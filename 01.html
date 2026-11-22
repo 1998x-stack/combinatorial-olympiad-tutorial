@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第1章 计数原理与排列</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html" class="active">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,17 +41,46 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第一章：计数原理与排列</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第1章：计数原理与排列</h1>
+            <p class="dek">从加法原理与乘法原理出发，推导排列数公式，并处理全排列、有重复排列与圆排列中的常见计数陷阱。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。今天正式开始学习组合数学——这门学科的核心问题概括起来就一句话：<strong>"有多少种方法？"</strong>。听起来简单，但别小看它。从安排一场比赛的赛程，到计算密码的破解难度，再到分析基因序列的排列方式，组合数学几乎无处不在。</p>
 
 <p>很多同学觉得组合数学就是"套公式"，背下 <code>P(n,k)</code> 和 <code>C(n,k)</code> 的公式就能做题了。但参加过竞赛的都知道，这是最大的误解。真正的难点不在公式本身，而在于<strong>判断什么时候用加法、什么时候用乘法、什么时候要排除重复</strong>。今天这一章，我们就从最根基的计数原理开始，把这些"直觉"真正建立起来。</p>
 
-<h2>1.1 加法原理与乘法原理</h2>
+<h2 id="s11">1.1 加法原理与乘法原理</h2>
 
 <p>这两个原理看起来简单到不值一提，但它们是一切组合计数的地基。如果你只能记住组合数学中的两件事，那就是这两个原理。</p>
+
+<figure id="fig-add-mul">
+  <svg role="img" aria-labelledby="fig-am-title fig-am-desc" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-am-title">加法原理与乘法原理的判定结构</title>
+    <desc id="fig-am-desc">左框“完成一件事”分出两条路径：各类方式互斥、任选其一即可时用加法原理 n1+n2+…；各步相互独立、需要依次完成时用乘法原理 n1×n2×…。</desc>
+    <rect x="18" y="112" width="180" height="76" rx="14" fill="#e6f4f4" stroke="#147f80" stroke-width="2"/>
+    <text x="108" y="145" text-anchor="middle" font-size="17" fill="#123b3c">完成一件事</text>
+    <text x="108" y="170" text-anchor="middle" font-size="13" fill="#53676d">先判断关系</text>
+    <path d="M198 132 C 260 60, 280 60, 330 62" fill="none" stroke="#147f80" stroke-width="2.5" marker-end="url(#ar-accent)"/>
+    <path d="M198 168 C 260 240, 280 240, 330 238" fill="none" stroke="#d06d4d" stroke-width="2.5" marker-end="url(#ar-transform)"/>
+    <rect x="332" y="22" width="230" height="92" rx="14" fill="#ffffff" stroke="#147f80" stroke-width="2"/>
+    <text x="447" y="52" text-anchor="middle" font-size="15" fill="#147f80">“或者”——任选一类即可</text>
+    <text x="447" y="80" text-anchor="middle" font-size="18" fill="#123b3c">加法原理</text>
+    <text x="447" y="102" text-anchor="middle" font-size="14" fill="#53676d">n₁ + n₂ + … + nₖ</text>
+    <rect x="332" y="192" width="230" height="92" rx="14" fill="#ffffff" stroke="#d06d4d" stroke-width="2"/>
+    <text x="447" y="222" text-anchor="middle" font-size="15" fill="#d06d4d">“并且”——依次完成每步</text>
+    <text x="447" y="250" text-anchor="middle" font-size="18" fill="#123b3c">乘法原理</text>
+    <text x="447" y="272" text-anchor="middle" font-size="14" fill="#53676d">n₁ × n₂ × … × nₖ</text>
+    <defs>
+      <marker id="ar-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#147f80"/></marker>
+      <marker id="ar-transform" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#d06d4d"/></marker>
+    </defs>
+  </svg>
+  <figcaption>图 1.1　计数前先判定结构：各类互斥走加法，各步独立走乘法。颜色仅作路径区分，“或者/并且”才是真正的判据。</figcaption>
+</figure>
 
 <h3>1.1.1 加法原理（分类计数）</h3>
 
@@ -142,7 +171,7 @@
   <p><strong>⚠️ 踩坑实录</strong>：有一年我带竞赛集训队，出了一个题："从A地到B地有3条路，从B地到C地有4条路，从A地直接到C地有2条路。从A到C有多少种走法？"结果超过一半的学生写了 3×4×2 = 24。错在哪里？因为"从A直接到C"和"从A经B到C"是两类路线，应该用加法：3×4 + 2 = 14。学生把"加法场景"当成了"乘法场景"——这是一个非常经典的加法乘法混淆。永远记住：<strong>先判断关系，再选择运算</strong>。</p>
 </div>
 
-<h2>1.2 排列数公式的推导</h2>
+<h2 id="s12">1.2 排列数公式的推导</h2>
 
 <p>理解了加法原理和乘法原理，排列数的公式就水到渠成了。</p>
 
@@ -161,6 +190,14 @@
 </ul>
 
 <p>因此：</p>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="排列数公式">
+<math display="block" aria-label="P(n,k) 等于 n 的阶乘除以 (n-k) 的阶乘">
+ <mrow><mi>P</mi><mo>(</mo><mi>n</mi><mo>,</mo><mi>k</mi><mo>)</mo><mo>=</mo>
+  <mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mo>(</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo>)</mo><mo>!</mo></mrow></mfrac>
+ </mrow>
+</math>
+</div>
 
 <pre><code>P(n,k) = n × (n-1) × (n-2) × ... × (n-k+1)
 
@@ -193,7 +230,7 @@ P(n,k) = n! / (n-k)!</code></pre>
   <p><strong>关键洞察</strong>：排列数的本质是"<strong>有序选取</strong>"——顺序不同就算不同的结果。"排列"和后面要讲的"组合"的唯一区别就是：排列考虑顺序，组合不考虑顺序。如果你在做题时犹豫"要不要考虑顺序"，问自己一句话：交换两个元素，结果是不同的吗？如果是，用排列数；如果不是，用组合数——那是第二章的内容。</p>
 </div>
 
-<h2>1.3 全排列与阶乘</h2>
+<h2 id="s13">1.3 全排列与阶乘</h2>
 
 <p>全排列 n! 是排列中最特殊也最常见的情形。我们通过几个例子来感受它的应用。</p>
 
@@ -222,7 +259,7 @@ P(n,k) = n! / (n-k)!</code></pre>
   <p><strong>一点思考</strong>：有重复元素的排列公式 n! / (n₁! × n₂! × ...) 实际上就是多项式系数的一种特殊情况。等你学到第三章的二项式定理时会发现，这些公式之间有着深刻的联系。组合数学的美妙之处就在于——各个知识点像一张网，互相印证、彼此关联。</p>
 </div>
 
-<h2>1.4 圆排列</h2>
+<h2 id="s14">1.4 圆排列</h2>
 
 <p>前面讨论的所有排列都是"线排列"——元素排成一条直线。但竞赛中还经常遇到"圆排列"的问题：元素排成一个圆环，旋转后相同的视为同一种排列。</p>
 
@@ -263,11 +300,49 @@ P(n,k) = n! / (n-k)!</code></pre>
   </tr>
 </table>
 
+<figure id="fig-circle">
+  <svg role="img" aria-labelledby="fig-c-title fig-c-desc" viewBox="0 0 800 340" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-c-title">线排列与圆排列的对应</title>
+    <desc id="fig-c-desc">左图 4 个元素 A、B、C、D 围成一圈；把圆在某处“剪开”可得到 4 个互为旋转的线排列，它们被视为同一种圆排列。</desc>
+    <circle cx="180" cy="170" r="96" fill="#f6fbfa" stroke="#147f80" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle cx="180" cy="74" r="22" fill="#147f80"/><text x="180" y="81" text-anchor="middle" font-size="16" fill="#ffffff">A</text>
+    <circle cx="276" cy="170" r="22" fill="#7461ba"/><text x="276" y="177" text-anchor="middle" font-size="16" fill="#ffffff">B</text>
+    <circle cx="180" cy="266" r="22" fill="#d06d4d"/><text x="180" y="273" text-anchor="middle" font-size="16" fill="#ffffff">C</text>
+    <circle cx="84" cy="170" r="22" fill="#916c22"/><text x="84" y="177" text-anchor="middle" font-size="16" fill="#ffffff">D</text>
+    <path d="M180 46 a124 124 0 0 1 118 124" fill="none" stroke="#53676d" stroke-width="2" marker-end="url(#ar-rot)"/>
+    <text x="330" y="120" font-size="16" fill="#123b3c">旋转一个位置</text>
+    <text x="330" y="148" font-size="15" fill="#53676d">A→B→C→D→A</text>
+    <text x="330" y="196" font-size="16" fill="#123b3c">被视为同一种排列</text>
+    <text x="330" y="240" font-size="17" fill="#147f80">圆排列数 = n! / n = (n−1)!</text>
+    <defs><marker id="ar-rot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#53676d"/></marker></defs>
+  </svg>
+  <figcaption>图 1.2　圆排列的关键在于“旋转视为相同”：每个圆排列恰好对应 n 个互为旋转的线排列，所以由 n! 除以 n 得到 (n−1)!。</figcaption>
+</figure>
+
+<div class="controls" role="group" aria-label="排列类型切换">
+  <button type="button" data-mode="line" aria-pressed="true">线排列</button>
+  <button type="button" data-mode="circle" aria-pressed="false">圆排列</button>
+  <button type="button" data-mode="bracelet" aria-pressed="false">手环排列</button>
+</div>
+<p id="arr-out" aria-live="polite">8 位同学排成一排：8! = 40320 种。</p>
+<script>
+(function(){
+  var out=document.getElementById('arr-out');
+  var msgs={line:'8 位同学排成一排：8! = 40320 种。',circle:'围坐一张未编号圆桌：8!/8 = 7! = 5040 种。',bracelet:'串成手环（旋转与翻转都视为相同）：7!/2 = 2520 种。'};
+  document.querySelectorAll('.controls button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.controls button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      out.textContent=msgs[b.getAttribute('data-mode')];
+    });
+  });
+})();
+</script>
+
 <div class="warning">
   <p><strong>⚠️ 常见错误</strong>：题目说"围坐一圈"，很多学生想都不想就除以 n。但请仔细看题——如果椅子是不同的（比如有编号），那就不需要除以 n，因为旋转后坐在不同椅子上的情况被视为不同的。反之，如果椅子没有编号，所有人都一模一样的圆桌，那才需要用 (n-1)!。我的一个学生曾在联赛中因此丢了15分——题目里就多了"编号"两个字，他硬是没看见。</p>
 </div>
 
-<h2>1.5 常见计数陷阱</h2>
+<h2 id="s15">1.5 常见计数陷阱</h2>
 
 <p>学习组合数学的过程中，"踩坑"本身就是最好的学习方式。下面这两个陷阱几乎每个竞赛生都栽过。</p>
 
@@ -310,7 +385,7 @@ P(n,k) = n! / (n-k)!</code></pre>
 
 <p>这个"三步法"不能保证你100%不出错，但可以筛掉80%以上的低级错误。</p>
 
-<h2>1.6 本章小结与过渡</h2>
+<h2 id="s16">1.6 本章小结与过渡</h2>
 
 <p>今天我们从最基础的加法原理和乘法原理出发，一步步推导出了排列数的公式，并讨论了全排列、有重复排列、圆排列这些重要的变体。最后我们通过几个"踩坑"故事，了解了计数中最常见的两类错误——重复计数和遗漏计数。</p>
 
@@ -321,8 +396,8 @@ P(n,k) = n! / (n-k)!</code></pre>
             <a href="index.html">📖 返回目录</a>
             <a href="02.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
