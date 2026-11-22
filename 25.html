@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第25章 组合几何</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,15 +42,19 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第25章 组合几何</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第25章：组合几何</h1>
+            <p class="dek">用组合的眼光看几何对象：凸包与极点、Pick 定理的数格点、Helly 的“局部相交”以及 Sylvester-Gallai 的极端原理。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。今天我们要探讨的是组合数学与平面几何的交叉领域——<strong>组合几何</strong>。如果说传统几何研究的是"给定图形有什么性质"，组合几何研究的就是"给定了若干点或若干图形，它们之间有什么组合关系"。</p>
 
 <p>很多同学觉得几何和组合是两门不太相关的学科，但实际上它们之间的交叉地带产生了大量既优美又实用的结论。从格点多边形的面积计算，到一堆凸集是否一定有公共交点，再到平面上过恰好两点的直线——这些问题的共同特点是：<strong>用组合数学的眼光去看几何对象</strong>。我们这一章就来领略这些结论的魅力。</p>
 
-<h2>25.1 凸包的基本性质与应用</h2>
+<h2 id="s251">25.1 凸包的基本性质与应用</h2>
 
 <h3>25.1.1 什么是凸包？</h3>
 
@@ -63,6 +68,22 @@
   <li>凸包的顶点是 S 的子集，称为"极点"</li>
   <li>S 中任意一点都可以表示为凸包顶点的凸组合</li>
 </ul>
+
+<figure id="fig-hull">
+  <svg role="img" aria-labelledby="fig-hull-title fig-hull-desc" viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-hull-title">点集的凸包与内部点</title>
+    <desc id="fig-hull-desc">外层深色顶点连成凸包（像拉紧的橡皮筋），内部浅色点落在多边形内；研究组合关系时只需关注凸包顶点。</desc>
+    <polygon points="90,120 220,50 430,70 600,170 520,300 300,330 140,260" fill="#147f80" fill-opacity="0.10" stroke="#147f80" stroke-width="2.5"/>
+    <g fill="#7461ba" fill-opacity="0.85"><circle cx="280" cy="160" r="7"/><circle cx="360" cy="200" r="7"/><circle cx="250" cy="240" r="7"/><circle cx="400" cy="150" r="7"/></g>
+    <g fill="#147f80">
+      <circle cx="90" cy="120" r="10"/><circle cx="220" cy="50" r="10"/><circle cx="430" cy="70" r="10"/>
+      <circle cx="600" cy="170" r="10"/><circle cx="520" cy="300" r="10"/><circle cx="300" cy="330" r="10"/><circle cx="140" cy="260" r="10"/>
+    </g>
+    <text x="610" y="40" text-anchor="middle" font-size="15" fill="#147f80">极点（凸包顶点）</text>
+    <text x="360" y="300" text-anchor="middle" font-size="14" fill="#7461ba">内部点</text>
+  </svg>
+  <figcaption>图 25.1　点集的凸包：深色点为极点，它们围出的凸多边形就是凸包；多个问题时内部点可以被“忽略”，只需盯住极点。</figcaption>
+</figure>
 
 <h3>25.1.2 Carathéodory 定理</h3>
 
@@ -85,43 +106,84 @@
   <p><strong>思考</strong>：这个问题的关键思路是"从极端情况入手"——考虑凸包，然后看内部点，利用"距离最近"这个极端条件来保证没有更小的三角形。这种思考方式正是我们第13章极端原理的几何应用。</p>
 </div>
 
-<h2>25.2 Pick 定理与格点多边形</h2>
+<h2 id="s252">25.2 Pick 定理与格点多边形</h2>
 
 <p>Pick 定理是竞赛中出镜率最高的组合几何定理之一，它给出了顶点在格点上的多边形的面积计算公式：</p>
 
 <div class="highlight">
   <p><strong>Pick 定理</strong>：设 P 是一个顶点都在格点（整点）上的简单多边形，I 为 P 内部（不含边界）的格点数，B 为 P 边界上（含顶点）的格点数。则 P 的面积为：</p>
-  <p style="text-align:center; font-size:1.3rem;"><strong>S = I + B/2 - 1</strong></p>
+  <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Pick 定理">
+  <math display="block" aria-label="Pick 定理：格点多边形面积等于内部格点数加边界格点数的一半减一">
+   <mrow><mi>S</mi><mo>=</mo><mi>I</mi><mo>+</mo><mfrac><mi>B</mi><mn>2</mn></mfrac><mo>−</mo><mn>1</mn></mrow>
+  </math>
+  </div>
 </div>
 
 <p>这个公式之优美在于：它建立了几何量（面积）与组合量（格点计数）之间的直接联系。你不需要做任何积分或复杂的几何计算，只需要数一数格点的个数，就能算出面积。</p>
 
+<figure id="fig-pick">
+  <svg role="img" aria-labelledby="fig-pk-title fig-pk-desc" viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-pk-title">格点三角形的 Pick 计数</title>
+    <desc id="fig-pk-desc">三角形顶点为 (0,0)、(5,0)、(2,3)；边界上有 9 个格点（方块），内部有 4 个格点（圆点），面积 7.5 = 4 + 9/2 − 1。</desc>
+    <g stroke="#e4ded2" stroke-width="1">
+      <line x1="120" y1="90" x2="120" y2="330"/><line x1="180" y1="90" x2="180" y2="330"/><line x1="240" y1="90" x2="240" y2="330"/><line x1="300" y1="90" x2="300" y2="330"/><line x1="360" y1="90" x2="360" y2="330"/><line x1="420" y1="90" x2="420" y2="330"/>
+      <line x1="120" y1="330" x2="420" y2="330"/><line x1="120" y1="270" x2="420" y2="270"/><line x1="120" y1="210" x2="420" y2="210"/><line x1="120" y1="150" x2="420" y2="150"/>
+    </g>
+    <polygon points="120,330 420,330 240,150" fill="#147f80" fill-opacity="0.10" stroke="#147f80" stroke-width="2.5"/>
+    <g fill="#d06d4d">
+      <rect x="114" y="324" width="12" height="12"/><rect x="174" y="324" width="12" height="12"/><rect x="234" y="324" width="12" height="12"/><rect x="294" y="324" width="12" height="12"/><rect x="354" y="324" width="12" height="12"/><rect x="414" y="324" width="12" height="12"/>
+      <rect x="234" y="144" width="12" height="12"/><rect x="294" y="204" width="12" height="12"/><rect x="354" y="264" width="12" height="12"/>
+    </g>
+    <g fill="#7461ba"><circle cx="180" cy="270" r="8"/><circle cx="240" cy="270" r="8"/><circle cx="300" cy="270" r="8"/><circle cx="240" cy="210" r="8"/></g>
+    <text x="560" y="150" font-size="15" fill="#d06d4d">▢ 边界格点 B = 9</text>
+    <text x="560" y="180" font-size="15" fill="#7461ba">● 内部格点 I = 4</text>
+    <text x="560" y="212" font-size="15" fill="#123b3c">S = 4 + 9/2 − 1 = 7.5</text>
+  </svg>
+  <figcaption>图 25.2　格点三角形 (0,0)、(5,0)、(2,3)：边界格点用方块标记（共 9 个），内部格点用圆点标记（共 4 个），代入 Pick 定理得面积 7.5。</figcaption>
+</figure>
+
 <p><strong>例2</strong>：一个三角形的三个顶点分别为 (0,0)、(5,0)、(2,3)。求这个三角形的面积和内部格点数。</p>
 
 <p>先用传统方法：面积 = (1/2) × 5 × 3 = 7.5。</p>
-<p>边界上的格点数：三条边上的格点数分别为 6（从 (0,0) 到 (5,0)，包含两端共 6 个）、4（从 (0,0) 到 (2,3)，gcd(2,3)=1，所以除了两端无其他格点？实际上需要仔细算）、以及从 (5,0) 到 (2,3) 的边。</p>
-<p>用 Pick 定理反推内部格点数：I = S - B/2 + 1。要验证需要仔细数 B。</p>
+<p>边界上的格点数用 gcd 公式数：一条边两端点为 (x₁,y₁)、(x₂,y₂) 时，该边（含端点）的格点数为 gcd(|x₂−x₁|, |y₂−y₁|) + 1。</p>
 
-<pre><code>三条边分别计算边界格点数（含端点）：
-边1：(0,0)→(5,0)：水平方向，格点为 (0,0),(1,0),...,(5,0)，共 6 个
-边2：(0,0)→(2,3)：向量 (2,3)，gcd(2,3)=1，除端点外无格点，共 2 个
-边3：(5,0)→(2,3)：向量 (-3,3)，gcd(3,3)=3，除两端点外，
-    中间格点为 (4,1)、(3,2)，共 2+3=... 注意端点被重复计算，
-    所以边界上格点总数为：6 + 2 + (2+2) - 3 = 9
-    （每个顶点被两条边共享，多算了 3 次）
+<pre><code>边1：(0,0)→(5,0)：gcd(5,0)=5，含端点共 5+1 = 6 个
+边2：(0,0)→(2,3)：gcd(2,3)=1，含端点共 1+1 = 2 个
+边3：(5,0)→(2,3)：向量 (-3,3)，gcd(3,3)=3，含端点共 3+1 = 4 个
 
-所以 B = 9。由 Pick 定理：
+三条边的端点被重复计数：每个顶点被两条边共享，
+共 3 个顶点各多算 1 次，故 B = 6 + 2 + 4 - 3 = 9
+
+由 Pick 定理反推内部格点数：
 I = S - B/2 + 1 = 7.5 - 4.5 + 1 = 4
-验证：三角形内部确实有 4 个格点：(1,1)、(2,1)、(3,1)、(4,1)?
-实际上需要检查：(1,1)不在三角形内，(2,1)也不在...
-这个例子告诉我们：用 Pick 定理时，边界点一定要数清楚！</code></pre>
+
+核对：内部格点为 (1,1)、(2,1)、(3,1)、(2,2)，恰为 4 个。</code></pre>
+
+<div class="controls" role="group" aria-label="Pick 定理算例">
+  <button type="button" data-case="0" aria-pressed="true">三角形 (0,0),(5,0),(2,3)</button>
+  <button type="button" data-case="1" aria-pressed="false">单位正方形 (0,0)–(1,1)</button>
+  <button type="button" data-case="2" aria-pressed="false">格点矩形 2×3</button>
+</div>
+<p id="pick-out" aria-live="polite">三角形：S = I + B/2 − 1 = 4 + 9/2 − 1 = 7.5。</p>
+<script>
+(function(){
+  var out=document.getElementById('pick-out');
+  var msgs=['三角形：S = I + B/2 − 1 = 4 + 9/2 − 1 = 7.5。','单位正方形：S = 0 + 4/2 − 1 = 1。','格点矩形 2×3：内部 0 个、边界 10 个，S = 0 + 10/2 − 1 = 4。'];
+  document.querySelectorAll('.controls button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.controls button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      out.textContent=msgs[+b.getAttribute('data-case')];
+    });
+  });
+})();
+</script>
 
 <div class="warning">
   <p><strong>⚠️ 踩坑实录</strong>：Pick定理的应用中有两个最常见的坑。第一个坑是<strong>忘记多边形必须顶点在格点上</strong>——Pick定理只适用于格点多边形，如果顶点不是整点，公式不成立。第二个坑是<strong>边界上的格点数 B 容易被数错</strong>。当一条边的两个端点分别为 (x₁,y₁) 和 (x₂,y₂) 时，该边上（含端点）的格点数为 gcd(|x₂-x₁|, |y₂-y₁|) + 1。如果你把这个公式忘了，手工去数，在复杂多边形上非常容易出错。</p>
   <p>我记得有一年带学生比赛，一道Pick定理的题本身只需要代入公式就能算出来，但三个学生数 B 数出了三个不同的答案——全错。后来我让他们必须用 gcd 公式算，才全部做对。记住：<strong>数格点用 gcd 公式，别靠肉眼数</strong>。</p>
 </div>
 
-<h2>25.3 Helly 定理与覆盖问题</h2>
+<h2 id="s253">25.3 Helly 定理与覆盖问题</h2>
 
 <p>Helly 定理是组合几何中最深刻的结论之一。它研究的问题是：给定一族凸集，什么时候它们有公共交点？</p>
 
@@ -143,7 +205,7 @@ I = S - B/2 + 1 = 7.5 - 4.5 + 1 = 4
   <li>在无限族凸集中，通过紧致性将问题归约为有限情况</li>
 </ul>
 
-<h2>25.4 Sylvester-Gallai 定理</h2>
+<h2 id="s254">25.4 Sylvester-Gallai 定理</h2>
 
 <p>Sylvester-Gallai 定理是组合几何中最"反直觉"的结论之一。问题的来源是这样的：</p>
 
@@ -170,7 +232,7 @@ I = S - B/2 + 1 = 7.5 - 4.5 + 1 = 4
   <p><strong>一点思考</strong>：Sylvester-Gallai 定理告诉我们，"恰好过两点的直线"不仅仅是可能存在的——在点不全共线的情况下，<strong>必然</strong>存在。这个结论在代数组合中有许多推广。比如在有限域上的射影平面中，类似的结论就不成立（Fano 平面中每条直线恰好经过三个点——但那是有限几何的范畴了）。</p>
 </div>
 
-<h2>25.5 组合几何中的极端原理</h2>
+<h2 id="s255">25.5 组合几何中的极端原理</h2>
 
 <p>上面对 Sylvester-Gallai 定理的证明展示了极端原理在组合几何中的力量。事实上，组合几何中许多存在性问题的核心都是<strong>找到一个合适的"极端量"，然后证明它满足要求</strong>。</p>
 
@@ -216,7 +278,7 @@ I = S - B/2 + 1 = 7.5 - 4.5 + 1 = 4
   </tr>
 </table>
 
-<h2>25.6 格点问题与 Minkowski 定理简介</h2>
+<h2 id="s256">25.6 格点问题与 Minkowski 定理简介</h2>
 
 <p>格点问题是组合几何中非常活跃的一个分支，它研究的是整数坐标点（格点）的几何性质。我们在 Pick 定理中已经看到了格点计数的威力，这里再介绍一个更深刻的结论。</p>
 
@@ -248,7 +310,7 @@ I = S - B/2 + 1 = 7.5 - 4.5 + 1 = 4
   <p><strong>⚠️ 常见误区</strong>：Minkowski 定理要求凸集是<strong>中心对称</strong>的（关于原点对称）。这个条件不能去掉。反例：考虑一个狭长的平行四边形，面积可以任意大，但不包含非零格点。另一个常见的误解是认为"面积大于 4"是充分必要条件——但"大于 4"是充分条件，不是必要条件（比如边长为 2 的正方形面积恰好等于 4，它包含原点和四个边界格点，但内部没有非零格点）。</p>
 </div>
 
-<h2>25.7 本章小结与过渡</h2>
+<h2 id="s257">25.7 本章小结与过渡</h2>
 
 <p>今天我们从凸包出发，学习了组合几何中五个重要的结论：</p>
 
@@ -269,8 +331,8 @@ I = S - B/2 + 1 = 7.5 - 4.5 + 1 = 4
             <a href="index.html">📖 返回目录</a>
             <a href="26.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
