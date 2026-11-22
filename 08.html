@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第8章 抽屉原理（一）</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第八章：抽屉原理（一）</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第8章：抽屉原理（一）</h1>
+            <p class="dek">把 n+1 个物体放进 n 个抽屉，必有一个抽屉不止一个。难点不在定理本身，而在于认出“物体”与“抽屉”，并用 ⌈m/n⌉ 量化保证。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。今天我们要讲组合数学中一个"最简单又最狡猾"的工具——<strong>抽屉原理</strong>（Pigeonhole Principle）。说它简单，是因为它的核心思想连小学生都能听懂：把10个苹果放进9个抽屉里，至少有一个抽屉有至少2个苹果。说它狡猾，是因为在竞赛中，你能不能认出"苹果"和"抽屉"，以及怎么构造它们，往往决定了你能不能解出这道题。</p>
 
@@ -51,7 +56,7 @@
 
 <p>抽屉原理还有一个更酷的名字——<strong>Dirichlet 原理</strong>。是的，就是那位在数论领域大名鼎鼎的德国数学家 Dirichlet。他在1834年第一次明确提出这个原理，用来证明数论中的逼近定理。所以别看它朴素，它的力量远超你的想象。</p>
 
-<h2>8.1 抽屉原理的三种表述</h2>
+<h2 id="s81">8.1 抽屉原理的三种表述</h2>
 
 <p>抽屉原理有三种常用的表述形式，分别适用于不同场景。我们逐一来看。</p>
 
@@ -66,11 +71,66 @@
 
 <p>就这么简单。但竞赛题不会这么直白——它们会把这个原理包装起来。</p>
 
+<figure id="fig-pigeon">
+  <svg role="img" aria-labelledby="fig-pg-title fig-pg-desc" viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-pg-title">五个物体放进四个抽屉</title>
+    <desc id="fig-pg-desc">上方 5 个物体沿箭头落入下方 4 个抽屉，其中第一个抽屉落入两个物体，说明 n+1 个物体放入 n 个抽屉必有一个抽屉至少两个。</desc>
+    <g stroke="#53676d" stroke-width="2" marker-end="url(#ar-pg)">
+      <line x1="80" y1="64" x2="72" y2="132"/>
+      <line x1="200" y1="64" x2="132" y2="132"/>
+      <line x1="320" y1="64" x2="256" y2="132"/>
+      <line x1="440" y1="64" x2="418" y2="132"/>
+      <line x1="560" y1="64" x2="578" y2="132"/>
+    </g>
+    <g>
+      <circle cx="80" cy="48" r="15" fill="#147f80"/><circle cx="200" cy="48" r="15" fill="#147f80"/>
+      <circle cx="320" cy="48" r="15" fill="#7461ba"/><circle cx="440" cy="48" r="15" fill="#916c22"/>
+      <circle cx="560" cy="48" r="15" fill="#d06d4d"/>
+      <rect x="20" y="140" width="145" height="76" rx="12" fill="#d9efee" stroke="#147f80" stroke-width="2"/>
+      <rect x="182" y="140" width="145" height="76" rx="12" fill="#ffffff" stroke="#53676d" stroke-width="1.5"/>
+      <rect x="344" y="140" width="145" height="76" rx="12" fill="#ffffff" stroke="#53676d" stroke-width="1.5"/>
+      <rect x="506" y="140" width="145" height="76" rx="12" fill="#ffffff" stroke="#53676d" stroke-width="1.5"/>
+    </g>
+    <text x="92" y="184" text-anchor="middle" font-size="15" fill="#123b3c">≥ 2 个</text>
+    <text x="254" y="184" text-anchor="middle" font-size="14" fill="#53676d">抽屉</text>
+    <text x="416" y="184" text-anchor="middle" font-size="14" fill="#53676d">抽屉</text>
+    <text x="578" y="184" text-anchor="middle" font-size="14" fill="#53676d">抽屉</text>
+    <defs><marker id="ar-pg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#53676d"/></marker></defs>
+  </svg>
+  <figcaption>图 8.1　5 个物体、4 个抽屉：无论怎么放，至少有一个抽屉落入 2 个物体。物体数比抽屉数多 1 就足够。</figcaption>
+</figure>
+
 <h3>8.1.2 一般形式（第二抽屉原理）</h3>
 
 <p><strong>表述二</strong>：如果把 m 个物体放入 n 个抽屉中，那么至少有一个抽屉中含有至少 ⌈m/n⌉ 个物体。</p>
 
 <p>这里的 ⌈x⌉ 表示向上取整（ceil），即不小于 x 的最小整数。当 m = n+1 时，⌈(n+1)/n⌉ = 2，退化为简单形式。</p>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="第二抽屉原理的保证值">
+<math display="block" aria-label="至少有一个抽屉的物体数不小于 m 除以 n 向上取整">
+ <mrow><mi>C</mi><mo>≥</mo><mo>⌈</mo><mfrac><mi>m</mi><mi>n</mi></mfrac><mo>⌉</mo></mrow>
+</math>
+</div>
+
+<div class="controls" role="group" aria-label="抽屉原理算例">
+  <button type="button" data-case="0" aria-pressed="true">13人 / 12月</button>
+  <button type="button" data-case="1" aria-pressed="false">101数 / 100奇数</button>
+  <button type="button" data-case="2" aria-pressed="false">9点 / 4小方格</button>
+</div>
+<p id="ph-out" aria-live="polite">13 个物体放进 12 个抽屉：至少一个抽屉有 ⌈13/12⌉ = 2 个。</p>
+<script>
+(function(){
+  var out=document.getElementById('ph-out');
+  var cases=[[13,12],[101,100],[9,4]];
+  document.querySelectorAll('.controls button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.controls button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      var c=cases[+b.getAttribute('data-case')];
+      out.textContent=c[0]+' 个物体放进 '+c[1]+' 个抽屉：至少一个抽屉有 ⌈'+c[0]+'/'+c[1]+'⌉ = '+Math.ceil(c[0]/c[1])+' 个。';
+    });
+  });
+})();
+</script>
 
 <p>这个一般形式的关键在于<strong>⌈m/n⌉ 这个数的构造</strong>。很多问题的突破口就是计算这个天花板值。</p>
 
@@ -90,7 +150,7 @@
 
 <p>竞赛中，平均值形式常常与"反证法"配合使用：假设所有数都小于某个值，推出与总和不符的矛盾。</p>
 
-<h2>8.2 ⌈m/n⌉ 的巧妙构造——如何制造抽屉</h2>
+<h2 id="s82">8.2 ⌈m/n⌉ 的巧妙构造——如何制造抽屉</h2>
 
 <p>抽屉原理最难的永远不是定理本身，而是<strong>如何在具体问题中识别出"苹果"和"抽屉"</strong>。下面我总结几种最常用的构造方法。</p>
 
@@ -146,7 +206,7 @@
 <p><strong>核心技巧</strong>：要证明"存在两个数之差不超过 d"，就把范围切成多个长度为 d 的小区间。物体数 = 点数，抽屉数 = 区间数。物体的数量只要大于区间数，结论就成立了。</p>
 </div>
 
-<h2>8.3 图形中的抽屉原理</h2>
+<h2 id="s83">8.3 图形中的抽屉原理</h2>
 
 <p>几何中的抽屉问题往往更加隐蔽——你需要将几何图形划分成若干区域作为抽屉。</p>
 
@@ -172,7 +232,7 @@
 <p>这个教训告诉我们：<strong>考试中用图画划分抽屉时，一定要确保每个点唯一确定一个抽屉</strong>。如果有歧义（比如点在边界上），你的证明就会有漏洞。</p>
 </div>
 
-<h2>8.4 Erdős-Szekeres 经典定理</h2>
+<h2 id="s84">8.4 Erdős-Szekeres 经典定理</h2>
 
 <p>这是抽屉原理历史上最著名的应用之一，由组合数学大师 Erdős 和 Szekeres 在1935年证明。</p>
 
@@ -196,6 +256,30 @@
 
 <p>所以假设不成立，原命题成立。</p>
 
+<figure id="fig-es-grid">
+  <svg role="img" aria-labelledby="fig-es-title fig-es-desc" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-es-title">有序对 (Lᵢ, Dᵢ) 构成 n² 个抽屉</title>
+    <desc id="fig-es-desc">以 n=3 为例，每个数对 (递增子序列长度 L, 递减子序列长度 D) 落在 3×3 网格的一格中，共 9 种取值；而 n²+1=10 个物体必有两个落入同一格。</desc>
+    <rect x="328" y="168" width="64" height="64" fill="#147f80" fill-opacity="0.22"/>
+    <rect x="200" y="40" width="192" height="192" fill="none" stroke="#203035" stroke-width="2"/>
+    <g stroke="#203035" stroke-width="1.5">
+      <line x1="264" y1="40" x2="264" y2="232"/><line x1="328" y1="40" x2="328" y2="232"/>
+      <line x1="200" y1="104" x2="392" y2="104"/><line x1="200" y1="168" x2="392" y2="168"/>
+    </g>
+    <g font-size="16" fill="#203035" text-anchor="middle"><text x="232" y="30">1</text><text x="296" y="30">2</text><text x="360" y="30">3</text></g>
+    <g font-size="16" fill="#203035" text-anchor="middle"><text x="186" y="78">1</text><text x="186" y="142">2</text><text x="186" y="206">3</text></g>
+    <g fill="#147f80">
+      <circle cx="232" cy="72" r="7"/><circle cx="296" cy="72" r="7"/><circle cx="360" cy="72" r="7"/>
+      <circle cx="232" cy="136" r="7"/><circle cx="296" cy="136" r="7"/><circle cx="360" cy="136" r="7"/>
+      <circle cx="232" cy="200" r="7"/><circle cx="296" cy="200" r="7"/>
+      <circle cx="344" cy="196" r="7"/><circle cx="376" cy="216" r="7"/>
+    </g>
+    <text x="296" y="264" text-anchor="middle" font-size="14" fill="#53676d">递增子序列长度 Lᵢ →</text>
+    <text x="288" y="136" text-anchor="middle" font-size="14" fill="#53676d" transform="rotate(-90 288 136)">递减长度 Dᵢ →</text>
+  </svg>
+  <figcaption>图 8.2　n=3 时，(Lᵢ,Dᵢ) 仅有 9 种取值，却有 10 个各不相同的物体；抽屉原理迫使两个物体落入同一格，与“互不相同”矛盾。</figcaption>
+</figure>
+
 <pre><code>Erdős-Szekeres 定理的抽屉结构：
 │  物体    │   n²+1 个有序对 (Lᵢ, Dᵢ)
 │  抽屉    │   n² 种可能的取值 (1..n)×(1..n)
@@ -206,7 +290,7 @@
 <p><strong>思路的精髓</strong>：这个证明的伟大之处在于，它本来要证"存在长的单调子序列"，但反过来假设"不存在"，然后给每个数贴上一个"标签"（Lᵢ, Dᵢ），发现如果有 n²+1 个数，标签的多寡就产生了矛盾。这种<strong>反证法 + 抽屉原理 + 巧妙标记</strong>的组合打法，在竞赛中经常出现。记住它。</p>
 </div>
 
-<h2>8.5 "两个人在同一个月出生"型问题</h2>
+<h2 id="s85">8.5 “两个人在同一个月出生”型问题</h2>
 
 <p>这类问题是在说：当物体数量超过抽屉数量时，"存在两个东西有某种共同属性"。我总结了几种最常见的变体：</p>
 
@@ -239,7 +323,7 @@
 </ol>
 </div>
 
-<h2>8.6 本章小结与过渡</h2>
+<h2 id="s86">8.6 本章小结与过渡</h2>
 
 <p>本章我们学习了抽屉原理的三种表述形式，掌握了如何通过数值范围、余数类和区间划分等方法来构造抽屉。我们在几何图形中看到了抽屉原理的应用，领略了 Erdős-Szekeres 定理的优美证明，最后总结了"存在两个..."型问题的通用解法。</p>
 
@@ -252,8 +336,8 @@
             <a href="index.html">📖 返回目录</a>
             <a href="09.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
