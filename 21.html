@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第21章 Ramsey理论</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第二十一章：Ramsey理论</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第21章：Ramsey 理论</h1>
+            <p class="dek">完全的无序是不可能的：任何足够大的红蓝两色完全图，都藏着一个单色完全子图。从 R(3,3)=6 走到 Schur 定理。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。如果你去问一个数学家："组合数学中最深刻的思想是什么？"很多人的答案会包含一个词——<strong>Ramsey理论</strong>。</p>
 
@@ -51,7 +56,7 @@
 
 <p>听起来很哲学对吧？但Ramsey理论是极其精确的数学。今天我们就从最经典的结论开始，一步步揭开它的面纱。</p>
 
-<h2>21.1 从聚会问题说起</h2>
+<h2 id="s211">21.1 从聚会问题说起</h2>
 
 <p>先来看一个经典问题：</p>
 
@@ -79,15 +84,80 @@
 
 两种情况都导出结论，证毕。</code></pre>
 
+<figure id="fig-r33">
+  <svg role="img" aria-labelledby="fig-r33-title fig-r33-desc" viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-r33-title">R(3,3)=6 证明中的锚点 A</title>
+    <desc id="fig-r33-desc">从顶点 A 连出的 5 条边被染成红、蓝两色，其中至少 3 条同色；这 3 个邻居无论内部关系如何，都会与 A 组成一个单色三角形。</desc>
+    <g stroke-width="3">
+      <line x1="350" y1="190" x2="350" y2="60" stroke="#d06d4d"/>
+      <line x1="350" y1="190" x2="500" y2="140" stroke="#d06d4d"/>
+      <line x1="350" y1="190" x2="200" y2="140" stroke="#d06d4d"/>
+      <line x1="350" y1="190" x2="445" y2="320" stroke="#147f80"/>
+      <line x1="350" y1="190" x2="255" y2="320" stroke="#147f80"/>
+    </g>
+    <circle cx="350" cy="190" r="26" fill="#203035"/>
+    <text x="350" y="198" text-anchor="middle" font-size="19" fill="#ffffff">A</text>
+    <g fill="#d06d4d"><circle cx="350" cy="60" r="19"/><circle cx="500" cy="140" r="19"/><circle cx="200" cy="140" r="19"/></g>
+    <g fill="#147f80"><circle cx="445" cy="320" r="19"/><circle cx="255" cy="320" r="19"/></g>
+    <text x="350" y="370" text-anchor="middle" font-size="15" fill="#123b3c">5 条关联边 → 必有一种颜色 ≥ ⌈5/2⌉ = 3 条</text>
+    <text x="120" y="40" font-size="14" fill="#d06d4d">— 认识（红）</text>
+    <text x="120" y="62" font-size="14" fill="#147f80">— 不认识（蓝）</text>
+  </svg>
+  <figcaption>图 21.1　固定锚点 A 的证明结构：5 个邻居中至少 3 人与 A 同色相连；再看这 3 人之间的边，要么出现红色 K₃，要么全部蓝边而与 A 组成蓝色 K₃。</figcaption>
+</figure>
+
+<div class="controls" role="group" aria-label="R(3,3) 证明逐步演示">
+  <button type="button" data-i="0" aria-pressed="true">① 选锚点</button>
+  <button type="button" data-i="1" aria-pressed="false">② 抽屉分类</button>
+  <button type="button" data-i="2" aria-pressed="false">③ 红色情形</button>
+  <button type="button" data-i="3" aria-pressed="false">④ 蓝色情形</button>
+</div>
+<p id="rtt-out" aria-live="polite">第①步　取定一人 A：其余 5 人与 A 的关系只分为“认识”与“不认识”两类。</p>
+<script>
+(function(){
+  var out=document.getElementById('rtt-out');
+  var msgs=['第①步　取定一人 A：其余 5 人与 A 的关系只分为“认识”与“不认识”两类。','第②步　抽屉原理：两类中必有一类不少于 ⌈5/2⌉ = 3 人，不妨设为 3 人与 A 认识。','第③步　若这 3 人中两人互相认识，则他们与 A 组成红色 K₃，已出现单色团。','第④步　否则这 3 人两两不认识，他们自己就组成蓝色 K₃。两种情形都得出单色三角形，故 R(3,3) = 6。'];
+  document.querySelectorAll('.controls button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.controls button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      out.textContent=msgs[+b.getAttribute('data-i')];
+    });
+  });
+})();
+</script>
+
 <p>这个证明非常优雅，只有两行推理，但结论却出人意料。它告诉我们：无论6个人之间的社会关系多么复杂，你总能从中找出一个"三人团"（要么全是朋友，要么全是陌生人）。</p>
 
 <p>而且6这个数字是最小的——如果只有5个人，就可以构造出既没有3人互相认识、也没有3人互不相识的情形（即一个5-边形，认识关系为相邻顶点，不认识关系为不相邻顶点）。</p>
+
+<figure id="fig-c5">
+  <svg role="img" aria-labelledby="fig-c5-title fig-c5-desc" viewBox="0 0 460 420" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-c5-title">5 个顶点的反例：蓝边与红边各是一个五边形</title>
+    <desc id="fig-c5-desc">正五边形的边染蓝色、对角线染红色；两种颜色各自都是一个 5-圈，都不含三角形，所以 5 个顶点存在无单色三角形的染色，R(3,3)>5。</desc>
+    <g stroke="#147f80" stroke-width="3">
+      <line x1="230" y1="60" x2="373" y2="164"/><line x1="373" y1="164" x2="318" y2="331"/>
+      <line x1="318" y1="331" x2="142" y2="331"/><line x1="142" y1="331" x2="87" y2="164"/>
+      <line x1="87" y1="164" x2="230" y2="60"/>
+    </g>
+    <g stroke="#d06d4d" stroke-width="3" stroke-dasharray="7 5">
+      <line x1="230" y1="60" x2="318" y2="331"/><line x1="230" y1="60" x2="142" y2="331"/>
+      <line x1="373" y1="164" x2="142" y2="331"/><line x1="373" y1="164" x2="87" y2="164"/>
+      <line x1="318" y1="331" x2="87" y2="164"/>
+    </g>
+    <g fill="#203035">
+      <circle cx="230" cy="60" r="15"/><circle cx="373" cy="164" r="15"/>
+      <circle cx="318" cy="331" r="15"/><circle cx="142" cy="331" r="15"/><circle cx="87" cy="164" r="15"/>
+    </g>
+    <text x="230" y="400" text-anchor="middle" font-size="14" fill="#53676d">实线蓝 C₅、虚线红 C₅：两者都不含三角形</text>
+  </svg>
+  <figcaption>图 21.2　5 个顶点的反例：蓝边（实线）与红边（虚线）各自是一个 5-圈，均无三角形，所以 5 个人可以避开单色三人团，R(3,3) > 5。</figcaption>
+</figure>
 
 <div class="tip">
   <p><strong>思考</strong>：这个证明本质上是对一个人进行"分类"，然后利用抽屉原理。这种"选一个人作为锚点"的思路是Ramsey型问题最常用的证明技巧——先固定一个点，然后根据它的边的颜色进行分类讨论。记住这个模式，它会反复出现。</p>
 </div>
 
-<h2>21.2 Ramsey数</h2>
+<h2 id="s212">21.2 Ramsey数</h2>
 
 <h3>21.2.1 定义</h3>
 
@@ -176,9 +246,15 @@
   <p>由这个递推和 R(3,3)=6 出发，可以推出 R(4,4) ≤ R(3,4)+R(4,3) = 9+9 = 18，从而 R(4,4)=18。</p>
 </div>
 
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Ramsey 数递推上界">
+<math display="block" aria-label="Ramsey 数递推上界：R(s,t) 不超过 R(s-1,t) 加 R(s,t-1)">
+ <mrow><mi>R</mi><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>)</mo><mo>≤</mo><mi>R</mi><mo>(</mo><mi>s</mi><mo>−</mo><mn>1</mn><mo>,</mo><mi>t</mi><mo>)</mo><mo>+</mo><mi>R</mi><mo>(</mo><mi>s</mi><mo>,</mo><mi>t</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow>
+</math>
+</div>
+
 <p>证明思路：设 N = R(s-1,t) + R(s,t-1)。任取一个顶点 v，它有 N-1 个邻居。它的边被染成红色或蓝色。如果红色边数 ≥ R(s-1,t)，则这些红色邻居中要么有红色 K<sub>s-1</sub>（加上v得到红色 K<sub>s</sub>），要么有蓝色 K<sub>t</sub>。蓝色边的情况同理。所以 N 就是符合条件的数。</p>
 
-<h2>21.3 Schur定理</h2>
+<h2 id="s213">21.3 Schur定理</h2>
 
 <p>从Ramsey定理出发，可以推导出一个在数论中出人意料的结论：</p>
 
@@ -214,7 +290,7 @@
   <p><strong>深挖一下</strong>：实际上Schur定理更精确的形式涉及Schur数 S(r)——使得 r-染色下保证有 x+y=z 同色的最小 N。已知 S(1)=2, S(2)=5, S(3)=14, S(4)=45。S(5) 只知道在 160 到 178 之间。你可以把它看作"加法的Ramsey数"。</p>
 </div>
 
-<h2>21.4 更一般的Ramsey定理</h2>
+<h2 id="s214">21.4 更一般的Ramsey定理</h2>
 
 <p>Ramsey定理不仅限于"完全图的边染色"——它有一个极其一般的形式：</p>
 
@@ -240,7 +316,7 @@
   <li>将问题转化为图染色问题并用抽屉原理+分类讨论解决</li>
 </ul>
 
-<h2>21.5 竞赛中的应用策略</h2>
+<h2 id="s215">21.5 竞赛中的应用策略</h2>
 
 <p>Ramsey理论在竞赛中虽然"出镜率"不如前面几章那么高，但一旦出现，往往是压轴题。以下我总结的几点应对策略：</p>
 
@@ -283,8 +359,8 @@
             <a href="index.html">📖 返回目录</a>
             <a href="22.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
