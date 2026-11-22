@@ -65,3 +65,5 @@ button[aria-pressed="true"]{background:var(--accent);color:#fff;}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important;}}
 @media print{nav.toc,.skip-link,.controls{display:none;}body{font-size:11pt;}a{color:var(--ink);}}
+.table-scroll{overflow-x:auto;}
+.table-scroll>table{margin:.2rem 0;}

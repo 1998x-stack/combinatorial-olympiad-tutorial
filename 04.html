@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第4章 容斥原理</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,21 +42,31 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第4章：容斥原理</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第4章：容斥原理</h1>
+            <p class="dek">当“直接数满足条件”很难时，先数“至少违反一个条件”的情况，再用加减符号一层层修正——这就是容斥原理，错排与欧拉函数都由此而来。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。前面的三章我们学的是"正着数"——直接计算满足条件的情况数。但现实中的很多计数问题，<strong>直接数满足条件的太难了，反而是数"不满足条件的"更简单</strong>。比如：有多少个排列使得没有人坐在自己的座位上？有多少个1到100之间的数与30互素？这些问题用正面计数简直是噩梦，但用"反过来数"的思路就异常简单。这就是容斥原理大显身手的舞台。</p>
 
 <p>容斥原理的核心思想就是一句话：<strong>加多了，减回来；减多了，再加回去</strong>。听起来像废话？别急——当这个思想用集合的语言精确表达出来时，它就成了组合数学中最强大的计数工具之一。</p>
 
-<h2>4.1 从两个集合到三个集合的递进</h2>
+<h2 id="s41">4.1 从两个集合到三个集合的递进</h2>
 
 <h3>4.1.1 两个集合的容斥</h3>
 
 <p>先看最简单的形式。对两个集合 A、B：</p>
 
 <pre><code>|A ∪ B| = |A| + |B| - |A ∩ B|</code></pre>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="两集合容斥公式">
+<math display="block" aria-label="A 并 B 的势等于 A 的势加 B 的势减去 A 交 B 的势">
+ <mrow><mo>|</mo><mi>A</mi><mo>∪</mo><mi>B</mi><mo>|</mo><mo>=</mo><mo>|</mo><mi>A</mi><mo>|</mo><mo>+</mo><mo>|</mo><mi>B</mi><mo>|</mo><mo>−</mo><mo>|</mo><mi>A</mi><mo>∩</mo><mi>B</mi><mo>|</mo></mrow>
+</math>
+</div>
 
 <p>道理很简单：把 A 和 B 的元素数加起来，A ∩ B 中的元素被重复算了一次，所以要减掉一次。</p>
 
@@ -74,6 +85,43 @@
              + |A∩B∩C|</code></pre>
 
 <p>模式：加所有单个、减所有两两交、加所有三三交。</p>
+
+<figure id="fig-venn3">
+  <svg role="img" aria-labelledby="fig-v3-title fig-v3-desc" viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-v3-title">三集合容斥的七块区域</title>
+    <desc id="fig-v3-desc">三个相互重叠的圆把并集分成 7 块：三块单区各加一次，三块两两交区各减一次，中间三交区加回一次，使每块恰好计一次。</desc>
+    <circle cx="300" cy="165" r="125" fill="#147f80" fill-opacity="0.10" stroke="#147f80" stroke-width="2"/>
+    <circle cx="460" cy="165" r="125" fill="#7461ba" fill-opacity="0.10" stroke="#7461ba" stroke-width="2"/>
+    <circle cx="380" cy="300" r="125" fill="#d06d4d" fill-opacity="0.10" stroke="#d06d4d" stroke-width="2"/>
+    <text x="215" y="140" font-size="15" fill="#147f80">+|A|</text>
+    <text x="525" y="140" font-size="15" fill="#7461ba">+|B|</text>
+    <text x="360" y="362" font-size="15" fill="#d06d4d">+|C|</text>
+    <text x="352" y="105" font-size="14" fill="#53676d">−|A∩B|</text>
+    <text x="278" y="300" font-size="14" fill="#53676d">−|A∩C|</text>
+    <text x="442" y="300" font-size="14" fill="#53676d">−|B∩C|</text>
+    <text x="340" y="212" font-size="14" fill="#916c22">+|A∩B∩C|</text>
+  </svg>
+  <figcaption>图 4.1　三圆 Venn 图：先加三块单区，再减三块两两交区，最后加回中间三交区，结果每个区域恰好被计数一次。</figcaption>
+</figure>
+
+<div class="controls" role="group" aria-label="三集合容斥逐步演示">
+  <button type="button" data-step="0" aria-pressed="true">① 加单个</button>
+  <button type="button" data-step="1" aria-pressed="false">② 减两两</button>
+  <button type="button" data-step="2" aria-pressed="false">③ 加三交</button>
+</div>
+<p id="ie-out" aria-live="polite">第①步 加单个：|A|+|B|+|C| = 50+40+30 = 120。此时两两交与三交都被重复计入。</p>
+<script>
+(function(){
+  var out=document.getElementById('ie-out');
+  var msgs=['第①步 加单个：|A|+|B|+|C| = 50+40+30 = 120。此时两两交与三交都被重复计入。','第②步 减两两：120 − (15+10+8) = 87。三交区前面被减了 3 次，需要补回。','第③步 加三交：87 + 3 = 90。最终 |A∪B∪C| = 90，每个区域恰好计一次。'];
+  document.querySelectorAll('.controls button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.controls button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      out.textContent=msgs[+b.getAttribute('data-step')];
+    });
+  });
+})();
+</script>
 
 <div class="highlight">
   <p><strong>🔥 Venn图理解</strong>：画三个相互交叠的圆。数并集时——</p>
@@ -104,7 +152,7 @@
 
 <p>当问题是对称的时候（即所有交集的大小只依赖于交集的个数），容斥的计算会大大简化。</p>
 
-<h2>4.2 经典错排问题 D_n</h2>
+<h2 id="s42">4.2 经典错排问题 D_n</h2>
 
 <p>错排问题是容斥原理最经典的应用之一——"全错位排列"（也被称为"derangement"）是指 1,2,...,n 的一个排列 π，使得 π(i) ≠ i 对所有的 i 成立。也就是说：<strong>没有一个人坐在自己的座位上</strong>。</p>
 
@@ -129,6 +177,7 @@ D_n = n! × [1 - 1/1! + 1/2! - 1/3! + ... + (-1)^n/n!]</code></pre>
 
 <p>这就是著名的错排公式。实际上 D_n 非常接近 n!/e——因为 e^{-1} = 1 - 1/1! + 1/2! - 1/3! + ...，所以 D_n = ⌊n!/e + 0.5⌋（四舍五入到最接近的整数），这个逼近在 n≥1 时成立。</p>
 
+<div class="table-scroll" style="overflow-x:auto">
 <table>
   <tr>
     <th>n</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th>
@@ -140,6 +189,7 @@ D_n = n! × [1 - 1/1! + 1/2! - 1/3! + ... + (-1)^n/n!]</code></pre>
     <td>n!/e</td><td>0.368</td><td>0.736</td><td>2.207</td><td>8.829</td><td>44.146</td><td>264.87</td><td>1854.11</td><td>14832.9</td>
   </tr>
 </table>
+</div>
 
 <p>可以看到 D_n 和 n!/e 已经非常接近了。容斥原理在这里优雅地给出了一个有封闭形式逼近的精确公式。</p>
 
@@ -162,7 +212,7 @@ D_n = n! × [1 - 1/1! + 1/2! - 1/3! + ... + (-1)^n/n!]</code></pre>
   <p><strong>💡 两种思路的对比</strong>：容斥原理给出了错排的封闭公式，而递推给出了它的"生长规律"。在竞赛中——如果你需要直接计算某个 n 的 D_n，用公式更快；如果你要证明 D_n 的某个性质（比如奇偶性），用递推更方便。两种工具都要掌握。</p>
 </div>
 
-<h2>4.3 欧拉函数 φ(n) 的组合推导</h2>
+<h2 id="s43">4.3 欧拉函数 φ(n) 的组合推导</h2>
 
 <p>欧拉函数 φ(n) 表示 1 到 n 之间与 n 互素的整数的个数。你可能在数论中见过它的公式，但你知道吗——这个公式也可以通过容斥原理组合推导出来。</p>
 
@@ -188,7 +238,7 @@ D_n = n! × [1 - 1/1! + 1/2! - 1/3! + ... + (-1)^n/n!]</code></pre>
 
 <p>这个推导展示了容斥原理和数论的深刻联系。</p>
 
-<h2>4.4 禁位排列问题</h2>
+<h2 id="s44">4.4 禁位排列问题</h2>
 
 <p>错排是"每个人都不坐自己的座位"——这是一个特定的禁止位置。但更一般地，我们可以禁止任意位置的组合。这种问题称为<strong>禁位排列</strong>（或"有限制排列"）。</p>
 
@@ -196,7 +246,29 @@ D_n = n! × [1 - 1/1! + 1/2! - 1/3! + ... + (-1)^n/n!]</code></pre>
 
 <p>在 n×n 的棋盘上，放 n 个车（rook），使得没有两个车在同一行或同一列。如果没有任何限制，这就是 n! 种放法。但如果我们禁止某些位置放车（比如某些格子不能放），问题就变成了禁位排列。</p>
 
-<p>设棋盘上有 m 个"禁止"格子。我们需要计算：有多少种放 n 个车的方式，使得没有任何车被放在禁止格子上？</p>
+<p>设棋盘上有 m 个“禁止”格子。我们需要计算：有多少种放 n 个车的方式，使得没有任何车被放在禁止格子上？</p>
+
+<figure id="fig-board">
+  <svg role="img" aria-labelledby="fig-bd-title fig-bd-desc" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-bd-title">错排对应的禁位棋盘</title>
+    <desc id="fig-bd-desc">4×4 棋盘上，阴影对角线代表“数字 i 不能排在第 i 位”的禁止位置；错排就是在剩下格子上放 4 个互不同行同列的车。</desc>
+    <rect x="250" y="40" width="216" height="216" fill="#ffffff" stroke="#203035" stroke-width="2"/>
+    <rect x="250" y="40" width="54" height="54" fill="#d06d4d" fill-opacity="0.28"/>
+    <rect x="304" y="94" width="54" height="54" fill="#d06d4d" fill-opacity="0.28"/>
+    <rect x="358" y="148" width="54" height="54" fill="#d06d4d" fill-opacity="0.28"/>
+    <rect x="412" y="202" width="54" height="54" fill="#d06d4d" fill-opacity="0.28"/>
+    <g stroke="#203035" stroke-width="1.5">
+      <line x1="304" y1="40" x2="304" y2="256"/><line x1="358" y1="40" x2="358" y2="256"/><line x1="412" y1="40" x2="412" y2="256"/>
+      <line x1="250" y1="94" x2="466" y2="94"/><line x1="250" y1="148" x2="466" y2="148"/><line x1="250" y1="202" x2="466" y2="202"/>
+    </g>
+    <g font-size="16" fill="#203035" text-anchor="middle">
+      <text x="277" y="30">1</text><text x="331" y="30">2</text><text x="385" y="30">3</text><text x="439" y="30">4</text>
+      <text x="238" y="76">1</text><text x="238" y="130">2</text><text x="238" y="184">3</text><text x="238" y="238">4</text>
+    </g>
+    <text x="250" y="285" font-size="14" fill="#53676d">阴影 = 禁止位置（数字 i 不排在第 i 位）</text>
+  </svg>
+  <figcaption>图 4.2　错排的棋盘模型：4 个不同的数字就是 4 个“车”，要求每个都落在非阴影格且互不同行同列；对角线上不能放车正是 Dₙ 的限制。</figcaption>
+</figure>
 
 <p>这正是容斥的用武之地：</p>
 
@@ -216,7 +288,7 @@ D_n = n! × [1 - 1/1! + 1/2! - 1/3! + ... + (-1)^n/n!]</code></pre>
 
 <p>这里不展开详细推导，但你可以感受到——当问题的不利条件不独立（夫妻关系导致依赖）时，容斥原理就成了为数不多的有效工具。</p>
 
-<h2>4.5 一个真实的踩坑故事</h2>
+<h2 id="s45">4.5 一个真实的踩坑故事</h2>
 
 <p>我来说一个自己当年参加竞赛时的教训。那是一道省队选拔题，题目是这样的：</p>
 
@@ -241,7 +313,7 @@ D_n = n! × [1 - 1/1! + 1/2! - 1/3! + ... + (-1)^n/n!]</code></pre>
   <p>这"容斥三问"帮我避免了很多低级失误。</p>
 </div>
 
-<h2>4.6 容斥原理的更多应用</h2>
+<h2 id="s46">4.6 容斥原理的更多应用</h2>
 
 <h3>4.6.1 有上下界的整数解</h3>
 
@@ -263,7 +335,7 @@ D_n = n! × [1 - 1/1! + 1/2! - 1/3! + ... + (-1)^n/n!]</code></pre>
   <p>记住：<strong>当我们对"完全满足所有条件"束手无策时，试着先放弃一些条件</strong>——这就是容斥原理的精髓。</p>
 </div>
 
-<h2>4.7 本章小结与过渡</h2>
+<h2 id="s47">4.7 本章小结与过渡</h2>
 
 <p>今天我们学习了容斥原理从两个集合到 n 个集合的递进、经典错排问题 D_n 的两种推导（容斥公式和递推公式）、欧拉函数的容斥推导、禁位排列问题，以及容斥原理在整数解、素数分布和染色问题中的扩展应用。</p>
 
@@ -274,8 +346,8 @@ D_n = n! × [1 - 1/1! + 1/2! - 1/3! + ... + (-1)^n/n!]</code></pre>
             <a href="index.html">📖 返回目录</a>
             <a href="05.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
