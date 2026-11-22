@@ -168,7 +168,7 @@ I = S - B/2 + 1 = 7.5 - 4.5 + 1 = 4
 <script>
 (function(){
   var out=document.getElementById('pick-out');
-  var msgs=['三角形：S = I + B/2 − 1 = 4 + 9/2 − 1 = 7.5。','单位正方形：S = 0 + 4/2 − 1 = 1。','格点矩形 2×3：内部 0 个、边界 10 个，S = 0 + 10/2 − 1 = 4。'];
+  var msgs=['三角形：S = I + B/2 − 1 = 4 + 9/2 − 1 = 7.5。','单位正方形：S = 0 + 4/2 − 1 = 1。','格点矩形 2×3：顶点 (0,0),(2,0),(2,3),(0,3)，边界 10 个（每边 gcd 分别为 2,3,2,3，B = 2+3+2+3 = 10）、内部 2 个（(1,1)、(1,2)），S = 2 + 10/2 − 1 = 6。'];
   document.querySelectorAll('.controls button').forEach(function(b){
     b.addEventListener('click',function(){
       document.querySelectorAll('.controls button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
