@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第5章 隔板法与整数解</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}.math-scroll{overflow-x:auto;max-width:100%;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第5章：隔板法与整数解</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第5章：隔板法与整数解</h1>
+            <p class="dek">把“相同物品分配”翻译成 x₁+…+x_k=n 的整数解计数：插板模型给出 C(n−1,k−1) 与 C(n+k−1,k−1)，上下界与不等式则靠变量替换和容斥处理。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。今天我们来学习组合数学中最"形象化"的一个技巧——<strong>隔板法</strong>。隔板法解决的问题看起来很简单：把 n 个相同的物品分给 k 个人，有多少种分法？但就是这么简单的问题，在竞赛中可以演变出上百种变体。</p>
 
@@ -61,11 +66,37 @@
 
 <p>有 n 个完全相同的物品，要分给 k 个人，每人至少分到一个。把 n 个物品排成一排，它们之间有 n-1 个空隙。在 n-1 个空隙中选 k-1 个位置插入隔板，就把 n 个物品分成了 k 份。</p>
 
-<pre><code>物品排列： ○ ○ ○ ○ ○ ○ ○ ○ ○ ○ (n个)
-空隙位置：  ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑  (n-1个)
-插入 k-1 块隔板后： ○|○○○|○|○○|○○○ (分给k个人)</code></pre>
+<figure id="fig-bars">
+  <svg role="img" aria-labelledby="fig-bars-title fig-bars-desc" viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-bars-title">隔板法：10 个相同物品插 2 块隔板</title>
+    <desc id="fig-bars-desc">10 个相同的圆形物品排成一行，在第 3、7 个物品之后各插入一块隔板，把它们分成 3 份，数量分别为 3、4、3，对应 x1+x2+x3=10 的一组正整数解。</desc>
+    <text x="350" y="34" text-anchor="middle" font-size="17" fill="#123b3c">n=10 个相同物品，插 k−1=2 块隔板分成 k=3 份</text>
+    <g fill="#147f80">
+      <circle cx="60" cy="95" r="13"/><circle cx="104" cy="95" r="13"/><circle cx="148" cy="95" r="13"/>
+      <circle cx="192" cy="95" r="13"/><circle cx="236" cy="95" r="13"/><circle cx="280" cy="95" r="13"/>
+      <circle cx="324" cy="95" r="13"/><circle cx="368" cy="95" r="13"/><circle cx="412" cy="95" r="13"/><circle cx="456" cy="95" r="13"/>
+    </g>
+    <g stroke="#d06d4d" stroke-width="5" stroke-linecap="round">
+      <line x1="170" y1="60" x2="170" y2="130"/><line x1="346" y1="60" x2="346" y2="130"/>
+    </g>
+    <g font-size="16" fill="#53676d" text-anchor="middle">
+      <text x="104" y="170">x₁ = 3</text><text x="258" y="170">x₂ = 4</text><text x="412" y="170">x₃ = 3</text>
+    </g>
+    <text x="350" y="212" text-anchor="middle" font-size="15" fill="#123b3c">在 n−1=9 个空隙中选 k−1=2 个插板 → C(9,2)=36 组正整数解</text>
+  </svg>
+  <figcaption>图 5.1　隔板法的核心图像：把 n 个相同物品排成一排，在 n−1 个空隙中挑 k−1 个插入隔板，就得到一组正整数解。这里 C(9,2)=36。</figcaption>
+</figure>
 
 <p>所以正整数解的数量为 <strong>C(n-1, k-1)</strong>。</p>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="正整数解数">
+<math display="block" aria-label="正整数解个数等于 C(n-1, k-1)">
+ <mrow>
+  <mi>N</mi><mo>=</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>)</mo></mrow>
+ </mrow>
+</math>
+</div>
 
 <p>用方程的语言：方程 x₁ + x₂ + ... + x_k = n，x_i ≥ 1 的整数解个数为 C(n-1, k-1)。</p>
 
@@ -75,11 +106,29 @@
 
 <p>解决方法<strong>非常巧妙</strong>：做一个变量替换。令 y_i = x_i + 1，则 y_i ≥ 1，且：</p>
 
-<pre><code>y₁ + y₂ + ... + y_k = (x₁+1) + (x₂+1) + ... + (x_k+1) = n + k</code></pre>
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="非负解到正解变量替换">
+<math display="block" aria-label="令 yi 等于 xi 加 1，则 y1 到 yk 之和等于 n 加 k">
+ <mrow>
+  <msub><mi>y</mi><mi>i</mi></msub><mo>=</mo><msub><mi>x</mi><mi>i</mi></msub><mo>+</mo><mn>1</mn>
+  <mo>⇒</mo>
+  <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><msub><mi>y</mi><mi>i</mi></msub>
+  <mo>=</mo><mi>n</mi><mo>+</mo><mi>k</mi>
+ </mrow>
+</math>
+</div>
 
 <p>这样就把"非负整数解"问题转化成了"正整数解"问题！</p>
 
 <p>所以 x_i ≥ 0 时方程 x₁+...+x_k=n 的解数为 <strong>C(n+k-1, k-1)</strong>。</p>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="非负整数解数">
+<math display="block" aria-label="非负整数解个数等于 C(n+k-1, k-1)">
+ <mrow>
+  <mi>N</mi><mo>=</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>n</mi><mo>+</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow><mrow><mi>k</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo>)</mo></mrow>
+ </mrow>
+</math>
+</div>
 
 <div class="highlight">
   <p><strong>🔥 两种模型的对比</strong>：</p>
@@ -95,6 +144,34 @@
     </tr>
   </table>
 </div>
+
+<div class="controls" role="group" aria-label="隔板法计数">
+  <label>物品 n = <input id="sb-n" type="number" min="1" max="60" value="10" style="width:4.5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <label>份数 k = <input id="sb-k" type="number" min="1" max="20" value="3" style="width:4.5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-mode="1" aria-pressed="true">正整数解 xᵢ≥1</button>
+  <button type="button" data-mode="0" aria-pressed="false">非负整数解 xᵢ≥0</button>
+</div>
+<p id="sb-out" aria-live="polite"></p>
+<script>
+(function(){
+  var out=document.getElementById('sb-out'), ni=document.getElementById('sb-n'), ki=document.getElementById('sb-k'), mode=1;
+  function C(n,k){if(k<0||k>n)return 0;var c=1;for(var i=0;i<k;i++){c=c*(n-i)/(i+1);}return Math.round(c);}
+  function upd(){
+    var n=Math.max(1,Math.min(60,+ni.value||1)), k=Math.max(1,Math.min(20,+ki.value||1));
+    if(mode===1){out.textContent='x₁+…+x_'+k+' = '+n+'（xᵢ≥1）：C('+(n-1)+','+(k-1)+') = '+C(n-1,k-1)+' 组。';}
+    else{out.textContent='x₁+…+x_'+k+' = '+n+'（xᵢ≥0）：C('+(n+k-1)+','+(k-1)+') = '+C(n+k-1,k-1)+' 组。';}
+  }
+  ni.addEventListener('input',upd); ki.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-mode]').forEach(function(b){
+    b.addEventListener('click',function(){
+      mode=+b.getAttribute('data-mode');
+      document.querySelectorAll('.controls button[data-mode]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
 
 <h3>5.1.3 模型三：下限约束（x_i ≥ a_i）</h3>
 
@@ -239,8 +316,8 @@
             <a href="index.html">📖 返回目录</a>
             <a href="06.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
