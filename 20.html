@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第20章 图论基础（二）</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}.math-scroll{overflow-x:auto;max-width:100%;}h1{font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.3;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第二十章：图论基础（二）</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第20章：图论基础（二）</h1>
+            <p class="dek">从“能否人人都分到对象”的 Hall 条件 |N(S)|≥|S|，到欧拉的偶数度判定、哈密顿的 Dirac/Ore 充分条件，再到竞赛图的 Landau 与 Redei 定理——这一章是竞赛图论真正“用于得分”的武器库。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。欢迎回到图论的世界。上一章我们打下了图论的"地基"——图的定义、握手引理、树、二分图。这些是最底层的工具，就像我们工具箱里的螺丝刀和锤子。今天我们要讲的东西就更"致命"了——<strong>匹配、Hall定理、欧拉与哈密顿图、竞赛图</strong>。这些是竞赛中直接拿来"得分"的武器。</p>
 
@@ -79,25 +84,60 @@
 <div class="highlight">
   <p><strong>定理 20.2（Hall婚配定理——Hall's Marriage Theorem）</strong></p>
   <p>设二分图 G = (X, Y, E)。G 存在一个饱和 X 中所有顶点的匹配（即从 X 到 Y 的完美匹配）当且仅当对 X 的任意子集 S，有：</p>
-  <pre><code>|N(S)| ≥ |S|</code></pre>
+  <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Hall 条件">
+<math display="block" aria-label="对 X 的任意子集 S，都有邻居集合的大小不小于 S 的大小">
+ <mrow>
+  <mo>|</mo><mi>N</mi><mo>(</mo><mi>S</mi><mo>)</mo><mo>|</mo><mo>≥</mo><mo>|</mo><mi>S</mi><mo>|</mo>
+  <mo>,</mo><mspace width="0.6em"/>
+  <mtext>对一切</mtext><mspace width="0.3em"/><mi>S</mi><mo>⊆</mo><mi>X</mi>
+ </mrow>
+</math>
+</div>
   <p>其中 N(S) 是 S 中所有顶点的邻居集合（在 Y 中）。</p>
 </div>
 
-<p>这个条件称为<strong>Hall条件</strong>。名字"婚配定理"来自一个经典比喻：X 是一群男生，Y 是一群女生，边表示两人认识。问：能否让每个男生都和他认识的女生配对（一夫一妻）？Hall条件说：对于任意一组男生，他们认识的女生总数不能少于这组男生的人数——这是必要条件，也是充分条件。</p>
+<p>这个条件称为<strong>Hall条件</strong>。名字“婚配定理”来自一个经典比喻：X 是一群男生，Y 是一群女生，边表示两人认识。问：能否让每个男生都和他认识的女生配对（一夫一妻）？Hall条件说：对于任意一组男生，他们认识的女生总数不能少于这组男生的人数——这是必要条件，也是充分条件。</p>
+
+<figure id="fig-hall">
+  <svg role="img" aria-labelledby="fig-hall-title fig-hall-desc" viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-hall-title">二分图的匹配与 Hall 条件</title>
+    <desc id="fig-hall-desc">左侧集合 X 的顶点 a、b、c 与右侧集合 Y 的顶点 x、y、z 之间连边；粗线 a-x、b-y、c-z 构成一个饱和 X 的匹配，每条匹配边两端不同顶点。</desc>
+    <g stroke="#b9c6c9" stroke-width="2">
+      <line x1="180" y1="80" x2="500" y2="170"/><line x1="180" y1="170" x2="500" y2="80"/>
+      <line x1="180" y1="170" x2="500" y2="260"/><line x1="180" y1="260" x2="500" y2="80"/>
+    </g>
+    <g stroke="#d06d4d" stroke-width="4">
+      <line x1="180" y1="80" x2="500" y2="80"/><line x1="180" y1="170" x2="500" y2="170"/><line x1="180" y1="260" x2="500" y2="260"/>
+    </g>
+    <g fill="#123b3c"><circle cx="180" cy="80" r="16"/><circle cx="180" cy="170" r="16"/><circle cx="180" cy="260" r="16"/></g>
+    <g fill="#ffffff" stroke="#147f80" stroke-width="3"><circle cx="500" cy="80" r="16"/><circle cx="500" cy="170" r="16"/><circle cx="500" cy="260" r="16"/></g>
+    <g font-size="15" fill="#ffffff" text-anchor="middle"><text x="180" y="85">a</text><text x="180" y="175">b</text><text x="180" y="265">c</text></g>
+    <g font-size="15" fill="#123b3c" text-anchor="middle"><text x="500" y="85">x</text><text x="500" y="175">y</text><text x="500" y="265">z</text></g>
+    <text x="180" y="40" text-anchor="middle" font-size="16" fill="#123b3c">X</text>
+    <text x="500" y="40" text-anchor="middle" font-size="16" fill="#147f80">Y</text>
+    <text x="350" y="315" text-anchor="middle" font-size="15" fill="#d06d4d">粗线：饱和 X 的匹配 a-x、b-y、c-z</text>
+  </svg>
+  <figcaption>图 20.1　二分图中的匹配：灰线是可选的配对关系，粗线是一个饱和 X 中所有顶点的匹配。Hall 条件 |N(S)|≥|S| 保证这样的匹配一定存在。</figcaption>
+</figure>
 
 <p><strong>证明要点</strong>：必要性显然——如果存在饱和X的匹配，则对任意 S ⊆ X，S 中每个男生至少匹配一个不同的女生，所以 |N(S)| ≥ |S|。</p>
 
 <p>充分性的证明稍复杂，通常用归纳法或用Berge引理（增广路定理）。这里给出一个简洁的证明思路：</p>
 
 <pre><code>反证法。假设满足Hall条件但不存在饱和X的匹配。
-取一个最大匹配M，由于M不饱和X，存在未匹配顶点 x₀ ∈ X。
-定义集合A为从x₀出发通过交错路径（alternating path）
-能到达的X中顶点集合，B为能到达的Y中顶点集合。
+取一个最大匹配M。由于M不饱和X，
+存在未匹配顶点 x₀ ∈ X。
 
-可以证明|B| = |A| - 1（因为从x₀到这些点的交错路径在Y中终止）。
-同时，由于M的最大性，B中没有未匹配的Y顶点（否则有增广路）。
-因此N(A) ⊆ B，|N(A)| ≤ |B| < |A|，违反Hall条件。
-矛盾。证毕。</code></pre>
+定义集合A为从x₀出发通过交错路径
+（alternating path）能到达的X中顶点集合，
+B为能到达的Y中顶点集合。
+
+可以证明 |B| = |A| - 1
+（因为从x₀到这些点的交错路径在Y中终止）。
+同时，因为M的最大性，B中没有未匹配的Y顶点
+（否则就有一条增广路）。
+所以 N(A) ⊆ B，于是 |N(A)| ≤ |B| < |A|，
+违反 Hall 条件。矛盾。证毕。</code></pre>
 
 <p>Hall定理的应用非常广泛。来看一个经典问题：</p>
 
@@ -110,10 +150,10 @@
 <h3>20.1.3 一个踩坑故事</h3>
 
 <div class="warning">
-  <p><strong>📖 踩坑实录</strong>：有一年集训队做模拟题，题目是："一个班级有n个男生和n个女生。每个男生恰好认识k个女生，每个女生恰好认识k个男生。是否一定可以让每个男生都和他认识的女生配对？"</p>
-  <p>超过半数的同学回答"是"——因为他们认为Hall条件显然成立：任意一组 S 个男生，每个人认识 k 个女生，所以 S 中男生认识的女生总人次为 k|S|。但认识的人次和认识的人数不是一回事——多个男生可能认识同一个女生。所以 |N(S)| 可能远小于 k|S|。</p>
-  <p>实际上这个问题并没有那么简单。仅仅知道每个人认识相同数量的人，不能保证 |N(S)| ≥ |S| 对所有 S 成立。反例？考虑 n=3，每个男生认识2个女生。如果3个男生都认识同样的2个女生，那么 |N(S)| = 2 < 3 = |S|，Hall条件被违反。所以"是"的结论是错误的。</p>
-  <p>这个故事的教训是：<strong>Hall条件必须对 X 的所有子集都成立</strong>，不能只凭直觉认为"看起来差不多"就下结论。很多学生在考场上也是这样——草草验证了一两个特殊情况就以为充分条件是显然成立的，结果丢了分。</p>
+  <p><strong>📖 踩坑实录</strong>：模拟题：“n 个男生、n 个女生，每个男生恰好认识 k 个女生，每个女生恰好认识 k 个男生。是否一定能让每个男生都和他认识的女生配对？”</p>
+  <p>很多同学凭直觉认为 Hall 条件“显然”成立，却说不清为什么。正确的验证是：对任意 S ⊆ X，从 S 出发的边共有 k|S| 条；每个 y ∈ N(S) 至多承接 k 条边，所以 k|N(S)| ≥ k|S|，即 |N(S)| ≥ |S|。Hall 条件成立，完美匹配存在。<strong>所以答案是“是”</strong>——但必须真的算出来，而不是“感觉”出来。</p>
+  <p>反过来，如果把条件削弱成“只保证每个男生恰好认识 k 个女生”（女生一侧不限制），结论就不成立了：n=3、k=2 时，若 3 个男生都只认识同样的 2 个女生，则 |N(S)|=2 < 3=|S|，Hall 条件被破坏，无法配对。</p>
+  <p>教训是：<strong>Hall 条件要对 X 的所有子集成立</strong>；两侧的对称性（如 k-正则）才是“完美匹配必存在”真正的原因，做题时要把两侧的度数条件都用上。</p>
 </div>
 
 <h2>20.2 欧拉图与哈密顿图</h2>
@@ -194,11 +234,58 @@
 <div class="highlight">
   <p><strong>定理 20.6（Landau定理，1953）</strong></p>
   <p>非递减非负整数序列 (s<sub>1</sub>, s<sub>2</sub>, ..., s<sub>n</sub>) 是某个 n 顶点竞赛图的得分序列当且仅当对每个 k = 1, 2, ..., n-1，有：</p>
-  <pre><code>∑_{i=1}^{k} s_i ≥ C(k, 2)</code></pre>
+  <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Landau 条件">
+<math display="block" aria-label="前 k 个得分之和大于等于 C(k,2)，且总分等于 C(n,2)">
+ <mrow>
+  <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><msub><mi>s</mi><mi>i</mi></msub>
+  <mo>≥</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mi>k</mi><mn>2</mn></mfrac><mo>)</mo></mrow>
+  <mo>,</mo><mspace width="0.5em"/>
+  <mn>1</mn><mo>≤</mo><mi>k</mi><mo>≤</mo><mi>n</mi><mo>−</mo><mn>1</mn>
+  <mo>;</mo><mspace width="0.5em"/>
+  <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>s</mi><mi>i</mi></msub>
+  <mo>=</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mi>n</mi><mn>2</mn></mfrac><mo>)</mo></mrow>
+ </mrow>
+</math>
+</div>
   <p>且 ∑_{i=1}^{n} s_i = C(n, 2)。</p>
 </div>
 
-<p>解读这个条件：前 k 个得分之和至少等于 k 个顶点之间的内部比赛场数（因为内部的比赛总要有人赢）。等号仅在前 k 名选手之间互相全输给了后 n-k 名之类的情形下成立。</p>
+<p>解读这个条件：前 k 个得分之和至少等于这 k 个顶点之间的内部比赛场数（因为这些比赛总要分出一个胜者）。等号成立时，这 k 个选手在与其余 n−k 名选手的比赛中全败，得分完全来自内部比赛。</p>
+
+<div class="controls" role="group" aria-label="竞赛图得分序列检验">
+  <label>得分序列 <input id="sc-in" type="text" value="0,1,2" style="width:9rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-seq="0,1,2" aria-pressed="true">n=3</button>
+  <button type="button" data-seq="0,1,2,3" aria-pressed="false">n=4</button>
+  <button type="button" data-seq="1,1,1,1,1" aria-pressed="false">n=5</button>
+</div>
+<p id="sc-out" aria-live="polite"></p>
+<script>
+(function(){
+  var out=document.getElementById('sc-out'), ii=document.getElementById('sc-in');
+  function chk(n){return n*(n-1)/2;}
+  function upd(){
+    var ds=(ii.value.match(/\d+/g)||[]).map(Number).sort(function(a,b){return a-b;});
+    var n=ds.length;
+    if(n<2){out.textContent='请输入至少两个非负整数作为得分序列。';return;}
+    var sum=ds.reduce(function(a,b){return a+b;},0);
+    var bad='';
+    if(sum!==chk(n)){bad='总分 '+sum+' ≠ C('+n+',2)='+chk(n)+'，不是得分序列。';}
+    else{for(var k=1;k<=n-1;k++){var p=ds.slice(0,k).reduce(function(a,b){return a+b;},0);if(p<chk(k)){bad='前 '+k+' 项之和 '+p+' < C('+k+',2)='+chk(k)+'，违反 Landau 条件。';break;}}}
+    out.textContent='序列 ['+ds.join(', ')+']，n='+n+'，总分 '+sum+'（应为 '+chk(n)+'）：'+(bad?bad:'满足 Landau 条件，是某个竞赛图的得分序列。');
+  }
+  ii.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-seq]').forEach(function(b){
+    b.addEventListener('click',function(){
+      ii.value=b.getAttribute('data-seq');
+      document.querySelectorAll('.controls button[data-seq]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
 
 <h3>20.3.3 Redei定理——Hamilton路径</h3>
 
@@ -243,8 +330,8 @@
             <a href="index.html">📖 返回目录</a>
             <a href="21.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
