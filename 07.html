@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第7章 映射与对应</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}.math-scroll{overflow-x:auto;max-width:100%;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第7章：映射与对应</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第7章：映射与对应</h1>
+            <p class="dek">不直接数目标对象，而是造一个双射把它变成好数的对象：不相邻选数→压缩、Vandermonde→分堆、Dyck 路径与反射原理→Catalan 数，是组合证明最优雅的工具。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。到此为止，我们学过了很多计数技巧——排列组合公式、二项式定理、容斥原理、隔板法、递推归纳。这些方法有一个共同点：<strong>它们都试图直接计算你要数的那个东西的数量</strong>。但这一章我们将学习一种完全不同的思路——<strong>不直接数你要的东西，而是把它变成另一个更容易数的东西</strong>。</p>
 
@@ -83,6 +88,16 @@
 所以 b_i = a_i - (i-1) ≥ (2i-1) - (i-1) = i
 并且 a_i ≤ 2n - (n-i) = n+i（最宽松的情况是选 n+1,n+2,...,2n）
 所以 b_i = a_i - (i-1) ≤ (n+i) - (i-1) = n+1</code></pre>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="不相邻选数的双射变换">
+<math display="block" aria-label="定义 b_i 等于 a_i 减去 i 减 1，当 a_i 取自 1 到 2n 且两两不相邻时，b_i 严格递增且落在 1 到 n+1 之间">
+ <mrow>
+  <msub><mi>b</mi><mi>i</mi></msub><mo>=</mo><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><mo>(</mo><mi>i</mi><mo>−</mo><mn>1</mn><mo>)</mo>
+  <mo>,</mo><mspace width="0.5em"/>
+  <mn>1</mn><mo>≤</mo><msub><mi>b</mi><mn>1</mn></msub><mo>&lt;</mo><mo>⋯</mo><mo>&lt;</mo><msub><mi>b</mi><mi>n</mi></msub><mo>≤</mo><mi>n</mi><mo>+</mo><mn>1</mn>
+ </mrow>
+</math>
+</div>
 
 <p>这个变换建立了——"从 1 到 2n 中选 n 个不相邻的数"与"从 1 到 n+1 中选 n 个数（无额外限制）"之间的一一对应。而后者就是 C(n+1, n) = n+1。</p>
 
@@ -125,6 +140,21 @@
 
 <p><strong>所以 Dyck 路径数 = C_n</strong></p>
 
+<figure id="fig-dyck">
+  <svg role="img" aria-labelledby="fig-dyck-title fig-dyck-desc" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-dyck-title">Dyck 路径的合法与不合法情形</title>
+    <desc id="fig-dyck-desc">两条从 (0,0) 出发、每步右上或右下的路径：实线路径 UUDUDD 始终不低于 x 轴，是合法 Dyck 路径；虚线路径 UDDUUD 中途跌到 x 轴下方，不合法。</desc>
+    <line x1="60" y1="260" x2="430" y2="260" stroke="#53676d" stroke-width="2"/>
+    <text x="435" y="265" font-size="14" fill="#53676d">x 轴</text>
+    <polyline fill="none" stroke="#147f80" stroke-width="3" points="80,260 125,215 170,170 215,215 260,170 305,215 350,260"/>
+    <polyline fill="none" stroke="#d06d4d" stroke-width="3" stroke-dasharray="7 5" points="80,260 125,215 170,260 215,305 260,260 305,215 350,260"/>
+    <text x="180" y="150" font-size="15" fill="#147f80">合法 UUDUDD（始终 ≥ 0）</text>
+    <text x="180" y="330" font-size="15" fill="#d06d4d">不合法 UDDUUD（中途跌到 0 以下）</text>
+    <text x="350" y="40" text-anchor="middle" font-size="17" fill="#123b3c">Dyck 路径：↗ = 左括号，↘ = 右括号</text>
+  </svg>
+  <figcaption>图 7.1　把左括号看成上步 U、右括号看成下步 D，合法括号序列就等价于一条始终不低于 x 轴的 Dyck 路径。 n=3 时这样的路径共 C₃ = 5 条。</figcaption>
+</figure>
+
 <p>这个对应关系非常直观：</p>
 
 <table>
@@ -166,7 +196,54 @@
 特别地，当 a=b=n 时（即到 (n,n) 且不越过对角线）：
 数量 = C(2n, n) - C(2n, n+1) = C(2n, n)/(n+1) = C_n</code></pre>
 
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="反射原理计数公式">
+<math display="block" aria-label="不越过对角线的路径数等于 C(a+b,a) 减 C(a+b,a+1)，当 a 等于 b 等于 n 时等于 Catalan 数 C_n">
+ <mrow>
+  <mi>N</mi><mo>=</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mi>a</mi></mfrac><mo>)</mo></mrow>
+  <mo>−</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mrow><mi>a</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>)</mo></mrow>
+  <mo>,</mo><mspace width="0.6em"/>
+  <mtext>取</mtext><mi>a</mi><mo>=</mo><mi>b</mi><mo>=</mo><mi>n</mi><mo>:</mo><mspace width="0.4em"/>
+  <msub><mi>C</mi><mi>n</mi></msub><mo>=</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mrow><mn>2</mn><mi>n</mi></mrow><mi>n</mi></mfrac><mo>)</mo></mrow>
+  <mo>−</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mrow><mn>2</mn><mi>n</mi></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>)</mo></mrow>
+ </mrow>
+</math>
+</div>
+
 <p>这正是 Catalan 数的另一种形式！</p>
+
+<div class="controls" role="group" aria-label="反射原理路径计数">
+  <label>a = <input id="rp-a" type="number" min="0" max="25" value="5" style="width:4rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <label>b = <input id="rp-b" type="number" min="0" max="25" value="3" style="width:4rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-ab="5,3" aria-pressed="true">(5,3)</button>
+  <button type="button" data-ab="3,2" aria-pressed="false">(3,2)</button>
+  <button type="button" data-ab="6,6" aria-pressed="false">(6,6)</button>
+</div>
+<p id="rp-out" aria-live="polite"></p>
+<script>
+(function(){
+  var out=document.getElementById('rp-out'), ai=document.getElementById('rp-a'), bi=document.getElementById('rp-b');
+  function C(n,k){if(k<0||k>n)return 0;var c=1;for(var i=0;i<k;i++){c=c*(n-i)/(i+1);}return Math.round(c);}
+  function upd(){
+    var a=Math.max(0,Math.min(25,+ai.value||0)), b=Math.max(0,Math.min(25,+bi.value||0));
+    if(a<b){out.textContent='a='+a+' 小于 b='+b+'：终点已在对角线上方，好路径数为 0。';return;}
+    var tot=C(a+b,a), bad=C(a+b,a+1);
+    out.textContent='从 (0,0) 到 ('+a+','+b+') 不越过对角线的路径：共 '+tot+' − '+bad+' = '+(tot-bad)+' 条。';
+  }
+  ai.addEventListener('input',upd); bi.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-ab]').forEach(function(bt){
+    bt.addEventListener('click',function(){
+      var p=bt.getAttribute('data-ab').split(','); ai.value=p[0]; bi.value=p[1];
+      document.querySelectorAll('.controls button[data-ab]').forEach(function(x){x.setAttribute('aria-pressed',x===bt?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
 
 <h3>7.4.2 反射原理的直观</h3>
 
@@ -211,7 +288,7 @@
 
 <p>"对。所以你是对的吗？"</p>
 
-<p>"我……等等，Catalan 数是不是要求第一条边是 U（男生）？实际上，Dyck 路径确实必须从 U 开始——因为从原点出发，如果第一步是 D，纵坐标就变成 -1 了，不满足非负条件。所以 Catalan 数确实要求第一个是 U。所以 D₈ = 1430 就是正确答案。"</p>
+<p>"我……等等，Catalan 数是不是要求第一条边是 U（男生）？实际上，Dyck 路径确实必须从 U 开始——因为从原点出发，如果第一步是 D，纵坐标就变成 -1 了，不满足非负条件。所以 Catalan 数确实要求第一个是 U。所以 C₈ = 1430 就是正确答案。"</p>
 
 <p>"好。现在我问你另一个问题——如果男生和女生是有区别的（即每个具体的人不同），结果会怎样？"</p>
 
@@ -224,7 +301,7 @@
     <li>在每个模式中，8 个不同的男生可以排列到 8 个 U 位置上：8! 种</li>
     <li>8 个不同的女生可以排列到 8 个 D 位置上：8! 种</li>
   </ul>
-  <p>所以正确答案是 C₈ × 8! × 8!，而不是仅仅 1430。1460 和 1430 × 40320 × 40320 之间差了近 16 亿倍！</p>
+  <p>所以正确答案是 C₈ × 8! × 8! ≈ 2.32×10¹²，而不是仅仅 1430——两者相差约 1.6×10⁹ 倍！</p>
   <p>这个学生的错误在于——<strong>他把 Catalan 数的"无区别元素"假设错误地应用到了"有区别元素"的问题中</strong>。在组合数学中，区分"相同的元素"和"不同的元素"永远是第一位的。</p>
 </div>
 
@@ -262,8 +339,8 @@
             <a href="index.html">📖 返回目录</a>
             <a href="08.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
