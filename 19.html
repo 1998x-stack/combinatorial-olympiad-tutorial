@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第19章 图论基础（一）</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}.math-scroll{overflow-x:auto;max-width:100%;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第十九章：图论基础（一）</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第19章：图论基础（一）</h1>
+            <p class="dek">把“关系”翻译成点与边：一条握手引理 ∑deg(v)=2|E| 就能推出“奇度顶点必为偶数”；再认识树（n−1 条边）、Cayley 公式 nⁿ⁻²与二分图（无奇圈）这三块基石。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。今天开始我们进入整个组合数学竞赛中最"有画面感"的一个分支——<strong>图论</strong>。</p>
 
@@ -79,7 +84,14 @@
 <div class="highlight">
   <p><strong>定理 19.1（握手引理——Handshaking Lemma）</strong></p>
   <p>对任意无向图 G = (V, E)，有：</p>
-  <pre><code>∑_{v∈V} deg(v) = 2|E|</code></pre>
+  <div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="握手引理">
+<math display="block" aria-label="所有顶点的度数之和等于边数的两倍">
+ <mrow>
+  <munder><mo>∑</mo><mrow><mi>v</mi><mo>∈</mo><mi>V</mi></mrow></munder>
+  <mi>deg</mi><mo>(</mo><mi>v</mi><mo>)</mo><mo>=</mo><mn>2</mn><mo>|</mo><mi>E</mi><mo>|</mo>
+ </mrow>
+</math>
+</div>
   <p>即<strong>所有顶点的度数之和等于边数的两倍</strong>。</p>
   <p>证明：每条边对两个端点的度数各贡献1，因此每条边在度数和中被计数了2次。证毕。</p>
 </div>
@@ -100,6 +112,35 @@
   <p><strong>例1</strong>：证明在任何一次握手聚会中，握过奇数次手的人数总是偶数。</p>
   <p>把每个人看作一个顶点，两个人之间如果握过手就连接一条边。那么每个人的握手次数就是他的度数。由推论19.2，奇度顶点（即握过奇数次手的人）必为偶数。证毕。</p>
 </div>
+
+<div class="controls" role="group" aria-label="度数序列检验">
+  <label>度数序列 <input id="dg-in" type="text" value="3,3,2,2,1,1" style="width:11rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-seq="3,3,2,2,1,1" aria-pressed="true">可行样例</button>
+  <button type="button" data-seq="3,3,3,3,3" aria-pressed="false">5 个奇数</button>
+</div>
+<p id="dg-out" aria-live="polite"></p>
+<script>
+(function(){
+  var out=document.getElementById('dg-out'), ii=document.getElementById('dg-in');
+  function upd(){
+    var ds=(ii.value.match(/\d+/g)||[]).map(Number);
+    if(!ds.length){out.textContent='请输入一组非负整数度数，用逗号分隔。';return;}
+    var sum=ds.reduce(function(a,b){return a+b;},0);
+    var odd=ds.filter(function(x){return x%2===1;}).length;
+    var ok = sum%2===0;
+    out.textContent='度数和 = '+sum+'，奇度顶点 '+odd+' 个。'+(ok?'度数和为偶数，不违背握手引理（奇度顶点数为偶数）。':'度数和为奇数，这样的图不可能存在（握手引理要求度数和为偶数）。');
+  }
+  ii.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-seq]').forEach(function(b){
+    b.addEventListener('click',function(){
+      ii.value=b.getAttribute('data-seq');
+      document.querySelectorAll('.controls button[data-seq]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
 
 <p>握手引理是图论中最常用的工具之一，几乎每一道图论题都会间接用到它。下面我讲一个真实的故事：</p>
 
@@ -220,6 +261,23 @@
 
 <p><strong>二分图</strong> G = (X, Y, E)：顶点集可以划分为两个非空子集 X 和 Y，使得每条边的两个端点分别属于 X 和 Y（即所有边都在 X 和 Y 之间）。</p>
 
+<figure id="fig-bip">
+  <svg role="img" aria-labelledby="fig-bip-title fig-bip-desc" viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-bip-title">二分图的两个独立集与二染色</title>
+    <desc id="fig-bip-desc">顶点分为左、右两个集合 X 与 Y，所有边都只在 X、Y 之间连接，集合内部没有任何边；把 X 染黑、Y 染白，每条边两端异色。</desc>
+    <g stroke="#53676d" stroke-width="2">
+      <line x1="200" y1="80" x2="500" y2="80"/><line x1="200" y1="80" x2="500" y2="170"/>
+      <line x1="200" y1="170" x2="500" y2="170"/><line x1="200" y1="260" x2="500" y2="170"/>
+      <line x1="200" y1="260" x2="500" y2="260"/>
+    </g>
+    <g fill="#123b3c"><circle cx="200" cy="80" r="16"/><circle cx="200" cy="170" r="16"/><circle cx="200" cy="260" r="16"/></g>
+    <g fill="#ffffff" stroke="#147f80" stroke-width="3"><circle cx="500" cy="80" r="16"/><circle cx="500" cy="170" r="16"/><circle cx="500" cy="260" r="16"/></g>
+    <text x="200" y="40" text-anchor="middle" font-size="17" fill="#123b3c">X（染黑）</text>
+    <text x="500" y="40" text-anchor="middle" font-size="17" fill="#147f80">Y（染白）</text>
+  </svg>
+  <figcaption>图 19.1　二分图：顶点分成 X、Y 两堆，边只跨堆连接。把 X 染黑、Y 染白就得到合法二染色，因此二分图等价于“可用两种颜色染色使相邻点异色”。</figcaption>
+</figure>
+
 <p>关于二分图，最重要的定理是：</p>
 
 <div class="highlight">
@@ -233,11 +291,13 @@
 
 <h3>19.3.2 竞赛中的应用</h3>
 
-<p><strong>例2</strong>：给定一个由 n 个人组成的群体，其中某些人之间互相认识。已知不存在三个人两两互相认识。证明：可以将这些人分成两组，使得每组内部没有人互相认识。</p>
+<p><strong>例2（二染色算法）</strong>：给定一个连通的、不含奇圈的图，证明可以把顶点染成黑白两色，使每条边的两端异色。</p>
 
-<p>分析：以人为顶点，认识关系为边。条件"不存在三个人两两互相认识"意味着图中没有三角形（3-圈）。但要注意，这并不直接说明图没有奇圈——可能有5-圈、7-圈等。但再仔细想，这个条件实际上是指图中没有长度为3的圈，但并没有排除其他奇圈。</p>
+<p>分析：任取一个顶点 v 染黑，对它做广度优先遍历：与 v 距离为偶数的顶点染黑，距离为奇数的染白。这个染色不会产生矛盾——否则就有一条边连接了两个同色顶点，而这两个顶点到 v 的距离同奇偶，于是它们连同到 v 的两条最短路构成一个奇圈，与“不含奇圈”矛盾。所以染色合法，图是二分图（这正是定理 19.6 的充分性证明）。</p>
 
-<p>等等——这个条件其实不足以直接得出二分图的结论。正确的思路是：如果图中存在奇圈，取其中一个最短奇圈。如果它的长度大于3，连接该圈上的两个距离为2的顶点（它们由两条路径可达，形成三角形），就会产生一个三角形，与条件矛盾。因此该图无奇圈，由定理19.6可知是二分图。</p>
+<div class="warning">
+  <p><strong>⚠️ 常见误区</strong>：必须强调，“不存在三角形”并不等于“二分图”。例如 5-圈 C₅ 没有三角形，却是奇圈，无法二染色。判定二分图的正确条件是<strong>不含任何奇圈</strong>（定理 19.6），而不是不含三角形。</p>
+</div>
 
 <p>二分图的判定也是竞赛中的常见考点。来看一个更直接的例子：</p>
 
@@ -272,8 +332,8 @@
             <a href="index.html">📖 返回目录</a>
             <a href="20.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
