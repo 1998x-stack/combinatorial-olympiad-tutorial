@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第6章 递推与归纳法</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}.math-scroll{overflow-x:auto;max-width:100%;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第6章：递推与归纳法</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第6章：递推与归纳法</h1>
+            <p class="dek">不直接写封闭公式，而是问“aₙ 与更小的项有什么关系”：用分类建立 aₙ=aₙ₋₁+aₙ₋₂ 这类递推，用特征方程求通项，用加强命题让归纳走得通。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。到目前为止，我们学的所有计数方法都遵循一个模式：<strong>直接写出答案的表达式</strong>——C(n,k)、2^n、n!、D_n 等等。但有些问题太复杂了，没有办法写出简洁的封闭公式。或者说，有公式但推导起来很困难。这时候我们需要另一种思路：<strong>不说"答案是多少"，而说"答案和更小的问题有什么关系"</strong>。</p>
 
@@ -67,7 +72,15 @@
 <p>设 a_n 为爬 n 级台阶的方法数。</p>
 <p>要到达第 n 级，最后一步要么是从第 n-1 级跨 1 级上来，要么是从第 n-2 级跨 2 级上来。所以：</p>
 
-<pre><code>a_n = a_{n-1} + a_{n-2}</code></pre>
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="上楼梯递推">
+<math display="block" aria-label="a_n 等于 a_{n-1} 加 a_{n-2}">
+ <mrow>
+  <msub><mi>a</mi><mi>n</mi></msub><mo>=</mo>
+  <msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo>
+  <msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>2</mn></mrow></msub>
+ </mrow>
+</math>
+</div>
 
 <p>初始值：a₁ = 1（一级台阶只有一种走法：跨1级），a₂ = 2（两种走法：1+1 或 2）。</p>
 
@@ -81,6 +94,30 @@
     <td>a_n</td><td>1</td><td>2</td><td>3</td><td>5</td><td>8</td><td>13</td><td>21</td><td>34</td><td>55</td><td>89</td>
   </tr>
 </table>
+
+<div class="controls" role="group" aria-label="上楼梯走法计算">
+  <label>台阶数 n = <input id="fib-n" type="number" min="1" max="40" value="10" style="width:4.5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-n="5" aria-pressed="false">n=5</button>
+  <button type="button" data-n="10" aria-pressed="true">n=10</button>
+  <button type="button" data-n="20" aria-pressed="false">n=20</button>
+</div>
+<p id="fib-out" aria-live="polite"></p>
+<script>
+(function(){
+  var out=document.getElementById('fib-out'), ni=document.getElementById('fib-n');
+  function ways(n){var a=[0,1,2];for(var i=3;i<=n;i++){a[i]=a[i-1]+a[i-2];}return a[n];}
+  function upd(){var n=Math.max(1,Math.min(40,+ni.value||1));out.textContent='爬 '+n+' 级台阶共有 '+ways(n)+' 种走法（即 Fibonacci 数 F'+(n+1)+'）。';}
+  ni.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-n]').forEach(function(b){
+    b.addEventListener('click',function(){
+      ni.value=b.getAttribute('data-n');
+      document.querySelectorAll('.controls button[data-n]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
 
 <p>这个递推的巧妙之处在于：<strong>我们把"到达第 n 级"这个事件，按照最后一步的动作进行了分类</strong>。分类的基本原则是"互斥且完备"——这两类既不重叠（最后一步不能同时是跨1级和跨2级），又能覆盖所有情况。这个分类-递推的思路是组合递推的基石。</p>
 
@@ -97,6 +134,35 @@
   <li>如果横着放两块骨牌（占据左边两列），剩下的 2×(n-2) 有 f(n-2) 种覆盖方法</li>
 </ul>
 <p>所以 f(n) = f(n-1) + f(n-2)，且 f(1)=1, f(2)=2。这就是我们在上楼梯问题中看到的同一个数列。</p>
+
+<figure id="fig-domino">
+  <svg role="img" aria-labelledby="fig-dom-title fig-dom-desc" viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-dom-title">2×n 棋盘骨牌覆盖的递推分解</title>
+    <desc id="fig-dom-desc">2×5 棋盘按最左列分类：竖放一块骨牌后剩下 2×4 棋盘（f(4)=5 种），或横放两块骨牌占两列后剩下 2×3 棋盘（f(3)=3 种），所以 f(5)=f(4)+f(3)=8。</desc>
+    <text x="350" y="30" text-anchor="middle" font-size="17" fill="#123b3c">按最左列分类：f(n) = f(n−1) + f(n−2)</text>
+    <rect x="40" y="60" width="200" height="80" fill="#e6f4f4" stroke="#147f80" stroke-width="2"/>
+    <g stroke="#147f80" stroke-width="1.2">
+      <line x1="80" y1="60" x2="80" y2="140"/><line x1="120" y1="60" x2="120" y2="140"/>
+      <line x1="160" y1="60" x2="160" y2="140"/><line x1="200" y1="60" x2="200" y2="140"/>
+      <line x1="40" y1="100" x2="240" y2="100"/>
+    </g>
+    <rect x="40" y="60" width="40" height="80" fill="#d06d4d" opacity="0.35"/>
+    <text x="140" y="165" text-anchor="middle" font-size="15" fill="#53676d">2×5 棋盘，先看第一列</text>
+    <g stroke="#53676d" stroke-width="2" marker-end="url(#ar-dom)" fill="none">
+      <line x1="120" y1="146" x2="115" y2="196"/>
+      <line x1="170" y1="146" x2="360" y2="196"/>
+    </g>
+    <rect x="40" y="200" width="160" height="80" fill="#ffffff" stroke="#7461ba" stroke-width="2"/>
+    <rect x="300" y="200" width="120" height="80" fill="#ffffff" stroke="#7461ba" stroke-width="2"/>
+    <text x="120" y="245" text-anchor="middle" font-size="16" fill="#123b3c">2×4：f(4)=5</text>
+    <text x="360" y="245" text-anchor="middle" font-size="16" fill="#123b3c">2×3：f(3)=3</text>
+    <text x="60" y="300" font-size="14" fill="#d06d4d">竖放 1 块</text>
+    <text x="320" y="300" font-size="14" fill="#d06d4d">横放 2 块</text>
+    <text x="350" y="322" text-anchor="middle" font-size="15" fill="#123b3c">f(5) = f(4) + f(3) = 5 + 3 = 8</text>
+    <defs><marker id="ar-dom" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#53676d"/></marker></defs>
+  </svg>
+  <figcaption>图 6.1　2×n 棋盘覆盖的“分治”：看最左列，要么竖放一块（剩下 2×(n−1)），要么横放两块（剩下 2×(n−2)），两种情形互斥且完备，于是 f(n)=f(n−1)+f(n−2)。这里 f(5)=8。</figcaption>
+</figure>
 
 <h3>6.2.2 不含连续 1 的二进制串</h3>
 <p>"有多少个长度为 n 的二进制串，使得没有两个 1 是相邻的？"</p>
@@ -147,6 +213,17 @@ A = 1/√5, B = -1/√5
 所以 F_n = (φⁿ - (-1/φ)ⁿ) / √5
 
 这就是著名的比内公式（Binet's formula）。</code></pre>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="比内公式">
+<math display="block" aria-label="F_n 等于 φ 的 n 次方减 (负 1 除以 φ) 的 n 次方，再除以根号 5">
+ <mrow>
+  <msub><mi>F</mi><mi>n</mi></msub><mo>=</mo>
+  <mfrac><mrow><msup><mi>φ</mi><mi>n</mi></msup><mo>−</mo><msup><mrow><mo>(</mo><mo>−</mo><mfrac><mn>1</mn><mi>φ</mi></mfrac><mo>)</mo></mrow><mi>n</mi></msup></mrow><msqrt><mn>5</mn></msqrt></mfrac>
+  <mo>,</mo><mspace width="0.5em"/>
+  <mi>φ</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><msqrt><mn>5</mn></msqrt></mrow><mn>2</mn></mfrac>
+ </mrow>
+</math>
+</div>
 
 <div class="highlight">
   <p><strong>🔥 关键洞察</strong>：特征方程法的本质是——把递推问题转化为代数方程求解。递推关系决定了数列的"局部规则"，特征方程则揭示了数列的"全局形态"。这就像微分方程和特征根的关系一样。掌握了特征方程法，你就能解几乎所有常见的线性递推。</p>
@@ -208,7 +285,18 @@ n=1：1 ≤ 1，成立。
 
 <p>Catalan 数有封闭公式：</p>
 
-<pre><code>C_n = C(2n, n) / (n+1) = C(2n, n) - C(2n, n+1)</code></pre>
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Catalan 数封闭公式">
+<math display="block" aria-label="C_n 等于 C(2n,n) 除以 n 加 1，也等于 C(2n,n) 减 C(2n,n+1)">
+ <mrow>
+  <msub><mi>C</mi><mi>n</mi></msub><mo>=</mo>
+  <mfrac><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mn>2</mn><mi>n</mi></mrow><mi>n</mi></mfrac><mo>)</mo></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac>
+  <mo>=</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mrow><mn>2</mn><mi>n</mi></mrow><mi>n</mi></mfrac><mo>)</mo></mrow>
+  <mo>−</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mrow><mn>2</mn><mi>n</mi></mrow><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>)</mo></mrow>
+ </mrow>
+</math>
+</div>
 
 <p>Catalan 数对应的组合问题至少有几十种，以下是竞赛中最常见的几种：</p>
 
@@ -284,18 +372,16 @@ n=1：1 ≤ 1，成立。
 </ul>
 
 <p>"现在来验证一下——a₆ 真的有 2 种覆盖方法吗？"</p>
-<p>学生动手枚举了一下，发现 a₆ 其实有 3 种方法：</p>
+<p>但在考场上他一时无法确定——于是他老老实实枚举 a₆ 的覆盖，只找到 2 种：</p>
 <ol>
-  <li>三块 1×2</li>
-  <li>两块 1×3</li>
-  <li>一块 1×3 + 一块 1×2 + 一块 1×3（不对——这个排列里 1×3 和 1×2 交错，无法用"最后一步"法直接得到）</li>
+  <li>三块 1×2（2+2+2 = 6）</li>
+  <li>两块 1×3（3+3 = 6）</li>
 </ol>
+<p>这与他按 a₆ = a₄ + a₃ = 1 + 1 = 2 算得的结果一致。数列为 a₀,a₁,… = 1, 0, 1, 1, 1, 2, 2, …，递推 a_n = a_{n-2} + a_{n-3} 成立。</p>
 
 <div class="warning">
-  <p><strong>⚠️ 问题在哪里？</strong> 在 a₆ 的递推推导中，我们假设"最后一步"只有两种可能——最后放 1×2 或最后放 1×3。但实际覆盖中，"最后"指的是覆盖的末端。如果先放一个 1×3，再放一个 1×2，再放一个 1×3，末端是一个 1×3——从递推角度看，它属于 a_{n-3} 的情况。但是，在 a_{n-3} 中，我们假设的是前面 n-3 格已经覆盖好，最后放一块 1×3。对于"1×3 + 1×2 + 1×3"的覆盖，去掉最后一块 1×3 后前面是"1×3 + 1×2"，长度为 3。a₃ 有多少种覆盖？a₃ = 1（一块 1×3）。所以 a₆ 应该包含 a₃ 中的那一种。但是，"1×3 + 1×2"这个覆盖真的在 a₃ 中吗？</p>
-  <p>问题暴露了！"1×3 + 1×2"的长度是 5，不是 3。去掉最后一块 1×3 后，剩下"1×3 + 1×2"长度是 5。而我之前计算 a₅ = 2，确实包含了"1×3 + 1×2"这种覆盖。所以 a₆ = a₄ + a₃ 时，a₃ 贡献的是"在覆盖好 3 格后加一块 1×3"——也就是"1×3 + 1×3"。a₄ 贡献的是"在覆盖好 4 格后加一块 1×2"——但 a₄ = 1，所以"1×2 + 1×2 + 1×2"这是一种。"1×3 + 1×2 + 1×3"不在 a₄ 中（因为去掉最后的 1×2，前面是 1×3 + 1×3 = 6...</p>
-  <p>我已经把自己绕晕了。这个故事的真正教训是：</p>
-  <p><strong>递推的边界条件需要大量验证。</strong> 在这个问题中，正确的递推确实是 a_n = a_{n-2} + a_{n-3}，但初始条件需要给到 a₁, a₂, a₃, a₄, a₅，并且通过手动枚举来验证前几项。我当时在考场上因为"自觉递推正确"就没有验证前几项，结果丢了大分。从此以后，不管递推关系看起来多么显然，我都一定会验证至少前 3 项。</p>
+  <p><strong>⚠️ 真正容易翻车的地方——边界项</strong>：递推 a_n = a_{n-2} + a_{n-3} 本身没错，错的是初始值给少了。如果只给 a₁=0, a₂=1 就往下推，会在小 n 处参照到未定义的项（这里需理解为 a₀=1，即“空棋盘有一种覆盖”），一旦 a₀ 取错，后面全错。</p>
+  <p>所以递推题的正确姿势是：<strong>先把边界项 a₀,a₁,…,a₄ 手动枚举写清楚，再验证递推算出的第 5、6 项与枚举一致，才放心地往下算</strong>。看起来笨，却能挡住绝大多数失分。这道题的边界就是 a₀=1, a₁=0, a₂=1, a₃=1, a₄=1, a₅=2, a₆=2。</p>
 </div>
 
 <h2>6.7 本章小结与过渡</h2>
@@ -309,8 +395,8 @@ n=1：1 ≤ 1，成立。
             <a href="index.html">📖 返回目录</a>
             <a href="07.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
