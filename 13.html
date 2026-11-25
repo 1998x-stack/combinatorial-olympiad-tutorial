@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第13章 极端原理</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}.math-scroll{overflow-x:auto;max-width:100%;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第十三章：极端原理</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第13章：极端原理</h1>
+            <p class="dek">取最极端的那一个——最大、最小、最左、度数最高——再用“没有比它更极端的了”逼出矛盾或结构，配合调整法把极值刻画成“无法再改进”的形态。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。今天我们来学习组合数学中最"懒"但最有效的方法之一——<strong>极端原理</strong>（Extremal Principle）。</p>
 
@@ -89,6 +94,39 @@
 
 所以 ΔABC 内部不可能有其他点。证毕。</code></pre>
 
+<figure id="fig-mintri">
+  <svg role="img" aria-labelledby="fig-mt-title fig-mt-desc" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-mt-title">最小面积三角形与内部点</title>
+    <desc id="fig-mt-desc">三角形 ABC 内部有一点 P，连接 PA、PB、PC 把 ABC 分成三个小三角形 PAB、PBC、PCA，它们的面积之和等于 ABC 的面积，所以至少有一个小三角形面积不超过总面积的三分之一。</desc>
+    <polygon points="120,60 620,80 360,300" fill="#e6f4f4" stroke="#147f80" stroke-width="2.5"/>
+    <polygon points="120,60 620,80 367,147" fill="#147f80" opacity="0.12"/>
+    <polygon points="620,80 360,300 367,147" fill="#7461ba" opacity="0.12"/>
+    <polygon points="360,300 120,60 367,147" fill="#d06d4d" opacity="0.12"/>
+    <g stroke="#53676d" stroke-width="1.8" stroke-dasharray="6 4">
+      <line x1="367" y1="147" x2="120" y2="60"/>
+      <line x1="367" y1="147" x2="620" y2="80"/>
+      <line x1="367" y1="147" x2="360" y2="300"/>
+    </g>
+    <circle cx="367" cy="147" r="5" fill="#d06d4d"/>
+    <g font-size="16" fill="#123b3c" font-weight="bold">
+      <text x="104" y="52">A</text><text x="626" y="74">B</text><text x="354" y="322">C</text>
+    </g>
+    <text x="382" y="150" font-size="16" fill="#d06d4d">P</text>
+  </svg>
+  <figcaption>图 13.1　最小面积三角形的反证：若内部还有一点 P，就把 ΔABC 分成三个更小的三角形，其中必有一个面积 ≤ 总面积的三分之一，与“ABC 面积最小”矛盾。</figcaption>
+</figure>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="面积分割不等式">
+<math display="block" aria-label="S(PAB) 加 S(PBC) 加 S(PCA) 等于 S(ABC)，因此最小的小三角形面积不超过 ABC 面积的三分之一">
+ <mrow>
+  <mi>S</mi><mo>(</mo><mi>PAB</mi><mo>)</mo><mo>+</mo><mi>S</mi><mo>(</mo><mi>PBC</mi><mo>)</mo><mo>+</mo><mi>S</mi><mo>(</mo><mi>PCA</mi><mo>)</mo><mo>=</mo><mi>S</mi><mo>(</mo><mi>ABC</mi><mo>)</mo>
+  <mo>,</mo><mspace width="0.5em"/>
+  <mi>min</mi><mo>{</mo><mi>S</mi><mo>(</mo><mi>PAB</mi><mo>)</mo><mo>,</mo><mo>…</mo><mo>}</mo><mo>≤</mo>
+  <mfrac><mrow><mi>S</mi><mo>(</mo><mi>ABC</mi><mo>)</mo></mrow><mn>3</mn></mfrac>
+ </mrow>
+</math>
+</div>
+
 <p>注意这个证明中精妙之处：我们选了<strong>最小</strong>而不是最大。因为"更小的三角形"可以通过分割产生，"更大的三角形"不一定能构造。在什么情况下选最大、什么情况选最小，取决于你能构造什么。</p>
 
 <h2>13.2 最大值/最小值的特殊性质利用</h2>
@@ -113,6 +151,32 @@
 
 所以存在两个认识人数相同的人。证毕。</code></pre>
 
+<div class="controls" role="group" aria-label="认识度抽屉演示">
+  <label>人数 n = <input id="dp-n" type="number" min="2" max="50" value="6" style="width:4.5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-n="6" aria-pressed="true">n=6</button>
+  <button type="button" data-n="12" aria-pressed="false">n=12</button>
+  <button type="button" data-n="30" aria-pressed="false">n=30</button>
+</div>
+<p id="dp-out" aria-live="polite"></p>
+<script>
+(function(){
+  var out=document.getElementById('dp-out'), ni=document.getElementById('dp-n');
+  function upd(){
+    var n=Math.max(2,Math.min(50,+ni.value||2));
+    out.textContent='n='+n+'：每人认识 0~'+(n-1)+' 人，看似有 '+n+' 种取值；但“认识 0 人”与“认识 '+(n-1)+' 人”不能同时出现，实际只有 '+(n-1)+' 种。将 '+n+' 人放进 '+(n-1)+' 个抽屉，必有两人认识人数相同。';
+  }
+  ni.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-n]').forEach(function(b){
+    b.addEventListener('click',function(){
+      ni.value=b.getAttribute('data-n');
+      document.querySelectorAll('.controls button[data-n]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
+
 <p>这里的关键是：<strong>极端值"认识所有人"和"谁都不认识"不能同时出现</strong>。这个"互斥性"缩小了抽屉的数量，使得抽屉原理得以应用。</p>
 
 <div class="highlight">
@@ -128,50 +192,31 @@
 <li>因为状态有限或目标函数有界，调整一定会终止——终止状态就是极值</li>
 </ol>
 
-<h3>例3：反链中的最大元素（Sperner 定理预览）</h3>
-<p>设S为n元集合，F是S的子集族且F中任意两个子集互不包含（即F是反链）。用调整法论证|F|的最大值。</p>
+<h3>例3：整数拆分——乘积最大化</h3>
+<p>把正整数 S 拆成若干个正整数之和，使它们的乘积最大。用调整法寻找最优结构：</p>
 
-<pre><code>思路：如果 F 中有两个子集 A 和 B，其中 |A| < |B| - 1，
-那么我们可以对 A 进行"压缩"调整：
-向 A 中添加一个不在 A∪B 中的元素（如果存在这样的元素），
-使 A 的大小增加 1，同时仍然保持反链的性质？
-不一定——添加元素后 A 可能不再是某个其他子集的子集，
-但也可能变成某个之前包含它的子集的超集，破坏反链性质。
+<pre><code>调整规则（先做显然是优的简化：去掉 1，把它并入别的部分）
+1. 若某个部分 x ≥ 5，把它换成 3 和 (x-3)：3(x-3)=3x-9 > x（当 x>4），乘积变大；
+2. 若出现 4，用 2+2 替代（2·2=4，不变，但统一结构）；
+3. 若出现三个及以上的 2，把 3 个 2 换成 2 个 3：3·3=9 > 2·2·2=8，乘积变大。
 
-所以简单的"扩大"调整不一定有效。
-Sperner 定理的标准证明需要更精妙的对称链分解或 LYM 不等式，
-我们用另一种调整策略：
+每次调整都严格增大乘积，而乘积有上界，故调整必终止。
+终止时只含 3 和至多两个 2：S = 3q + r（r∈{0,1,2}），
+最大乘积为 3^q（r=0）、3^(q-1)·4（r=1）、3^q·2（r=2）。</code></pre>
 
-定义 F 中所有子集大小的集合为 {|A| : A∈F}。
-如果这个集合中的最大值和最小值相差 ≥ 2，
-我们可以把最小子集"扩大"一步（添加一个不在它里面的元素），
-或者把最大子集"缩小"一步（去掉一个元素）。
-但这些操作可能会破坏反链性质。
+<p>调整法的关键是要证明调整过程一定终止、且终止状态确实最优。</p>
 
-实际上，Sperner 定理的更标准证明是通过"压缩转移"：
-反复对 F 进行"左压缩"操作，直到得到"左压缩族"，
-在该族中，所有子集都是"前 k 个元素"的子集。
-这样就能导出 |F| ≤ C(n, ⌊n/2⌋)。</code></pre>
+<h3>例4：棋盘上的象（n×n）</h3>
+<p>在 n×n 的国际象棋棋盘上放置最多的“象”，使它们互不攻击。象沿对角线攻击、不限距离。</p>
 
-<p>调整法的关键是要证明调整过程一定终止且终止状态确实是最优的。</p>
+<pre><code>结论：最多 2n-2 个（8×8 棋盘为 14 个）。
 
-<h3>例4：棋盘上的象</h3>
-<p>在8×8的国际象棋棋盘上放置最多的"象"，使得它们互不攻击。象沿对角线攻击，不限距离。</p>
+上界：棋盘上的“/”对角线共 2n-1 条，同一条上任意两只象必互攻，故每条至多一只。
+但两条长度为 1 的角对角线（(1,1) 与 (n,n)）所在格子互攻（同在主“\”对角线上），
+所以它们的象不能同时出现，上界收紧为 (2n-1)-1 = 2n-2。
 
-<pre><code>棋盘有两种颜色的格子，象在同色格中移动。
-在同色的主对角线（左上到右下）上，最多放一个象。
-同时，在同色的副对角线（右上到左下）上，也最多放一个象。
-
-对8×8棋盘：
-- 黑色象最多数目：黑色对角线有7条（长度为1,2,...,7,7,...,2,1中的黑色部分）
-  实际上，棋盘上同一颜色的对角线数是 7 条（不算长度为1的极端情况？）
-  更准确：棋盘有15条左上-右下对角线，黑白交替。
-  黑色象只能在黑色格子上，而黑格所在的"主对角线"有7条（每条上放一个），
-  同时黑格也分布在"副对角线"上……
-
-这个最优解是14个象——每条"长"对角线上放一个象的"对称"排列。
-调整法：从任意互不攻击的象布局出发，如果某条同色对角线上没有象，可以调整
-一个象到那条对角线上而不增加冲突。最终每条对角线上恰有一个象 = 14个。</code></pre>
+构造：把象放在第一行与第 n 行（同一行内两格不同对角线，互不攻击），
+从 (1,1)/(n,n) 与 (1,n)/(n,1) 中各舍弃一个，共 2n-2 只，达到上界。</code></pre>
 
 <div class="tip">
 <p><strong>调整法的一般模式</strong>：</p>
@@ -219,7 +264,7 @@ Sperner 定理的标准证明需要更精妙的对称链分解或 LYM 不等式�
 <p>这个证明中暗含了极端思想：<strong>C(n,k) 在 k=⌊n/2⌋ 时取最大值</strong>——这是"组合数的极端性质"的运用。如果不利用这个极端性质，LYM不等式只能得到 Σ 1/C(n,|A|) ≤ 1，无法直接得到|F|的上界。</p>
 
 <div class="warning">
-<p><strong>⚠️ 关于这个证明的一个说明</strong>：上面的 LY M 不等式证明方法本质上用的是"算两次"（数排列和数链中的子集），但最后一步用了组合数的极值性质（C(n,k)在中间取最大）。所以Sperner 定理的证明是<strong>算两次 + 极端原理</strong>的联合应用——这也是竞赛中常见的多方法综合使用。</p>
+<p><strong>⚠️ 关于这个证明的一个说明</strong>：上面的 LYM 不等式证明方法本质上用的是“算两次”(数排列和数链中的子集),但最后一步用了组合数的极值性质(C(n,k)在中间取最大)。所以Sperner 定理的证明是<strong>算两次 + 极端原理</strong>的联合应用--这也是竞赛中常见的多方法综合使用。</p>
 <p>Sperner 定理在组合数学中具有基础性地位。它是 Erdős-Ko-Rado 定理、Bollobás 不等式等一系列重要结果的先驱。如果你未来从事组合数学研究，会反复遇到它。</p>
 </div>
 
@@ -238,8 +283,7 @@ Sperner 定理的标准证明需要更精妙的对称链分解或 LYM 不等式�
 
 <p><strong>例5（综合例题）</strong>：在一个舞会上，每个人认识若干其他人。如果两个人不认识，那么他们认识的总人数相同。证明：每个人都认识相同数量的人。</p>
 
-<pre><code>这道题来自 IMO Shortlist，非常经典。
-用极端原理分析：
+<pre><code>这是一道经典的极端原理问题，思路是用极端原理分析：
 
 取认识人数最多的人，记为 A，设他认识 k 个人。
 任取一个不认识 A 的人 B（如果不存在这样的B，那A认识所有人，
@@ -280,30 +324,19 @@ Sperner 定理的标准证明需要更精妙的对称链分解或 LYM 不等式�
 这里"x坐标最小"是极端选择，"夹角最小"也是极端选择。
 极端原理保证了每一步的选择都是唯一的（在适当约定下）。</code></pre>
 
-<p><strong>例7（调整法 + 反证法的综合题）</strong>：</p>
-<p>将正整数1,2,…,n排成一排，使得相邻两数之和都是完全平方数。问n最大可以是多少？</p>
+<p><strong>例7（调整法：重排不等式）</strong>：设 x₁≤x₂≤…≤xₙ，y₁≤y₂≤…≤yₙ。证明：对任意排列 π，都有 Σ xᵢ y_{π(i)} ≤ Σ xᵢ yᵢ（同序和最大）。</p>
 
-<pre><code>这个问题的标准解法是用图论建模：
-顶点是 1,2,…,n，如果 i+j 是完全平方数则在 i 和 j 之间连边。
-题目要求就等价于在这个图中找到一条哈密顿路径。
+<pre><code>证明（调整法）：设排列 π 中存在 i<j 使 π(i)>π(j)（即 y_{π(i)} > y_{π(j)}）。
+交换 π(i) 与 π(j)，和的变化为：
 
-用极端原理分析：
-考虑 n 非常大的情况。数字 n 只能与满足 n+k = m² 的数 k 相邻。
-m² > n，所以 m ≥ ⌈√(n+1)⌉。
-n 的邻居是那些形如 m²-n 的数，其中 m 是满足 m² > n 的正整数。
+  Δ = x_i·y_{π(j)} + x_j·y_{π(i)} - ( x_i·y_{π(i)} + x_j·y_{π(j)} )
+    = (x_j - x_i)( y_{π(i)} - y_{π(j)} ) ≥ 0
 
-如果 n 很大，n 的邻居个数 = 满足 ⌈√(n+1)⌉ ≤ m ≤ √(2n) 的整数 m 的个数。
-（因为 n + (m²-n) ≤ n + n = 2n，所以 m² ≤ 2n，m ≤ √(2n)）
+因为 x_j ≥ x_i 且 y_{π(i)} ≥ y_{π(j)}，所以每次消除一个“逆序”都不会让和变小。
+只要 π 不是恒等排列，就存在逆序可消除；每消一次逆序数严格减少，
+故调整在有限步内终止于恒等排列，此时和最大。证毕。</code></pre>
 
-当 n 很大时，这个区间长度约为 √(2n) - √n ≈ (√2 - 1)√n。
-也就是说 n 的度数约为 (√2-1)√n，远小于 n。
-
-取度数最小的顶点——也就是 n 这样的大数——它的度数很小，
-这就给哈密顿路径的存在性施加了很强的限制。
-通过分析最大顶点 n 的度数，可以得出 n 的上界。
-实际上这个问题的答案是 n=15 或 n=16 附近。</code></pre>
-
-<p>这个例子展示了极端原理在竞赛中的典型用法：<strong>最大的那个数（或最特殊的那个元素）往往只有很少的连接或选择，因此它的存在本身就限制了整个结构的大小</strong>。</p>
+<p>这个例子展示了调整法的典型用法：<strong>把目标函数的极值刻画成“无法再改进”的结构</strong>。这里“无法再改进”就是“没有逆序”，也就是排好序的排列。</p>
 
 <div class="tip">
 <p><strong>解题建议</strong>：竞赛中遇到需要证明存在性的问题，按以下顺序尝试：</p>
@@ -335,8 +368,8 @@ n 的邻居是那些形如 m²-n 的数，其中 m 是满足 m² > n 的正整�
             <a href="index.html">📖 返回目录</a>
             <a href="14.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
