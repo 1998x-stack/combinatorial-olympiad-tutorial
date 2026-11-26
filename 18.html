@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第18章 不等式与估计</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第十八章：不等式与估计</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第18章：不等式与估计</h1>
+            <p class="dek">当精确计数不可能时，界限就是答案：本章梳理计数、概率、归纳三类估计，锤炼二项式系数不等式链与 Stirling 阶估计，并给出保留主项、积分放缩、对称削峰填谷等标准放缩套路与上下界合围策略。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。在组合数学中，我们很少能获得精确值——绝大多数情况下，我们只能给出一个<strong>估计</strong>："至少有多少""至多有多少""大约是多少"。这就像画一个靶子——有时候你知道靶心在哪里（精确值），但更多时候你只能画出一个圆，知道答案在这个圆里就足够了。</p>
 
@@ -91,7 +96,63 @@
   <p><strong>构造达到</strong>：取 1, 1+d, 1+2d, ... 即可达到 ⌈n/d⌉。所以答案是 ⌈n/d⌉。</p>
 </div>
 
+<figure id="fig-gap">
+  <svg role="img" aria-labelledby="fig-gp-title fig-gp-desc" viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-gp-title">间隔至少 d 的选取分组上界</title>
+    <desc id="fig-gp-desc">把一到 n 按每 d 个一组划分，每组至多选一个；高亮选出一、四、七、十这四个数，任意两者之差至少为三。</desc>
+    <g stroke="#8a9a98">
+      <rect x="40" y="80" width="44" height="44" fill="#d06d4d" fill-opacity="0.22"/><rect x="84" y="80" width="44" height="44" fill="#f2efe6"/><rect x="128" y="80" width="44" height="44" fill="#f2efe6"/>
+      <rect x="172" y="80" width="44" height="44" fill="#d06d4d" fill-opacity="0.22"/><rect x="216" y="80" width="44" height="44" fill="#f2efe6"/><rect x="260" y="80" width="44" height="44" fill="#f2efe6"/>
+      <rect x="304" y="80" width="44" height="44" fill="#d06d4d" fill-opacity="0.22"/><rect x="348" y="80" width="44" height="44" fill="#f2efe6"/><rect x="392" y="80" width="44" height="44" fill="#f2efe6"/>
+      <rect x="436" y="80" width="44" height="44" fill="#d06d4d" fill-opacity="0.22"/><rect x="480" y="80" width="44" height="44" fill="#f2efe6"/><rect x="524" y="80" width="44" height="44" fill="#f2efe6"/>
+    </g>
+    <g font-size="13" text-anchor="middle" fill="#123b3c">
+      <text x="62" y="108">1</text><text x="106" y="108">2</text><text x="150" y="108">3</text>
+      <text x="194" y="108">4</text><text x="238" y="108">5</text><text x="282" y="108">6</text>
+      <text x="326" y="108">7</text><text x="370" y="108">8</text><text x="414" y="108">9</text>
+      <text x="458" y="108">10</text><text x="502" y="108">11</text><text x="546" y="108">12</text>
+    </g>
+    <g stroke="#7461ba" stroke-width="1.5">
+      <line x1="40" y1="140" x2="172" y2="140"/><line x1="172" y1="140" x2="304" y2="140"/><line x1="304" y1="140" x2="436" y2="140"/><line x1="436" y1="140" x2="568" y2="140"/>
+    </g>
+    <g font-size="12" fill="#7461ba" text-anchor="middle"><text x="106" y="158">每组≤1个</text><text x="238" y="158">每组≤1个</text><text x="370" y="158">每组≤1个</text><text x="502" y="158">每组≤1个</text></g>
+    <text x="305" y="40" text-anchor="middle" font-size="14" fill="#123b3c">n = 12, d = 3：k ≤ ⌈12/3⌉ = 4，构造 1,4,7,10</text>
+    <text x="305" y="186" text-anchor="middle" font-size="12" fill="#53676d">高亮为选出的数；同一组内任意两数之差都小于 d</text>
+  </svg>
+  <figcaption>图 18.1　间隔至少 d 的计数上界：把 1~n 每 d 个一组，同组内任意两数之差 &lt; d，所以每组至多选一个，k ≤ ⌈n/d⌉；取 1,1+d,1+2d,… 即可达到这个上界。</figcaption>
+</figure>
+
 <p>这个例子展示了计数估计的基本思路：通过构造"分组"来获得上界，再通过一个具体的选取方案来证明这个上界是紧的。这里的"分组"其实就是抽屉原理的一种应用。</p>
+
+<div class="controls" role="group" aria-label="间隔至少 d 的选取计数">
+  <label>n = <input id="gd-n" type="number" min="2" max="60" value="12" style="width:4.5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <label>d = <input id="gd-d" type="number" min="1" max="30" value="3" style="width:4.5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-gd="12,3" aria-pressed="true">12, 3</button>
+  <button type="button" data-gd="20,4" aria-pressed="false">20, 4</button>
+  <button type="button" data-gd="15,2" aria-pressed="false">15, 2</button>
+</div>
+<p id="gd-out" aria-live="polite"></p>
+<script>
+(function(){
+  var ni=document.getElementById('gd-n'), di=document.getElementById('gd-d'), out=document.getElementById('gd-out');
+  function upd(){
+    var n=Math.max(2,Math.min(60,Math.round(+ni.value||2)));
+    var d=Math.max(1,Math.min(30,Math.round(+di.value||1)));
+    var k=Math.ceil(n/d), seq=[];
+    for(var i=0;i<k;i++) seq.push(1+i*d);
+    out.textContent='n='+n+', d='+d+'：最多可选 ⌈'+n+'/'+d+'⌉ = '+k+' 个数，例如 '+seq.join(', ')+'（任意两数之差 ≥ '+d+'）。';
+  }
+  ni.addEventListener('input',upd); di.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-gd]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var p=b.getAttribute('data-gd').split(','); ni.value=p[0]; di.value=p[1];
+      document.querySelectorAll('.controls button[data-gd]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
 
 <h2>18.2 二项式系数的不等式链</h2>
 
@@ -114,16 +175,45 @@
 ⑤ 精确上界：C(n, k) ≤ (en/k)^k
    这是通过 Sterling 公式的变体得到的，在概率方法中尤其常用</code></pre>
 
+<figure id="fig-bin">
+  <svg role="img" aria-labelledby="fig-bn-title fig-bn-desc" viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-bn-title">二项式系数的单峰性</title>
+    <desc id="fig-bn-desc">十六阶二项式系数从两端向中间递增，中间项 C(16,8) 最大，为 12870。</desc>
+    <line x1="40" y1="210" x2="600" y2="210" stroke="#8a9a98" stroke-width="2"/>
+    <g fill="#147f80">
+      <rect x="40" y="208" width="26" height="2"/><rect x="74" y="208" width="26" height="2"/><rect x="108" y="208" width="26" height="2"/><rect x="142" y="203" width="26" height="7"/>
+      <rect x="176" y="189" width="26" height="21"/><rect x="210" y="159" width="26" height="51"/><rect x="244" y="117" width="26" height="93"/><rect x="278" y="77" width="26" height="133"/>
+      <rect x="312" y="60" width="26" height="150"/><rect x="346" y="77" width="26" height="133"/><rect x="380" y="117" width="26" height="93"/><rect x="414" y="159" width="26" height="51"/>
+      <rect x="448" y="189" width="26" height="21"/><rect x="482" y="203" width="26" height="7"/><rect x="516" y="208" width="26" height="2"/><rect x="550" y="208" width="26" height="2"/><rect x="584" y="208" width="26" height="2"/>
+    </g>
+    <g fill="#d06d4d"><rect x="312" y="60" width="26" height="150"/></g>
+    <text x="325" y="50" text-anchor="middle" font-size="12" fill="#d06d4d">C(16,8)=12870</text>
+    <text x="325" y="230" text-anchor="middle" font-size="12" fill="#123b3c">k = 0 … 16</text>
+    <text x="120" y="34" font-size="14" fill="#123b3c">C(16,k)：中间项最大（单峰）</text>
+  </svg>
+  <figcaption>图 18.2　二项式系数的单峰性：C(n,k) 随 k 先增后减，在 k = ⌊n/2⌋ 处取最大值。左半边求和被最大项控制，这正是用 (en/k)^k 型上界控制 C(n,k) 的直觉来源。</figcaption>
+</figure>
+
 <h3>18.2.2 指数上界的应用</h3>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="二项式系数的指数上界">
+<math display="block" aria-label="C(n,k) 不超过 e n 除以 k 的 k 次方">
+ <mrow>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mi>n</mi><mi>k</mi></mfrac><mo>)</mo></mrow>
+  <mo>≤</mo>
+  <msup><mrow><mo>(</mo><mfrac><mrow><mi>e</mi><mi>n</mi></mrow><mi>k</mi></mfrac><mo>)</mo></mrow><mi>k</mi></msup>
+ </mrow>
+</math>
+</div>
 
 <p>C(n, k) ≤ (en/k)^k 这个不等式在概率方法中极其常用。它允许我们处理 C(n, k) 和 2^{-C(k,2)} 的乘积——比如在推导 Ramsey 数下界时：</p>
 
 <pre><code>C(n, k) × 2^{1 - C(k,2)} &lt; 1
 → (en/k)^k × 2^{1 - k(k-1)/2} &lt; 1
-→ 取对数：k ln(en/k) + (1 - k(k-1)/2) ln 2 &lt; 0
-→ 当 k 较大时，主导项是 -k²/2 · ln 2
-→ 因此 n ~ k × 2^{k/2} × √e 时不等式成立
-→ 即 R(k,k) > k × 2^{k/2} / e</code></pre>
+→ 取以 2 为底的对数：k·log₂(en/k) + 1 − k(k−1)/2 &lt; 0
+→ 当 k 较大时，主导项是 −k(k−1)/2，于是需 log₂(en/k) ≈ (k−1)/2
+→ 即 en/k ≈ 2^{(k−1)/2}，解得 n ≈ (k/(e√2))·2^{k/2}
+→ 即 R(k,k) &gt; (k/(e√2))·2^{k/2}</code></pre>
 
 <p>这就是前面第15章使用过的估计。没有这个二项式系数的不等式链，我们无法从概率论证转化为具体的数值下界。</p>
 
@@ -135,6 +225,16 @@
   <p><strong>Stirling 公式</strong>：n! ~ √(2πn) × (n/e)ⁿ</p>
   <p>更精确地，有双边不等式：</p>
   <p>√(2πn) × (n/e)ⁿ × e^{1/(12n+1)} &lt; n! &lt; √(2πn) × (n/e)ⁿ × e^{1/(12n)}</p>
+</div>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Stirling 公式">
+<math display="block" aria-label="n 的阶乘约等于根号二 pi n 乘以 n 除以 e 的 n 次方">
+ <mrow>
+  <mi>n</mi><mo>!</mo><mo>∼</mo>
+  <msqrt><mrow><mn>2</mn><mi>π</mi><mi>n</mi></mrow></msqrt>
+  <msup><mrow><mo>(</mo><mfrac><mi>n</mi><mi>e</mi></mfrac><mo>)</mo></mrow><mi>n</mi></msup>
+ </mrow>
+</math>
 </div>
 
 <p>在竞赛中，我们几乎不需要使用这么精确的版本。通常只用到它的"弱化版"：</p>
@@ -228,8 +328,8 @@ C(n, i) ≤ C(n, k) 对所有 i ≤ k 成立
   <p>这个结论看起来非常合理——所有包含元素 1 的子集共有 2ⁿ⁻¹ 个，它们两两相交（因为有公共元素 1），所以界是紧的，构造已经给出。我的一个学生非常自信地写下了证明：</p>
   <p>"假设 |A| > 2ⁿ⁻¹。对每个子集 S，考虑它的补集 Sᶜ。由于 |A| > 2ⁿ⁻¹，由抽屉原理，A 中一定包含一对互补的子集 (S, Sᶜ)。但 S 和 Sᶜ 的交集为空，与条件矛盾。所以 |A| ≤ 2ⁿ⁻¹。"</p>
   <p>完美！看起来滴水不漏。但仔细想想——他说"由抽屉原理，A中一定包含一对互补的子集"，这成立吗？2ⁿ个子集，互补配对得2ⁿ⁻¹对。|A| > 2ⁿ⁻¹，确实由抽屉原理，A 中一定包含至少一对互为补集的子集。正确！</p>
-  <p>但评卷老师给了他一处分：他忘了考虑空集！空集和任何集合的交集都是空集——如果 A 中包含了空集，那 |A| 就不能超过 1。所以他应该在前面加上一句"假设 A 中不含空集"（否则结论不成立：A = {∅, {1}} 但 n=2 时 |A|=2 > 2²⁻¹=2？不对，2>2不成立。实际上空集的情况需要单独讨论）。</p>
-  <p>这个教训是：<strong>在组合证明中，永远不要忘记空集、全集的特殊情况</strong>。边界情况往往是证明的盲点。一个真正的竞赛高手在写完证明后，一定会专门检查"n 最小的时候""边界的元素""空集和全集"这些特殊情形。</p>
+  <p>但真正需要检查的“边界”并不是“空集”这种单个特殊元素，而是“配对的完整性”：2ⁿ 个子集恰好两两配成 2ⁿ⁻¹ 对 (S, Sᶜ)，抽屉原理保证只要 |A| &gt; 2ⁿ⁻¹ 就一定有一对被同时选中。这个论证本身已经涵盖空集（∅ 与 [n] 就是同一对），并不需要额外声明“不含空集”。</p>
+  <p>这个教训是：<strong>在组合证明中，边界情况往往是盲点，但“补漏”要补在正确的地方</strong>——与其机械地加一句“假设不含空集”，不如检查“配对的边界”“最小规模 n”“等号能否取到”这些真正决定论证是否闭合的环节。</p>
 </div>
 
 <h2>18.6 本章小结与过渡</h2>
@@ -243,8 +343,8 @@ C(n, i) ≤ C(n, k) 对所有 i ≤ k 成立
             <a href="index.html">📖 返回目录</a>
             <a href="19.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
