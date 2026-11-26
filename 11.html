@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第11章 母函数（二）</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第十一章：母函数（二）</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第11章：母函数（二）</h1>
+            <p class="dek">当顺序变得重要，就往分母里塞进一个 n!：指数型母函数让“排列的拼接”自动带上二项式系数。用它一并推出错排、Catalan 与 Bell 数，并给出 OGF/EGF 的选择原则。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。在上一章中，我们学习了普通母函数（OGF）——它将数列对应为 xⁿ 的系数，适用于组合型问题（顺序无关）。但如果你遇到的是"排列"问题（顺序有关），普通母函数就不太方便了。举个例子：从n个不同元素中选k个排列，如果要用母函数表达，系数应该是 P(n,k) 而不是 C(n,k)。而 P(n,k) = n!/(n-k)!，用普通幂级数很难简洁表达。</p>
 
@@ -55,8 +60,16 @@
 
 <p>数列 {aₙ} 的<strong>指数型母函数</strong>定义为：</p>
 
-<pre><code>EGF(x) = Σ aₙ · xⁿ/n!
-       = a₀ + a₁x/1! + a₂x²/2! + a₃x³/3! + ...</code></pre>
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="指数型母函数的定义">
+<math display="block" aria-label="E(x) 等于 a下标n 乘以 x 的 n 次方除以 n 的阶乘，对 n 从零到无穷求和">
+ <mrow>
+  <mi>E</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo>
+  <munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></munderover>
+  <msub><mi>a</mi><mi>n</mi></msub>
+  <mfrac><msup><mi>x</mi><mi>n</mi></msup><mrow><mi>n</mi><mo>!</mo></mrow></mfrac>
+ </mrow>
+</math>
+</div>
 
 <p>对比普通母函数 OGF(x) = Σ aₙxⁿ，指数型母函数多了一个除以 n!。这个看似微小的变化带来了巨大的差异。</p>
 
@@ -121,6 +134,25 @@
 <p><strong>指数型母函数的好处</strong>：它自动处理了元素之间的"标签"区分。在普通母函数中，"选择 k 个不动点"这一步的 C(n,k) 需要手动处理；在指数型母函数中，乘积的定义自动包含了这个二项式系数。这就是为什么对排列问题要用指数型母函数。</p>
 </div>
 
+<figure id="fig-derange">
+  <svg role="img" aria-labelledby="fig-der-title fig-der-desc" viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-der-title">排列按不动点分解</title>
+    <desc id="fig-der-desc">任一排列可唯一地拆成“被固定的元素集合”与“其余元素的一个错排”两部分；两部分都是带标签结构，所以各自的指数型母函数相乘。</desc>
+    <rect x="150" y="24" width="260" height="46" rx="12" fill="#eef4f2" stroke="#147f80" stroke-width="2"/>
+    <text x="280" y="53" text-anchor="middle" font-size="15" fill="#123b3c">全部排列：EGF = 1/(1−x)</text>
+    <text x="280" y="90" text-anchor="middle" font-size="17" fill="#147f80">=</text>
+    <rect x="60" y="104" width="200" height="60" rx="12" fill="#fbf6e2" stroke="#7461ba" stroke-width="2"/>
+    <text x="160" y="130" text-anchor="middle" font-size="13" fill="#123b3c">不动点集合</text>
+    <text x="160" y="150" text-anchor="middle" font-size="13" fill="#7461ba">任意子集 · EGF = eˣ</text>
+    <text x="280" y="140" text-anchor="middle" font-size="20" fill="#147f80">×</text>
+    <rect x="300" y="104" width="200" height="60" rx="12" fill="#e6f4f4" stroke="#d06d4d" stroke-width="2"/>
+    <text x="400" y="130" text-anchor="middle" font-size="13" fill="#123b3c">其余位置的错排</text>
+    <text x="400" y="150" text-anchor="middle" font-size="13" fill="#d06d4d">EGF = D(x)</text>
+    <text x="280" y="206" text-anchor="middle" font-size="15" fill="#123b3c">1/(1−x) = eˣ · D(x)  ⇒  D(x) = e⁻ˣ/(1−x)</text>
+  </svg>
+  <figcaption>图 11.2　错排 EGF 的来源：一个排列 = 被固定的元素集合（任意子集，EGF = eˣ）与其余元素上的一个错排（EGF = D(x)）的拼接。拼接是带标签的，所以对应 EGF 相乘，于是 1/(1−x) = eˣ·D(x)。</figcaption>
+</figure>
+
 <h2>11.3 Catalan 数的生成函数</h2>
 
 <p>Catalan 数是组合数学中出现频率最高的数列之一，它的生成函数推导是必须掌握的经典。Catalan 数 Cₙ 满足：</p>
@@ -140,6 +172,14 @@ Cₙ = Σₖ₌₀ⁿ⁻¹ Cₖ Cₙ₋₁₋ₖ  (n ≥ 1)</code></pre>
 所以 C(x) = 1 + x · C(x)²
 即 x·C(x)² - C(x) + 1 = 0</code></pre>
 
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Catalan 母函数满足的函数方程">
+<math display="block" aria-label="C(x) 等于 1 加 x 乘以 C(x) 的平方">
+ <mrow>
+  <mi>C</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>1</mn><mo>+</mo><mi>x</mi><msup><mrow><mo>(</mo><mi>C</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>)</mo></mrow><mn>2</mn></msup>
+ </mrow>
+</math>
+</div>
+
 <p>这是一个关于 C(x) 的二次方程，用求根公式：</p>
 
 <pre><code>C(x) = (1 ± √(1 - 4x)) / (2x)
@@ -157,6 +197,34 @@ Cₙ = C(2n, n) / (n+1) = (2n)! / (n!(n+1)!)</code></pre>
 
 <p><strong>这就是 Catalan 数的经典公式。</strong></p>
 
+<div class="controls" role="group" aria-label="错排数与 Catalan 数计算器">
+  <label>n = <input id="ec-n" type="number" min="0" max="20" value="5" style="width:4.5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-ec="5" aria-pressed="true">n = 5</button>
+  <button type="button" data-ec="8" aria-pressed="false">n = 8</button>
+  <button type="button" data-ec="10" aria-pressed="false">n = 10</button>
+</div>
+<p id="ec-out" aria-live="polite"></p>
+<script>
+(function(){
+  var ni=document.getElementById('ec-n'), out=document.getElementById('ec-out');
+  function derange(n){ var d=[1]; for(var i=1;i<=n;i++){ d[i]=i*d[i-1] + (i%2?-1:1); } return d[n]; }
+  function catalan(n){ var c=1; for(var i=0;i<n;i++){ c = c*2*(2*i+1)/(i+2); } return Math.round(c); }
+  function upd(){
+    var n=Math.max(0,Math.min(20,Math.round(+ni.value||0)));
+    out.textContent='n='+n+'：错排 Dₙ = '+derange(n)+'，Catalan Cₙ = '+catalan(n)+'。';
+  }
+  ni.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-ec]').forEach(function(b){
+    b.addEventListener('click',function(){
+      ni.value=b.getAttribute('data-ec');
+      document.querySelectorAll('.controls button[data-ec]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
+
 <div class="highlight">
 <p><strong>方法论的启示</strong>：Catalan 数递推关系的卷积形式直接提示了它的母函数满足二次方程——这是递归结构 → 代数方程 → 封闭形式 → 通项公式的标准路径。这条路径在组合数学中反复出现：</p>
 <ol>
@@ -166,6 +234,23 @@ Cₙ = C(2n, n) / (n+1) = (2n)! / (n!(n+1)!)</code></pre>
 <li>用展开得到通项</li>
 </ol>
 </div>
+
+<figure id="fig-catalan">
+  <svg role="img" aria-labelledby="fig-cat-title fig-cat-desc" viewBox="0 0 520 260" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-cat-title">Catalan 递推的二叉树分解</title>
+    <desc id="fig-cat-desc">一个具有 n 个节点的二叉树由根、含 k 个节点的左子树与含 n 减 1 减 k 个节点的右子树拼成；对所有 k 求和即得 Catalan 递推。</desc>
+    <line x1="260" y1="52" x2="160" y2="120" stroke="#147f80" stroke-width="2"/>
+    <line x1="260" y1="52" x2="360" y2="120" stroke="#147f80" stroke-width="2"/>
+    <circle cx="260" cy="40" r="16" fill="#147f80"/>
+    <text x="260" y="45" text-anchor="middle" font-size="13" fill="#fff">根</text>
+    <polygon points="160,120 110,210 210,210" fill="#eef4f2" stroke="#7461ba" stroke-width="2"/>
+    <text x="160" y="180" text-anchor="middle" font-size="14" fill="#7461ba">C_k</text>
+    <polygon points="360,120 310,210 410,210" fill="#eef4f2" stroke="#d06d4d" stroke-width="2"/>
+    <text x="360" y="180" text-anchor="middle" font-size="14" fill="#d06d4d">C_(n−1−k)</text>
+    <text x="260" y="248" text-anchor="middle" font-size="15" fill="#123b3c">Cₙ = Σ C_k · C_(n−1−k)</text>
+  </svg>
+  <figcaption>图 11.1　Catalan 递推的结构：根的左右子树互相独立，分别有 k 与 n−1−k 个节点。左子树有 C_k 种形态、右子树有 C_(n−1−k) 种，相乘后对所有 k 求和即得 Cₙ。这正是母函数方程 C(x)=1+xC(x)² 的来源。</figcaption>
+</figure>
 
 <h2>11.4 Bell 数与集合划分</h2>
 
@@ -183,6 +268,18 @@ Cₙ = C(2n, n) / (n+1) = (2n)! / (n!(n+1)!)</code></pre>
 一个划分 = 将集合分成任意多个"非空块"
 "非空块"的 EGF = eˣ - 1
 任意多个块的组合 = exp(eˣ - 1)</code></pre>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Bell 数的指数型母函数">
+<math display="block" aria-label="Bell 数的指数型母函数等于 e 的 e 的 x 次方减一 次方">
+ <mrow>
+  <munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></munderover>
+  <msub><mi>B</mi><mi>n</mi></msub>
+  <mfrac><msup><mi>x</mi><mi>n</mi></msup><mrow><mi>n</mi><mo>!</mo></mrow></mfrac>
+  <mo>=</mo>
+  <msup><mi>e</mi><mrow><msup><mi>e</mi><mi>x</mi></msup><mo>−</mo><mn>1</mn></mrow></msup>
+ </mrow>
+</math>
+</div>
 
 <p>展开 e^(eˣ - 1) 的前几项：</p>
 
@@ -247,7 +344,12 @@ x³/3! 的系数：1 + 3 + 1 = 5  → B₃ = 5</code></pre>
 
 <pre><code>Π (1+xᵏ) = Π 1/(1-x²ᵏ⁻¹)</code></pre>
 
-<p>即"拆分成互不相同的正整数的方式数 = 拆分成奇正整数的方式数"。这可以用组合直觉证明：每个偶数 2m 可以拆成 m+m，但要求互不相同的限制禁止了这种重复。而奇正整数拆分没有这个限制。Euler 的母函数推导证明了这两个看似不同的拆分问题实际上是一样的。</p>
+<p>即"拆分成互不相同的正整数的方式数 = 拆分成奇正整数的方式数"。这个恒等式有一个一行就能写出的母函数证明：</p>
+<pre><code>Πₖ (1+xᵏ) = Πₖ (1−x^{2k})/(1−xᵏ)
+          = [Πₖ (1−x^{2k})] / [Πₖ (1−xᵏ)]</code></pre>
+<p>分母 Π(1−xᵏ) 遍历所有正整数 k，分子 Π(1−x^{2k}) 只遍历偶数。相除后，分母中的偶数因子被分子恰好约去，只剩下奇数因子：</p>
+<pre><code>Πₖ (1+xᵏ) = Π_{m 为奇数} 1/(1−x^m)</code></pre>
+<p>右边正是"每个奇数 m 可用任意多次"的拆分母函数，即"拆分成奇正整数"的母函数。两个母函数相等，遂有结论。这就是母函数最迷人的地方——<strong>一个纯代数的约分，证明了一个本来看起来毫不相干的双射</strong>。</p>
 
 <p>这就是母函数最迷人的地方——<strong>你能"看出"两个不同组合问题之间的等价性</strong>，仅仅因为它们的母函数相同。</p>
 
@@ -281,8 +383,8 @@ x³/3! 的系数：1 + 3 + 1 = 5  → B₃ = 5</code></pre>
             <a href="index.html">📖 返回目录</a>
             <a href="12.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
