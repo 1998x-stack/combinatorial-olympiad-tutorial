@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第17章 存在性与构造</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第十七章：存在性与构造</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第17章：存在性与构造</h1>
+            <p class="dek">“有”比“有多少”更难：本章区分非构造性与构造性证明，给出显式构造的通用技巧（模周期、递归、局部调整）与反证法，并以 Sylvester–Gallai、Erdős 整除问题和拉丁方为例，建立面对构造题的五步法。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。在组合数学竞赛中，有一类题目极其考验思维深度："证明存在一个满足……条件的结构。"这类题目不需要你计算出具体有多少种，只需要你证明"有"——但"有"这个结论往往比"有多少"更加难以证明。</p>
 
@@ -117,8 +122,9 @@
 - 构造 2ⁿ⁺¹ × 2ⁿ⁺¹ 矩阵：
   [ A  A ]
   [ A ~A ]  其中 ~A 表示逐位取反（0变1，1变0）
-- 验证：每行每列的 1 的个数 = n 中的个数 + n 中的个数（或取反后的个数）
-  = 2ⁿ⁻¹ + 2ⁿ⁻¹ = 2ⁿ ✓</code></pre>
+- 验证：上半区某行 = [A 的一行 | A 的一行]，1 的个数 = 2ⁿ⁻¹ + 2ⁿ⁻¹ = 2ⁿ ✓
+  下半区某行 = [A 的一行 | ~A 的一行]，1 的个数 = 2ⁿ⁻¹ + 2ⁿ⁻¹ = 2ⁿ ✓
+  列同理。所以 2ⁿ⁺¹ 阶矩阵每行每列恰有 2ⁿ 个 1。</code></pre>
 
 <p>递归构造的关键在于找到正确的"从 n 到 n+1 的扩展方法"。这个扩展必须保持核心性质不变。在上述例子中，"逐位取反"的操作恰好保证了行和列的平衡。</p>
 
@@ -145,29 +151,55 @@
 <p>先考虑假设下"最极端"的候选结构，然后证明它不可能是极端的——因为总可以找到一个"更极端"的。这与第13章的极端原理密切相关。</p>
 
 <div class="highlight">
-  <p><strong>例2</strong>：给定平面上的 n 个点（n ≥ 3），任意三点不共线。证明：总能找到一条直线只经过其中两个点。</p>
-  <p><strong>反证法</strong>：假设每条经过两个点的直线都至少经过三个点。考虑所有"点-直线"对（P, L），其中 P 是点，L 是经过至少两个点的直线。在所有这样的对中，取 P 到 L 距离最小的那一对（但不为零，因为 P 不在 L 上——如果 P 恰好在 L 上就取距离为无穷大）。设这个最小距离为 d。</p>
-  <p>设 L 经过三个点 A、B、C，P 是到 L 距离为 d 的点。从 P 向 L 作垂线，垂足为 H。则 A、B、C 中至少有两个在 H 的同侧（或恰在 H 两侧），设为 A 和 B。则点 P 到直线 AB 的距离比 d 更小——因为三角形 PAB 的高小于 PH 的长度。这与 d 的最小性矛盾！</p>
-  <p>因此假设错误——总存在一条直线只经过两个点。这是 Sylvester 问题的经典证明，其核心就是"假设最极端的情况，然后推导出更极端的"。这种手法几乎可以原封不动地移植到很多竞赛题中。</p>
+  <p><strong>例2（Sylvester–Gallai 定理）</strong>：给定平面上 n 个不共线的点，证明：总能找到一条直线恰好经过其中两个点。</p>
+  <p><strong>反证法</strong>：假设每一条经过至少两个给定点的直线都至少经过三个给定点。在所有“点 P + 由给定点确定的直线 L”的组合中（要求 P 不在 L 上），取 P 到 L 的距离最小的一对，记最小距离为 d > 0（因为点不共线，这样的组合存在）。</p>
+  <p>设 L 上至少有 A、B、C 三个给定点。从 P 向 L 作垂线，垂足为 H。由抽屉原理，A、B、C 中至少有两个在 H 的同一侧；设离 H 较近的是 Q、较远的是 R（Q 在 H 与 R 之间）。考虑过 P 和 R 的直线——它也经过两个给定点，是合法的候选直线，而 Q 不在它上面。</p>
+  <p>在三角形 PQR 中用两种方式算面积：底取 QR（在 L 上）时高为 PH = d；底取 PR 时高就是 Q 到直线 PR 的距离 h。于是 h = (QR/PR)·d。又 QR &lt; PR（直角三角形 PHR 中斜边 PR 最长，而 QR ≤ HR &lt; PR），所以 h &lt; d。这与 d 的最小性矛盾！</p>
+  <p>故假设不成立，存在一条直线恰好经过两个给定点。这是 Sylvester 问题的经典证明，其核心就是“假设最极端的情况，然后造出一个更极端的”。</p>
 </div>
+
+<figure id="fig-sylvester">
+  <svg role="img" aria-labelledby="fig-sy-title fig-sy-desc" viewBox="0 0 520 260" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-sy-title">Sylvester–Gallai 的最小距离反证</title>
+    <desc id="fig-sy-desc">点 P 到直线 L 的距禈 PH 在所有点线对中最小；L 上有 A、Q、R 三点，Q、R 在 H 同侧且 Q 离 H 较近，于是 Q 到直线 PR 的距离比 PH 更小，与最小性矛盾。</desc>
+    <line x1="120" y1="200" x2="470" y2="200" stroke="#147f80" stroke-width="2"/>
+    <line x1="200" y1="60" x2="200" y2="200" stroke="#8a9a98" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <line x1="200" y1="60" x2="380" y2="200" stroke="#7461ba" stroke-width="1.5"/>
+    <line x1="300" y1="200" x2="330" y2="161" stroke="#d06d4d" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <g fill="#7461ba"><circle cx="200" cy="60" r="6"/></g>
+    <g fill="#147f80"><circle cx="140" cy="200" r="6"/><circle cx="300" cy="200" r="6"/><circle cx="380" cy="200" r="6"/></g>
+    <g fill="#123b3c" font-size="14">
+      <text x="206" y="54">P</text>
+      <text x="196" y="220">H</text>
+      <text x="134" y="220">A</text>
+      <text x="296" y="220">Q</text>
+      <text x="382" y="220">R</text>
+    </g>
+    <text x="120" y="238" font-size="13" fill="#53676d">L</text>
+    <text x="336" y="176" font-size="12" fill="#d06d4d">h</text>
+    <text x="204" y="140" font-size="12" fill="#8a9a98">d</text>
+  </svg>
+  <figcaption>图 17.1　Sylvester–Gallai 证明的最小距离配置：P 到 L 的距离 d = PH 在所有“点–线”对中最小。L 上三点中 Q、R 落在 H 同侧且 Q 更靠近 H，过 P、R 的直线合法，而 Q 到它的距离 h &lt; d，与 d 的最小性矛盾。</figcaption>
+</figure>
 
 <h3>17.3.2 反证法+计数论证</h3>
 
 <p>如果"不存在"能推出某个量太大（超过上界）或太小（低于下界），那就产生了矛盾。这是反证法和计数原理的组合应用。</p>
 
-<pre><code>问题：证明在任何 2ⁿ 个整数中，总可以选出 n+1 个，使得没有一个是另一个的倍数。
+<pre><code>问题（Erdős）：从 1, 2, …, 2n 中任取 n+1 个数，
+证明其中必有两个数，一个整除另一个。
 
-假设结论不成立：任意 n+1 个数中都存在一个是另一个的倍数。
-这意味着最大反链的大小 ≤ n。
-但由 Dilworth 定理或对称链分解理论，
-在 {1,2,...,2ⁿ} 中（视为偏序集，整除关系为偏序），
-反链的最大大小为 C(2ⁿ, n) * ...
-等一下——实际上这个问题的整数不限于 1~2ⁿ，而是任意 2ⁿ 个整数。
-正确的证法是：将每个数写成 2^a × b（b 为奇数）的形式。
-b 最多有 n 种可能（因为最大的奇数 ≤ 2ⁿ-1）。
-由抽屉原理，有至少一个奇数值对应多个数（超过 n+1 个）。
-这些数中，较小的整除较大的（因为 2 的幂次不同）。
-这就推出了矛盾——所以假设 "不能选出 n+1 个数使无整除关系" 是错的！</code></pre>
+证明（计数 / 抽屉）：把每个取出的数写成 2^a × b 的形式，
+其中 b 为奇数（不断除以 2 直到剩下奇数）。
+
+关键观察：1~2n 中的奇数 b 只有 n 个：1, 3, 5, …, 2n−1。
+而我们取了 n+1 个数，它们对应的奇数部分 b 都落在这 n 个值里。
+由抽屉原理，必有两个数对应同一个奇数部分 b：
+   x = 2^a · b,  y = 2^c · b（a < c）。
+于是 x 整除 y。证毕。
+
+（这是“用有限种状态控制无限大小”的典型手法：
+  数的大小可以任意，但它的“奇数部分”只有 n 种。）</code></pre>
 
 <h2>17.4 竞赛构造题的系统方法</h2>
 
@@ -237,11 +269,74 @@ b 最多有 n 种可能（因为最大的奇数 ≤ 2ⁿ-1）。
 - 第 j 列：0+j, 1+j, ..., (n-1)+j (mod n) → 同样是一个排列
 因此这是一个拉丁方。✓</code></pre>
 
+<figure id="fig-latin">
+  <svg role="img" aria-labelledby="fig-la-title fig-la-desc" viewBox="0 0 460 320" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-la-title">模周期法构造的 5 阶拉丁方</title>
+    <desc id="fig-la-desc">五阶拉丁方中每个数在每行每列恰好出现一次，由 a(i,j) 等于 i 加 j 模五再加一得到。</desc>
+    <g stroke="#c9d6d3" stroke-width="1" fill="#fbf6e9">
+      <rect x="140" y="50" width="40" height="40"/><rect x="180" y="50" width="40" height="40"/><rect x="220" y="50" width="40" height="40"/><rect x="260" y="50" width="40" height="40"/><rect x="300" y="50" width="40" height="40"/>
+      <rect x="140" y="90" width="40" height="40"/><rect x="180" y="90" width="40" height="40"/><rect x="220" y="90" width="40" height="40"/><rect x="260" y="90" width="40" height="40"/><rect x="300" y="90" width="40" height="40"/>
+      <rect x="140" y="130" width="40" height="40"/><rect x="180" y="130" width="40" height="40"/><rect x="220" y="130" width="40" height="40"/><rect x="260" y="130" width="40" height="40"/><rect x="300" y="130" width="40" height="40"/>
+      <rect x="140" y="170" width="40" height="40"/><rect x="180" y="170" width="40" height="40"/><rect x="220" y="170" width="40" height="40"/><rect x="260" y="170" width="40" height="40"/><rect x="300" y="170" width="40" height="40"/>
+      <rect x="140" y="210" width="40" height="40"/><rect x="180" y="210" width="40" height="40"/><rect x="220" y="210" width="40" height="40"/><rect x="260" y="210" width="40" height="40"/><rect x="300" y="210" width="40" height="40"/>
+    </g>
+    <g font-size="16" text-anchor="middle" fill="#123b3c">
+      <text x="160" y="76">1</text><text x="200" y="76">2</text><text x="240" y="76">3</text><text x="280" y="76">4</text><text x="320" y="76">5</text>
+      <text x="160" y="116">2</text><text x="200" y="116">3</text><text x="240" y="116">4</text><text x="280" y="116">5</text><text x="320" y="116">1</text>
+      <text x="160" y="156">3</text><text x="200" y="156">4</text><text x="240" y="156">5</text><text x="280" y="156">1</text><text x="320" y="156">2</text>
+      <text x="160" y="196">4</text><text x="200" y="196">5</text><text x="240" y="196">1</text><text x="280" y="196">2</text><text x="320" y="196">3</text>
+      <text x="160" y="236">5</text><text x="200" y="236">1</text><text x="240" y="236">2</text><text x="280" y="236">3</text><text x="320" y="236">4</text>
+    </g>
+    <text x="230" y="286" text-anchor="middle" font-size="14" fill="#123b3c">a(i, j) = ((i + j) mod 5) + 1</text>
+  </svg>
+  <figcaption>图 17.2　模周期法构造的 5 阶拉丁方：a(i,j)=((i+j) mod 5)+1。行是相邻的循环移位，列也是——所以每行、每列都恰含 1…5 各一次，无需逐格检查。</figcaption>
+</figure>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="拉丁方构造公式">
+<math display="block" aria-label="a(i,j) 等于 i 加 j 模 n 之后再加一">
+ <mrow>
+  <mi>a</mi><mo>(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>)</mo><mo>=</mo>
+  <mo>(</mo><mo>(</mo><mi>i</mi><mo>+</mo><mi>j</mi><mo>)</mo><mspace width="0.3em"/><mi>mod</mi><mspace width="0.3em"/><mi>n</mi><mo>)</mo><mo>+</mo><mn>1</mn>
+ </mrow>
+</math>
+</div>
+
 <p>这个构造极其简洁，而且它展示了构造题中一个非常强大的方法论：<strong>用代数结构来保证组合性质</strong>。你不需要逐格检查每行每列——代数的运算规律已经替你保证了。</p>
 
 <div class="tip">
   <p><strong>拓展思考</strong>：上面的构造对任意 n 都成立吗？当 n 不是质数时，这个构造仍然正确（因为模 n 加法群始终存在）。但如果 n 是偶数，你还能不能构造出"相互正交"的拉丁方？这就是 Euler 的 36 军官问题了——后者的复杂性远超前者。所以构造的难度取决于你要什么性质的构造。</p>
 </div>
+
+<div class="controls" role="group" aria-label="拉丁方生成器">
+  <label>阶数 n = <input id="ls-n" type="number" min="3" max="9" value="5" style="width:4.5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-ls="3" aria-pressed="false">n = 3</button>
+  <button type="button" data-ls="5" aria-pressed="true">n = 5</button>
+  <button type="button" data-ls="8" aria-pressed="false">n = 8</button>
+</div>
+<div id="ls-out" aria-live="polite"></div>
+<p id="ls-msg" aria-live="polite"></p>
+<script>
+(function(){
+  var ni=document.getElementById('ls-n'), host=document.getElementById('ls-out'), msg=document.getElementById('ls-msg');
+  function upd(){
+    var n=Math.max(3,Math.min(9,Math.round(+ni.value||3)));
+    var html='<table style="width:auto;border-collapse:collapse;margin:.4rem 0"><caption style="caption-side:top;text-align:left;font-size:.85rem;color:var(--subtle);padding-bottom:.2rem">a(i,j) = ((i+j) mod '+n+') + 1</caption>';
+    for(var i=0;i<n;i++){ html+='<tr>'; for(var j=0;j<n;j++){ html+='<td style="text-align:center;padding:.25rem .5rem">'+(((i+j)%n)+1)+'</td>'; } html+='</tr>'; }
+    html+='</table>';
+    host.innerHTML=html;
+    msg.textContent='第 1 行是 1…'+n+'；每一行都是上一行的循环左移，列同理——所以每行每列都恰含 1…'+n+' 各一次。';
+  }
+  ni.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-ls]').forEach(function(b){
+    b.addEventListener('click',function(){
+      ni.value=b.getAttribute('data-ls');
+      document.querySelectorAll('.controls button[data-ls]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
 
 <h2>17.6 本章小结与过渡</h2>
 
@@ -254,8 +349,8 @@ b 最多有 n 种可能（因为最大的奇数 ≤ 2ⁿ-1）。
             <a href="index.html">📖 返回目录</a>
             <a href="18.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
