@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第12章 算两次与不变量</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第十二章：算两次与不变量</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第12章：算两次与不变量</h1>
+            <p class="dek">同一个量数两遍就得到等式，同一个量在操作下守成不变就得到禁阻：本章把“换一个角度看”这件事拆成可操作的两套方法——双重计数与不变量——并用握手引理、Mantel 定理、棋盘与硬币问题反复演练。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。今天我们来学一个在竞赛中"性价比"极高的技巧——<strong>算两次</strong>（Double Counting）。什么叫算两次？字面意思：把同一个东西用两种不同的方法数一遍，然后让结果相等。听起来像废话，对吧？但就是这个"废话"，能秒杀联赛和IMO中一大批看起来无从下手的组合题。</p>
 
@@ -75,7 +80,42 @@
 同一个东西，两种数法，结果必须相等：
 Σ d(v) = 2m。证毕。</code></pre>
 
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="握手引理">
+<math display="block" aria-label="所有顶点度数之和等于边数的两倍">
+ <mrow>
+  <munder><mo>∑</mo><mrow><mi>v</mi><mo>∈</mo><mi>V</mi></mrow></munder>
+  <mi>d</mi><mo>(</mo><mi>v</mi><mo>)</mo>
+  <mo>=</mo><mn>2</mn><mi>m</mi>
+ </mrow>
+</math>
+</div>
+
 <p>这个证明只有一个式子，但它代表了算两次最纯粹的形式。关键不在于"握手引理"本身，而在于它的证明提供了<strong>通用的方法论</strong>：当你看到一个结构，问自己"这个结构中的基本关系对是什么"，然后数两遍。</p>
+
+<figure id="fig-handshake">
+  <svg role="img" aria-labelledby="fig-hs-title fig-hs-desc" viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-hs-title">握手引理：两种方式数“边-端点对”</title>
+    <desc id="fig-hs-desc">一个含五个顶点、五条边的图。从边的角度看每条边贡献两个端点，得到二 m；从顶点的角度看每个顶点贡献它的度数，得到度数之和。</desc>
+    <g stroke="#147f80" stroke-width="2">
+      <line x1="120" y1="90" x2="240" y2="70"/>
+      <line x1="240" y1="70" x2="210" y2="180"/>
+      <line x1="210" y1="180" x2="120" y2="90"/>
+      <line x1="210" y1="180" x2="370" y2="130"/>
+      <line x1="370" y1="130" x2="480" y2="90"/>
+    </g>
+    <g fill="#7461ba">
+      <circle cx="120" cy="90" r="13"/><circle cx="240" cy="70" r="13"/><circle cx="210" cy="180" r="13"/><circle cx="370" cy="130" r="13"/><circle cx="480" cy="90" r="13"/>
+    </g>
+    <g fill="#fff" font-size="12" text-anchor="middle">
+      <text x="120" y="94">A</text><text x="240" y="74">B</text><text x="210" y="184">C</text><text x="370" y="134">D</text><text x="480" y="94">E</text>
+    </g>
+    <g fill="#d06d4d" font-size="13" font-weight="700" text-anchor="middle">
+      <text x="120" y="130">d=2</text><text x="240" y="48">d=2</text><text x="210" y="214">d=3</text><text x="370" y="162">d=2</text><text x="480" y="122">d=1</text>
+    </g>
+    <text x="280" y="24" text-anchor="middle" font-size="14" fill="#123b3c">Σ d(v) = 2+2+3+2+1 = 10 = 2 × 5 = 2m</text>
+  </svg>
+  <figcaption>图 12.1　握手引理的算两次：从边看，每条边贡献 2 个端点，总数 = 2m = 10；从顶点看，每个顶点贡献它的度数，总数 = Σd(v) = 10。两者相等即得 Σd(v) = 2m。</figcaption>
+</figure>
 
 <div class="highlight">
 <p><strong>算两次的灵魂</strong>：你不需要知道每个顶点的具体度数，只需要理解"每条边贡献两个端点数给度数总和"这个事实。关键在于找到正确的"计数对象"——它必须能从两个视角自然地分解。</p>
@@ -88,33 +128,21 @@
 <h3>例2：座位问题</h3>
 <p>一个教室里有30行30列共900个座位。每行至少有20个座位被占，每列至多有25个座位被占。问至少有多少个座位被占？</p>
 
-<pre><code>设 xᵢ = 第i行被占的座位数，yⱼ = 第j列被占的座位数。
-被占座位总数 S = Σ xᵢ = Σ yⱼ  （算两次！行和 = 列和）
+<pre><code>设 xᵢ = 第 i 行被占的座位数，yⱼ = 第 j 列被占的座位数。
+被占座位总数 S 满足：S = Σᵢ xᵢ = Σⱼ yⱼ（算两次！行和总和 = 列和总和）
 
-已知：xᵢ ≥ 20，yⱼ ≤ 25
+已知：每行 xᵢ ≥ 20 → S = Σ xᵢ ≥ 30 × 20 = 600
+      每列 yⱼ ≤ 25 → S = Σ yⱼ ≤ 30 × 25 = 750
 
-所以 S = Σ xᵢ ≥ 30 × 20 = 600
-并且 S = Σ yⱼ ≤ 30 × 25 = 750
+下界 600 能否达到？只要构造一个 30×30 的 0-1 矩阵，
+使每行恰好 20 个 1、每列恰好 20 个 1（于是每列 ≤ 25 自然成立），
+则 S = 30 × 20 = 600 就是最小值。
 
-光靠这个还不够精确。我们来求 S 的最小可能值。
-构造方案：让前20列每列坐满30人 → 600人，后10列每列坐0人。
-验证条件——"每列至多25人"：前20列有30 > 25！这违反条件。
+构造：把 30 列按 0,1,…,29 编号，第 i 行占用列 (i+j) mod 30（j = 0,…,19），
+即每行连续占 20 列但循环移位。此时每一列恰好被 20 行占用。
+验证：每行占用数 = 20 ≥ 20 ✓；每列占用数 = 20 ≤ 25 ✓；总数 = 600。</code></pre>
 
-重新构造：因为每列至多25人，每行至少20人。
-考虑"行和 = 列和"的硬约束：
-S = Σ xᵢ ≥ 30×20 = 600
-S = Σ yⱼ ≤ 30×25 = 750
-
-但这只是上下界。精确的最小值需要用更精细的算两次...
-实际上，如果我们设被占座位的位置为1，空位为0，
-行和 xᵢ ≥ 20, 列和 yⱼ ≤ 25。
-要最小化 S = Σ xᵢ = Σ yⱼ，
-显然需要让每一行尽可能少（20），每一列尽可能多（25）。
-30行每行20个 → S = 600。需要检查是否存在同时满足行和列约束的0-1矩阵。
-由 Gale-Ryser 定理，这样的矩阵存在的充要条件是...
-但在竞赛中，更简单的做法是构造一个具体的方案。</code></pre>
-
-<p>这个题的关键就是"行和 = 列和"——算两次锁定了S必须同时满足行约束和列约束。</p>
+<p>所以最少被占的座位数是 <strong>600</strong>。关键在于：算两次把“行和的约束”和“列和的约束”拧到同一个量 S 上——下界来自行、上界来自列，两端一夹，再验证能达到即可。</p>
 
 <h3>例3：关联矩阵表格示例</h3>
 <table>
@@ -127,6 +155,34 @@ S = Σ yⱼ ≤ 30×25 = 750
 </table>
 
 <p>从这个表格可以直观地看到：行和的总和（2+3+2+1=8）等于列和的总和（2+2+2+2=8），都等于矩阵中1的个数。</p>
+
+<div class="controls" role="group" aria-label="可切换的 3×4 零一矩阵">
+  <span>点击格子切换 0/1：</span>
+</div>
+<div id="mx-grid" role="group" aria-label="可切换的 3 行 4 列零一矩阵" style="margin:.4rem 0"></div>
+<p id="mx-out" aria-live="polite"></p>
+<script>
+(function(){
+  var rows=3, cols=4;
+  var grid=document.getElementById('mx-grid'), out=document.getElementById('mx-out');
+  var state=[[1,1,0,0],[1,0,1,1],[0,1,1,0]];
+  grid.style.display='grid'; grid.style.gridTemplateColumns='repeat('+cols+',2.4rem)'; grid.style.gap='4px';
+  for(var i=0;i<rows;i++)for(var j=0;j<cols;j++){(function(i,j){
+    var b=document.createElement('button'); b.type='button'; b.textContent=state[i][j];
+    b.setAttribute('aria-pressed', state[i][j]?'true':'false');
+    b.style.width='2.4rem'; b.style.height='2.4rem'; b.style.padding='0';
+    b.addEventListener('click',function(){ state[i][j]^=1; b.textContent=state[i][j]; b.setAttribute('aria-pressed',state[i][j]?'true':'false'); upd(); });
+    grid.appendChild(b);
+  })(i,j);}
+  function upd(){
+    var rowsSum=0, colsum=[0,0,0,0], s='';
+    for(var i=0;i<rows;i++){ var r=0; for(var j=0;j<cols;j++){ r+=state[i][j]; colsum[j]+=state[i][j]; } rowsSum+=r; s+='第'+(i+1)+'行和='+r+'；'; }
+    var colsSum=0; for(var j=0;j<cols;j++) colsSum+=colsum[j];
+    out.textContent=s+' 行和总和 = '+rowsSum+'；列和总和 = '+colsSum+'；两者恒相等。';
+  }
+  upd();
+})();
+</script>
 
 <div class="tip">
 <p><strong>矩阵模型的威力</strong>：当你遇到一个"对象-属性"关系时，尝试构建一个0-1矩阵。行和对应"每个对象具有的属性数"，列和对应"每个属性被多少对象具有"。行和之和 = 列和之和这个等式本身，就是一个强有力的约束。</p>
@@ -150,28 +206,22 @@ S = Σ yⱼ ≤ 30×25 = 750
 <h3>例5：用算两次推导不等式</h3>
 <p>设G是一个n个顶点、m条边的图，且G不含三角形。证明：m ≤ n²/4。</p>
 
-<pre><code>这是经典的 Turán 定理的 K₃ 情形。
+<pre><code>这就是 Mantel 定理（Turán 定理的 K₃ 情形）。证明用算两次 + Cauchy–Schwarz：
+设顶点 v 的度数为 d(v)，边数为 m，顶点数为 n。
 
-证明思路：设顶点 v 的度数为 d(v)。因为 G 不含三角形，
-v 的任意两个邻居之间不能有边（否则就会形成三角形）。
+第1步（无三角形的局部约束）：若 u, v 相邻，则 N(u) 与 N(v) 不相交
+——否则存在公共邻居 w，就构成三角形 u-v-w。
+又 N(u) ∪ N(v) 都是 G 的顶点，所以 d(u) + d(v) = |N(u) ∪ N(v)| ≤ n。
 
-所以从 v 的邻居出发的边，每条边的两个端点不能都是 v 的邻居。
-更精确的证明用"算两次"：
+第2步（对边求和，算两次）：把 Σ_{uv∈E} (d(u)+d(v)) 换一种方式数。
+每个顶点 v 出现在 d(v) 条边中、各贡献一次 d(v)，
+所以 Σ_{uv∈E}(d(u)+d(v)) = Σ_v d(v)² ≤ Σ_{uv∈E} n = m·n。
 
-考虑"顶点-边"对 (v, e) 满足 v 是 e 的一个端点。
-这个总数已经是 2m（由握手引理）。
+第3步（Cauchy–Schwarz）：(Σ_v d(v))² ≤ n · Σ_v d(v)²，
+左边 = (2m)²，右边 ≤ n·(m·n) = m·n²。
+于是 4m² ≤ m·n²，当 m > 0 时得 m ≤ n²/4。证毕。</code></pre>
 
-现在考虑"顶点-边"对 (v, e) 满足 v 不是 e 的端点但 e 的两个端点都是 v 的邻居。
-因为 G 不含三角形，这样的 (v, e) 有多少？
-
-实际上，Mantel 定理的标准证明有多种：
-方法一（算两次）：对每个顶点 v，它的 d(v) 个邻居之间没有边，
-因此这 d(v) 个点之间最多能有的边数，与全局边数形成约束。
-通过计算 Σ d(v)² 可以得到 m ≤ n²/4。</code></pre>
-
-<p>这个证明更详细地展开是这样的：由握手引理 Σ d(v) = 2m。又由 Cauchy-Schwarz 不等式，(Σ d(v))² ≤ n Σ d(v)²，所以 Σ d(v)² ≥ 4m²/n。另一方面，每个顶点 v 的 d(v) 个邻居之间没有边（因为无三角形），所以这些邻居之间的"可能边"——最多 C(d(v), 2) 条——有一些在图外。但更精确的约束是：</p>
-
-<p>因为每条边最多被多少个顶点"监控"为邻居之间的边？其实，每条边 (u,w) 的两个端点 u 和 w 的公共邻居数 = 0（因为没有三角形）。所以每条边 (u,w) 不会被任何顶点视为"邻居之间的边"。所以通过更巧妙的算两次可以得到精确的极值。</p>
+<p>这个证明是算两次与不等式配合的典范：第1步把“无三角形”翻译成局部的不等式，第2步用“同一和式两种数法”累加成全局约束，第3步用 Cauchy–Schwarz 把平方和与和平方联系起来。三步各司其职，没有一个多余的动作。</p>
 
 <div class="warning">
 <p><strong>⚠️ 踩坑经验</strong>：很多同学拿到图论极值题，第一反应是"尝试各种构造"，花一个小时找反例，最后没找到就说"我觉得这应该成立"。这是典型的坏习惯。</p>
@@ -199,6 +249,28 @@ v 的任意两个邻居之间不能有边（否则就会形成三角形）。
 <h3>例6：棋盘覆盖问题</h3>
 <p>一个8×8的国际象棋棋盘被去掉对角线上的两个对角格子。能否用31个2×1的多米诺骨牌覆盖剩下的62个格子？</p>
 
+<figure id="fig-chess">
+  <svg role="img" aria-labelledby="fig-ch-title fig-ch-desc" viewBox="0 0 300 340" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-ch-title">去掉对角两格的棋盘不能骨牌覆盖</title>
+    <desc id="fig-ch-desc">四乘四棋盘黑白相间，去掉左上与右下两个同色角格后，黑格剩六个、白格剩八个，而每块骨牌需要一黑一白。</desc>
+    <text x="150" y="30" text-anchor="middle" font-size="14" fill="#123b3c">4×4 棋盘，去掉两个对角格</text>
+    <g stroke="#8a9a98" stroke-width="1">
+      <rect x="65" y="55" width="44" height="44" fill="#3a4b50"/><rect x="109" y="55" width="44" height="44" fill="#f2efe6"/><rect x="153" y="55" width="44" height="44" fill="#3a4b50"/><rect x="197" y="55" width="44" height="44" fill="#f2efe6"/>
+      <rect x="65" y="99" width="44" height="44" fill="#f2efe6"/><rect x="109" y="99" width="44" height="44" fill="#3a4b50"/><rect x="153" y="99" width="44" height="44" fill="#f2efe6"/><rect x="197" y="99" width="44" height="44" fill="#3a4b50"/>
+      <rect x="65" y="143" width="44" height="44" fill="#3a4b50"/><rect x="109" y="143" width="44" height="44" fill="#f2efe6"/><rect x="153" y="143" width="44" height="44" fill="#3a4b50"/><rect x="197" y="143" width="44" height="44" fill="#f2efe6"/>
+      <rect x="65" y="187" width="44" height="44" fill="#f2efe6"/><rect x="109" y="187" width="44" height="44" fill="#3a4b50"/><rect x="153" y="187" width="44" height="44" fill="#f2efe6"/><rect x="197" y="187" width="44" height="44" fill="#3a4b50"/>
+    </g>
+    <g stroke="#d06d4d" stroke-width="2.5" fill="none">
+      <rect x="67" y="57" width="40" height="40"/><rect x="199" y="189" width="40" height="40"/>
+      <line x1="67" y1="57" x2="107" y2="97"/><line x1="107" y1="57" x2="67" y2="97"/>
+      <line x1="199" y1="189" x2="239" y2="229"/><line x1="239" y1="189" x2="199" y2="229"/>
+    </g>
+    <text x="150" y="262" text-anchor="middle" font-size="13" fill="#123b3c">剭下 6 黑 + 8 白 = 14 格</text>
+    <text x="150" y="284" text-anchor="middle" font-size="13" fill="#d06d4d">7 块骨牌需 7 黑 + 7 白 ✗</text>
+  </svg>
+  <figcaption>图 12.2　奇偶性不变量的经典例子：对角两格同色，去掉后黑、白格数分别为 6 与 8。每块 2×1 骨牌必覆盖一黑一白，因此 7 块骨牌需 7 黑 7 白，与 6 黑 8 白矛盾，不可能覆盖。</figcaption>
+</figure>
+
 <pre><code>棋盘是黑白相间染色：两个对角格同色（比如都是黑色）。
 去掉两个黑格后，剩下 30 黑 + 32 白。
 
@@ -216,31 +288,23 @@ v 的任意两个邻居之间不能有边（否则就会形成三角形）。
 <h3>例7：硬币翻转问题</h3>
 <p>桌上有7枚硬币，初始全部正面朝上。每次操作可以翻转任意3枚硬币。问：能否经过若干次操作后使全部硬币反面朝上？</p>
 
-<pre><code>不变量分析：设正面朝上的硬币数为 H。
-每次操作翻转3枚，设其中有 k 枚正面、3-k 枚反面。
-翻转后：k 枚正面变反面（正面数减少 k），
-        3-k 枚反面变正面（正面数增加 3-k）。
-所以正面数的变化量 ΔH = -k + (3-k) = 3 - 2k。
+<pre><code>用奇偶性不变量：设 t 为操作次数，每枚硬币被翻转的次数记作 c₁,…,c₇。
+要把全部正面变反面，每枚硬币必须被翻奇数次（cᵢ 为奇数）。
+每次翻转 3 枚，所以总翻转次数 c₁+…+c₇ = 3t。
 
-3 - 2k 是奇数（因为 2k 是偶数，3 - 偶数 = 奇数）。
-所以每次操作，H 的奇偶性反转。
+7 个奇数的和是奇数，所以 3t 是奇数，即 t 是奇数。
 
-初始 H = 7（奇数）。
-第1次后 H 变偶数，第2次变奇数，第3次变偶数……
-最终目标 H = 0（偶数）。
-所以需要偶数次操作。
+奇偶性只给出“t 必须是奇数”这个必要条件。它排除了“用 2 次完成”
+（因为 2 是偶数），但并不能否定存在性。那么 t = 3 行不行？
+3 次共翻 9 次，要把 9 分摊成 7 个奇数，只能是 1,1,1,1,1,1,3。
+构造：编号 1~7，依次翻转 (1,2,3)、(1,4,5)、(1,6,7)。
+则硬币 1 被翻 3 次、硬币 2~7 各被翻 1 次——全部奇数次，全部翻面成功。
 
-但"偶数次操作"只是必要条件，不是充分条件。
-还需要进一步分析：是否真的存在偶数次操作的方案？
-经过尝试，发现确实可以——例如操作序列（1,2,3）、（1,4,5）、（1,6,7）各一次，
-共3次（奇数次），需要调整方案。
-实际上经过分析，7枚硬币翻转3枚的问题，答案是可能的。
-（比如先把硬币编号1-7，翻转(1,2,3)、(1,4,5)、(2,4,6)、(3,5,7)各一次，
-验证：1被翻3次，2被翻2次，3被翻2次，4被翻2次，5被翻2次，6被翻1次，7被翻1次。
-每枚被翻奇数次 → 从正面变反面。）
+所以结论：可以做到，最少需要 3 次；而“能否用偶数次完成”则被奇偶性彻底排除。</code></pre>
 
-但如果我们问的是"能否用3次操作完成"——这就被奇偶性不变量排除了，
-因为3是奇数，H必须从奇数变偶数，奇数次操作不可能。</code></pre>
+<div class="tip">
+<p><strong>💡 不变量给出的是“必要条件”</strong>：奇偶性/守恒量通常只能否定一部分目标（这里是“偶数次”），而要证明“存在”往往还需要一个显式构造。把“必要条件”误当成“充分条件”，是不变量类题目最常见的踩坑点。</p>
+</div>
 
 <div class="highlight">
 <p><strong>选不变量的线索</strong>：</p>
@@ -277,7 +341,17 @@ v 的任意两个邻居之间不能有边（否则就会形成三角形）。
 <p>这就是算两次！一个恒等式，三行证明。不需要代数变形，不需要归纳法——只需要你看清楚"从两个组里选人"和"从一大组里选人"是同一件事。</p>
 
 <h3>例10：Vandermonde 恒等式</h3>
-<p>Σ C(m, k) C(n, r-k) = C(m+n, r)</p>
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Vandermonde 恒等式">
+<math display="block" aria-label="C(m,k) 乘 C(n, r 减 k) 对 k 求和等于 C(m+n, r)">
+ <mrow>
+  <munder><mo>∑</mo><mi>k</mi></munder>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mi>m</mi><mi>k</mi></mfrac><mo>)</mo></mrow>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mi>n</mi><mrow><mi>r</mi><mo>−</mo><mi>k</mi></mrow></mfrac><mo>)</mo></mrow>
+  <mo>=</mo>
+  <mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>m</mi><mo>+</mo><mi>n</mi></mrow><mi>r</mi></mfrac><mo>)</mo></mrow>
+ </mrow>
+</math>
+</div>
 <ul>
 <li>方式一：从m+n个人中选r个 → C(m+n, r)</li>
 <li>方式二：把m+n个人分成m个男生和n个女生。先从男生中选k个，再从女生中选r-k个 → C(m,k)C(n,r-k)。对所有k求和。</li>
@@ -312,8 +386,8 @@ v 的任意两个邻居之间不能有边（否则就会形成三角形）。
             <a href="index.html">📖 返回目录</a>
             <a href="13.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
