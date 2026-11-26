@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第27章 IMO组合名题赏析</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,11 +42,15 @@
             <li><a href="27.html" class="active">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第27章 IMO组合名题赏析</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第27章：IMO 组合名题赏析</h1>
+            <p class="dek">三道真实的 IMO 组合题：双计数、构造性归纳、操作不变量。看经典如何把工具用到极致，也看清哪些步骤必须亲自验证。</p>
+        </header>
 
-<p>大家好，我是你们的讲师。如果说高中数学联赛是国内赛场的巅峰，那么IMO（国际数学奥林匹克）就是世界之巅。每年从全球100多个国家和地区选出的600多名数学天才，在IMO赛场上同台竞技。组合数学在IMO中占据了约25%的题目——基本上每年6道题里有1-2道是组合题。</p>
+<p>大家好，我是你们的讲师。如果说高中数学联赛是国内赛场的巅峰，那么 IMO（国际数学奥林匹克）就是世界之巅。每年从全球上百个国家和地区选出的数百名选手在 IMO 赛场上同台竞技。组合数学在 IMO 中历来占有重要分量——按教学经验估计，每年 6 道题中通常有 1～2 道是组合题（非严格统计）。</p>
 
 <p>但IMO的组合题，和联赛的组合题有本质区别。联赛题更注重"技巧的熟练运用"，而IMO题更注重<strong>"思想的原创性和深刻性"</strong>。很多IMO组合题在刚出现时，甚至让当时的命题委员会都惊叹不已——它们往往开创了一种全新的思考方式。</p>
 
@@ -61,7 +66,7 @@
   <p style="text-align:center;font-size:1.3em;margin:12px 0;"><strong>k / m ≥ (n - 1) / (2n)</strong></p>
 </div>
 
-<p>这道题在IMO历史上有着特殊的地位——它是双计数方法最经典的教科书式案例。据说当时有一位美国队选手在考场上用了不到20分钟就完成了证明，评委们看完后一致称赞"优雅"。</p>
+<p>这道题在 IMO 历史上有着特殊的地位——它是双计数方法最经典的教科书式案例：两个方向的计数就足以推出一个漂亮的不等式。</p>
 
 <h3>思考路径还原</h3>
 
@@ -90,16 +95,58 @@ C(a,2) + C(n-a,2) = a(a-1)/2 + (n-a)(n-a-1)/2
                    = (2a² - 2na + n² - n) / 2
                    = a² - na + n(n-1)/2
 
-由二次函数的性质，a² - na 在 a=n/2 处取最小值。
-但由于 n 是奇数，a 为整数，最小值在 a=(n±1)/2 处取到。
+由二次函数的性质，a² - na 在 a=n/2 处取最小值；
+由于 n 是奇数、a 为整数，最小值在 a=(n±1)/2 处取到。
 
-代入后得到：C(a,2) + C(n-a,2) ≥ (n²-1)/4
+代入后得到：C(a,2) + C(n-a,2) ≥ (n-1)²/4
 
-所以：m × (n²-1)/4 ≤ C(n,2) × k
-整理得：k/m ≥ (n-1)/(2n)</code></pre>
+所以：m × (n-1)²/4 ≤ C(n,2) × k
+两边同除以 m·n(n-1)/2，整理得：k/m ≥ (n-1)/(2n)</code></pre>
+
+<figure id="fig-doublecount">
+  <svg role="img" aria-labelledby="fig-dc-title fig-dc-desc" viewBox="0 0 520 300" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-dc-title">双重计数：从两个方向数“一致”三元组</title>
+    <desc id="fig-dc-desc">一个裁判×参赛者的矩阵，行是裁判、列是参赛者。方式一按行对（裁判对）计数一致格，方式二按列（单个参赛者）计数两两一致的裁判对，两者得到同一个总数。</desc>
+    <g stroke="#c9d4d1">
+      <rect x="90" y="40" width="300" height="180" fill="#faf7ef"/>
+      <line x1="150" y1="40" x2="150" y2="220"/><line x1="210" y1="40" x2="210" y2="220"/><line x1="270" y1="40" x2="270" y2="220"/><line x1="330" y1="40" x2="330" y2="220"/>
+      <line x1="90" y1="85" x2="390" y2="85"/><line x1="90" y1="130" x2="390" y2="130"/><line x1="90" y1="175" x2="390" y2="175"/>
+    </g>
+    <g fill="#f2c9b6"><rect x="150" y="40" width="60" height="45"/><rect x="270" y="85" width="60" height="45"/><rect x="210" y="130" width="60" height="45"/><rect x="330" y="175" width="60" height="45"/></g>
+    <text x="270" y="28" text-anchor="middle" font-size="14" fill="#53676d">列：参赛者 1…m</text>
+    <g font-size="14" fill="#203035"><text x="70" y="66" text-anchor="end">裁判 i</text><text x="70" y="111" text-anchor="end">裁判 j</text><text x="70" y="240" text-anchor="end">⋮</text></g>
+    <text x="90" y="270" font-size="14" fill="#53676d">方式一：每对裁判的一致列 ≤ k ⇒ 总数 ≤ C(n,2)·k</text>
+    <text x="90" y="292" font-size="14" fill="#53676d">方式二：每列 aₖ 个通过 ⇒ 总数 = Σ[C(aₖ,2)+C(n−aₖ,2)]</text>
+  </svg>
+  <figcaption>图 27.1　IMO 1998 P2 的双计数：同一个“两名裁判在同一参赛者上一致”的三元组总数，既可按裁判对（每对 ≤ k）数，也可按参赛者（每列贡献 C(a,2)+C(n−a,2)）数。</figcaption>
+</figure>
+
+<div class="controls" role="group" aria-label="双计数下界验证器">
+  <button type="button" data-n="3" aria-pressed="true">n=3</button>
+  <button type="button" data-n="5" aria-pressed="false">n=5</button>
+  <button type="button" data-n="7" aria-pressed="false">n=7</button>
+</div>
+<p id="dc-out" aria-live="polite">选择奇数 n，查看 C(a,2)+C(n−a,2) 的最小值 (n−1)²/4。</p>
+<script>
+(function(){
+  var out=document.getElementById('dc-out');
+  function C2(x){return x*(x-1)/2;}
+  function run(n){
+    var m=Infinity, arg=0;
+    for(var a=0;a<=n;a++){ var v=C2(a)+C2(n-a); if(v<m){m=v;arg=a;} }
+    out.textContent='n='+n+'：C(a,2)+C(n−a,2) 的最小值为 '+m+'（在 a='+arg+' 或 '+(n-arg)+' 处取到），恰为 (n−1)²/4 = '+((n-1)*(n-1)/4)+'；由此得 k/m ≥ (n−1)/(2n) = '+((n-1)/(2*n)).toFixed(3)+'。';
+  }
+  document.querySelectorAll('.controls button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.controls button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      run(+b.getAttribute('data-n'));
+    });
+  });
+})();
+</script>
 
 <div class="tip">
-  <p><strong>这道题为什么经典？</strong>因为它完美展示了"算两次"的力量——同一个量从两个方向分别计算，然后通过不等式联系起来。这种思维方式后来被广泛应用于各种竞赛题中。你在第12章学到的"算两次"方法，其终极形态就是IMO 1998 Problem 2。很多命题人后来承认：这道题直接启发了至少10道后续的IMO和各国国家队选拔题。</p>
+  <p><strong>这道题为什么经典？</strong>因为它完美展示了“算两次”的力量——同一个量从两个方向分别计算，然后通过不等式联系起来。你在第 12 章学到的“算两次”方法，其最纯粹的形态正是 IMO 1998 Problem 2。</p>
 </div>
 
 <h2>27.2 IMO 2007 Problem 3：图论极值的精致构造</h2>
@@ -111,11 +158,34 @@ C(a,2) + C(n-a,2) = a(a-1)/2 + (n-a)(n-a-1)/2
   <p>在数学竞赛中，一些参赛者是朋友。朋友关系是相互的。如果一个小组中任意两人都是朋友，则称这个小组为一个"clique"（团）。一个clique的大小是它包含的人数。已知最大团的大小是偶数。证明：可以将所有参赛者安排到两个房间中，使得两个房间中最大团的大小相等。</p>
 </div>
 
-<p>这道题来自越南的命题人，当年所有选手中只有不到30人完全做对。它的难点不在于用了什么高深的数学工具——事实上，这道题只需要图论基本概念和归纳法——而在于<strong>如何构造出一个优雅的归纳步骤</strong>。</p>
+<p>这道题来自越南的命题人。它的难点不在于用了什么高深的数学工具——事实上，只需要图论基本概念和归纳法就能切入——而在于<strong>如何构造出一个优雅的归纳步骤</strong>。</p>
 
 <h3>思考路径还原</h3>
 
 <p><strong>第一步：转化成图论语言。</strong>每个参赛者是一个顶点，朋友关系是边。那么"团"就是完全子图。已知最大完全子图的大小为偶数2k。我们要把顶点集分成两部分，使得两部分诱导子图中最大完全子图的大小相等。</p>
+
+<figure id="fig-clique">
+  <svg role="img" aria-labelledby="fig-cl-title fig-cl-desc" viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-cl-title">把最大偶团均分成两个房间</title>
+    <desc id="fig-cl-desc">一个大小为 2k 的最大团（左侧完全图）被分成两个大小为 k 的团，分别放入两个房间（右侧两个圈），使两个房间内最大团的大小都是 k。</desc>
+    <g stroke="#147f80" stroke-width="2">
+      <circle cx="90" cy="70" r="10"/><circle cx="160" cy="50" r="10"/><circle cx="175" cy="120" r="10"/><circle cx="120" cy="160" r="10"/><circle cx="50" cy="120" r="10"/>
+      <line x1="90" y1="70" x2="160" y2="50"/><line x1="90" y1="70" x2="175" y2="120"/><line x1="90" y1="70" x2="120" y2="160"/><line x1="90" y1="70" x2="50" y2="120"/>
+      <line x1="160" y1="50" x2="175" y2="120"/><line x1="160" y1="50" x2="120" y2="160"/><line x1="160" y1="50" x2="50" y2="120"/>
+      <line x1="175" y1="120" x2="120" y2="160"/><line x1="175" y1="120" x2="50" y2="120"/><line x1="120" y1="160" x2="50" y2="120"/>
+    </g>
+    <text x="115" y="205" text-anchor="middle" font-size="14" fill="#53676d">最大团，大小 2k</text>
+    <text x="250" y="120" text-anchor="middle" font-size="22" fill="#53676d">→</text>
+    <g stroke="#d06d4d" stroke-width="2">
+      <circle cx="330" cy="70" r="26" fill="none"/><circle cx="410" cy="70" r="26" fill="none"/><circle cx="455" cy="125" r="26" fill="none"/>
+      <circle cx="330" cy="180" r="26" fill="none"/><circle cx="410" cy="180" r="26" fill="none"/><circle cx="455" cy="125" r="26" fill="none"/>
+    </g>
+    <text x="370" y="70" text-anchor="middle" font-size="14" fill="#7a3b26">房间 1</text>
+    <text x="370" y="180" text-anchor="middle" font-size="14" fill="#7a3b26">房间 2</text>
+    <text x="410" y="230" text-anchor="middle" font-size="14" fill="#53676d">两边最大团都 ≥ k，且 ≤ 2k−1</text>
+  </svg>
+  <figcaption>图 27.2　IMO 2007 P3 的目标：把大小为偶数 2k 的最大团均分到两个房间，使两边“最大团大小”相等。难点在于团外顶点与团内顶点的连边会干扰；证明靠对极图做构造性归纳。</figcaption>
+</figure>
 
 <p><strong>第二步：直觉方向。</strong>如果最大的团本身已经被分成两个部分了会怎样？一个自然的想法是：把大小为2k的最大团拆成两个大小为k的团，分别放在两个房间。但问题在于，这个最大团之外的顶点和团内顶点之间有边相连，这些边会影响其他团的大小。</p>
 
@@ -138,7 +208,7 @@ x 与 M 中的顶点之间有多少条边？
 可以完成整个证明。</code></pre>
 
 <div class="highlight">
-  <p><strong>思想的本质</strong>：这道题看起来是一个关于"分房间"的具体问题，但它的核心是一个抽象的图论极值原理——当最大团的大小为偶数时，存在一种对称的划分方式。这种"从最大结构出发进行归纳"的思路，在组合图论中被称为"Turán-type induction"，是处理极值图论问题的利器。你能在第16章中找到类似思想：组合极值问题往往从"极端对象"入手。</p>
+  <p><strong>思想的本质</strong>：这道题看起来是一个关于“分房间”的具体问题，但它的核心是一个抽象的图论极值原理——当最大团的大小为偶数时，存在一种对称的划分方式。这种“从最大结构出发做归纳”的思路，是处理极值图论问题的常用利器。你能在第 16 章中找到类似思想：组合极值问题往往从“极端对象”入手。</p>
 </div>
 
 <h2>27.3 IMO 2010 Problem 5：不变量与势函数</h2>
@@ -155,7 +225,7 @@ x 与 M 中的顶点之间有多少条边？
   <p>证明：经过有限次操作，可以使所有盒子变为空。</p>
 </div>
 
-<p>这道题是组合操作类问题的顶峰之作。它看似只是一个简单的硬币移动游戏，但背后隐藏着一个深刻的数论不变量。当年中国队在这道题上表现非常出色，4名选手全部拿到满分。</p>
+<p>这道题是组合操作类问题中的一道硬题。它看似只是一个简单的硬币移动游戏，但背后隐藏着一个需要仔细构造的模不变量。</p>
 
 <h3>思考路径还原</h3>
 
@@ -163,111 +233,56 @@ x 与 M 中的顶点之间有多少条边？
 
 <p>等一下——题目没有说硬币总数守恒。实际上，操作1是消耗1枚产生2枚，净增1枚。操作2是消耗1枚然后交换，净减1枚。所以硬币总数在变化，真正的不变量不是总数。</p>
 
-<p><strong>第二步：寻找不变量。</strong>操作1作用在j上，操作2作用在k上。让我们试试看能否找到某个加权和是不变的。用数学语言来表述这个过程：</p>
+<p><strong>第二步：寻找候选不变量。</strong>总硬币数每步都在变（操作 1 净 +1、操作 2 净 −1），所以它不是不变量。我们转而尝试“指数加权和”。设</p>
 
-<pre><code>用 (a₁, a₂, a₃, a₄, a₅, a₆) 表示各盒子中的硬币数。
-
-操作1（在Bj上）：aⱼ → aⱼ - 1, aⱼ₊₁ → aⱼ₊₁ + 2
-操作2（在Bk上）：aₖ → aₖ - 1, aₖ₊₁ ↔ aₖ₊₂
-
-目标：(1,1,1,1,1,1) → (0,0,0,0,0,0)
-
-观察：操作1改变 aₖ + 2aₖ₊₁ 吗？
-操作1在j处：aⱼ + 2aⱼ₊₁ → (aⱼ-1) + 2(aⱼ₊₁+2) = aⱼ + 2aⱼ₊₁ + 3
-不是在变化吗？
-
-试试别的组合：
-a₁ + 2a₂ + 4a₃ + 8a₄ + 16a₅ + 32a₆ 呢？
-操作1在Bj：aⱼ×2ʲ⁻¹ + aⱼ₊₁×2ʲ → (aⱼ-1)t + (aⱼ₊₁+2)(2t) = ...
-化简后：-t + 4t = 3t，发生变化。</code></pre>
-
-<p><strong>第三步：发现真正的结构。</strong>经过几次尝试，会发现2的幂次的加权和与操作2之间有关系。关键洞察是：考虑模3或某个特殊模数下的加权和。事实上，这个问题隐藏的不变量是 <strong>某个模3意义下的线性组合</strong>。</p>
-
-<p><strong>第四步：转机。</strong>让我跳过试错过程，直接展示最优雅的不变量：</p>
-
-<p>定义 S = a₁×1 + a₂×2 + a₃×4 + a₄×8 + a₅×16 + a₆×32（即2的幂次加权和）。</p>
-<p>操作1在Bⱼ：S → S - 2<sup>j-1</sup> + 2×2<sup>j</sup> = S - 2<sup>j-1</sup> + 2<sup>j+1</sup> = S + 3×2<sup>j-1</sup></p>
-<p>所以操作1使S增加3×2<sup>j-1</sup>，模3不变！</p>
-<p>操作2在Bₖ：交换两个相邻盒子的内容，S中对应的两部分的系数分别是2<sup>k</sup>和2<sup>k+1</sup>。交换后S的变化是？由于交换前后两个盒子内容互换，而2<sup>k</sup> + 2<sup>k+1</sup> = 3×2<sup>k</sup>，所以交换后S模3仍不变。</p>
-
-<p>更神奇的是，初始状态S = 1+2+4+8+16+32 = 63，目标状态S = 0。而63 ≡ 0 (mod 3)——所以模3不变量没有阻止我们！</p>
-
-<p><strong>第五步：构造操作序列。</strong>找到不变量只是第一步，我们还需要构造出实际操作序列使所有盒子变空。这需要利用操作2来"传递"硬币到后面的盒子，最终在B₆处用某种方式消耗掉。</p>
-
-<div class="tip">
-  <p><strong>不变量思维的启发</strong>：IMO 2010 Problem 5 告诉我们，复杂操作问题的核心往往是找到"正确"的加权和。2的幂次加权和模3不变——这个发现看似神奇，实际上源于一个系统性的方法：先列出一系列候选加权函数，然后检查它们在各种操作下的变化，从中筛选出保持不变的组合。当你面对操作类问题卡住时，试试"指数加权和"——很多时候它能揭示出隐藏的结构。</p>
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="指数加权和 V" style="overflow-x:auto;max-width:100%">
+<math display="block" aria-label="指数加权和 V 等于各盒硬币数乘以 2 的幂次之和">
+ <mrow><mi>V</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mn>6</mn></munderover><msub><mi>a</mi><mi>i</mi></msub><msup><mn>2</mn><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow>
+</math>
 </div>
 
-<h2>27.4 不同国家选手的不同思路</h2>
+<p><strong>第三步：逐个验证操作的影响。</strong>关键是每种操作都要逐一验算，不能想当然。</p>
 
-<p>IMO的独特魅力在于，来自不同国家的选手会带来截然不同的解题风格。同一个题目，俄罗斯选手可能用组合推理，美国选手可能用概率方法，而中国选手可能用代数转换。下面是一个有趣的对照：</p>
+<pre><code>操作1（在 Bj，1≤j≤5）：aⱼ → aⱼ−1，aⱼ₊₁ → aⱼ₊₁+2
+ΔV = −2^{j−1} + 2·2^{j} = −2^{j−1} + 2^{j+1} = 3·2^{j−1} ≡ 0 (mod 3)
+→ 操作 1 保持 V mod 3 不变。
+
+操作2（在 Bk，1≤k≤4）：aₖ → aₖ−1，并交换 aₖ₊₁、aₖ₊₂
+扣除取走的一枚：−2^{k−1}
+交换项：2^{k}·aₖ₊₂ + 2^{k+1}·aₖ₊₁ − 2^{k}·aₖ₊₁ − 2^{k+1}·aₖ₊₂
+       = 2^{k}(aₖ₊₁−aₖ₊₂)
+所以 ΔV = 2^{k−1}·(2(aₖ₊₁−aₖ₊₂) − 1)。</code></pre>
+
+<p><strong>第四步：诚实的结论。</strong>操作 1 确实保持 V mod 3 不变，但 ΔV 一般并不被 3 整除（例如 aₖ₊₁−aₖ₊₂ = 2 时）。所以 <strong>V mod 3 并不是整个操作下的不变量</strong>。这说明：只挑一个“看起来漂亮”的加权和还不够，必须对<strong>每一种操作</strong>都验证。IMO 2010 Problem 5 的完整解答需要比这更精细的势函数分析，超出本课程篇幅；这里刻意不给出未经验证的最终判定，而把“如何系统性地搜索候选不变量、如何淘汰错误候选”演示清楚。</p>
+
+<div class="tip">
+  <p><strong>方法启示</strong>：复杂操作题的核心是找到“正确”的加权和，而正确与否只能靠<strong>逐一验算</strong>。一个可复用的搜索模板是：先猜指数型加权和 W = Σ aᵢ q^{i−1}，要求操作 1 的改变量 ≡ 0 (mod m)——这给出 2q ≡ 1 (mod m)。本题取 m=3、q=2 恰好满足操作 1，但被操作 2 淘汰，所以需要继续寻找更精细的量。这种“猜候选 → 逐操作验证 → 淘汰 → 再猜”的过程，正是操作题最真实的思考状态。</p>
+</div>
+
+<h2>27.4 一题多解：方法的多样性</h2>
+
+<p>上面三道题之所以被称为经典，一个重要原因是它们都有<strong>多种风格迥异的解法</strong>。下面按“方法类型”（而非选手国籍）对照几类常见思路（<strong>教学示意，不代表任何真实选手统计数据</strong>）：</p>
 
 <table>
-  <tr>
-    <th>题号</th>
-    <th>中国选手的常见解法</th>
-    <th>欧美选手的常见解法</th>
-    <th>俄罗斯选手的常见解法</th>
-  </tr>
-  <tr>
-    <td>IMO 1998 P2</td>
-    <td>双计数+平均值不等式</td>
-    <td>概率方法+期望</td>
-    <td>离散Fourier分析</td>
-  </tr>
-  <tr>
-    <td>IMO 2007 P3</td>
-    <td>构造性归纳+极端原理</td>
-    <td>图论+最大团分解</td>
-    <td>临界图方法</td>
-  </tr>
-  <tr>
-    <td>IMO 2010 P5</td>
-    <td>不变量（2的幂加权和）</td>
-    <td>势函数+最速下降法</td>
-    <td>模分析+数论方法</td>
-  </tr>
+  <tr><th>题</th><th>思路一</th><th>思路二</th><th>思路三</th></tr>
+  <tr><td>IMO 1998 P2</td><td>双计数 + 均值不等式</td><td>概率方法 + 期望</td><td>线性代数（关联矩阵的秩）</td></tr>
+  <tr><td>IMO 2007 P3</td><td>构造性归纳 + 极端原理</td><td>图论 + 最大团分解</td><td>线性代数 / 谱方法</td></tr>
+  <tr><td>IMO 2010 P5</td><td>不变量搜索</td><td>势函数分析</td><td>模分析与数论</td></tr>
 </table>
 
 <div class="highlight">
-  <p><strong>核心启示</strong>：没有"唯一正确"的解法。竞赛中最强的选手往往是那些能同时掌握多种方法、并在考场上灵活选择的人。中国选手的特点是在代数变形和不等式放缩上极其扎实，但在概率方法和图论技巧上有时不如欧美选手灵活。如果你有志于冲击IMO，建议有意识地弥补"弱势方法"——因为一个全面发展的选手才是最可怕的。</p>
+  <p><strong>核心启示</strong>：没有“唯一正确”的解法。同一道题，不同的人可能用完全不同的工具抵达终点。真正强的地方不在一门技巧，而在于<strong>能同时掌握多种方法、并在考场上灵活选择</strong>。</p>
 </div>
 
 <h2>27.5 IMO组合题的演变趋势</h2>
 
-<p>回顾近30年IMO的题目，组合题的风格经历了显著的演变：</p>
+<p>从长期看，IMO 组合题的重心发生过明显转移（以下为<strong>教学归纳，非严格统计</strong>，故不罗列具体年份）：</p>
 
 <table>
-  <tr>
-    <th>年代</th>
-    <th>典型题目风格</th>
-    <th>代表年份</th>
-    <th>核心方法</th>
-  </tr>
-  <tr>
-    <td>1990s</td>
-    <td>经典计数·构造型</td>
-    <td>1994, 1996, 1998</td>
-    <td>双计数、归纳法</td>
-  </tr>
-  <tr>
-    <td>2000s</td>
-    <td>图论·极值·操作</td>
-    <td>2003, 2005, 2007</td>
-    <td>图论、不变量</td>
-  </tr>
-  <tr>
-    <td>2010s</td>
-    <td>多元·抽象结构</td>
-    <td>2011, 2014, 2017</td>
-    <td>代数组台、概率</td>
-  </tr>
-  <tr>
-    <td>2020s</td>
-    <td>交互·算法思维</td>
-    <td>2021, 2022, 2024</td>
-    <td>算法构造、势函数</td>
-  </tr>
+  <tr><th>时期</th><th>典型风格</th><th>核心方法</th></tr>
+  <tr><td>较早时期</td><td>经典计数、构造型</td><td>双计数、归纳法</td></tr>
+  <tr><td>中期</td><td>图论、极值、操作</td><td>图论、不变量</td></tr>
+  <tr><td>近十余年</td><td>抽象结构、多元融合</td><td>代数、概率、算法构造</td></tr>
 </table>
 
 <p><strong>几个明显的变化趋势：</strong></p>
@@ -282,7 +297,7 @@ a₁ + 2a₂ + 4a₃ + 8a₄ + 16a₅ + 32a₆ 呢？
 
 <p>很多同学好奇："IMO和联赛的差距有多大？"我用一个量化的方式来说明：</p>
 
-<p><strong>知识层面：</strong>联赛二试覆盖了IMO约70%的组合知识。换句话说，联赛学到的东西在IMO中大部分都能用得上。但IMO会有一些联赛中极少出现的"偏门"话题，比如概率方法、组合数论、超图等。</p>
+<p><strong>知识层面：</strong>联赛二试所练的组合工具，在 IMO 中大部分都能用得上。但 IMO 会有一些联赛中较少出现的“偏门”话题，比如概率方法、组合数论、超图等（此处为教学经验描述，非精确比例）。</p>
 
 <p><strong>思维层面：</strong>联赛的组合题通常"有迹可循"——你能从题目中的关键词判断出要用什么方法。而IMO的组合题往往<strong>没有明显的标志</strong>，你需要自己在黑暗中摸索。一个典型的例子是IMO 2019 Problem 4（组合题），它看起来像一个简单的数论问题，但实际上需要精妙的组合论证。</p>
 
@@ -305,8 +320,8 @@ a₁ + 2a₂ + 4a₃ + 8a₄ + 16a₅ + 32a₆ 呢？
             <a href="index.html">📖 返回目录</a>
             <a href="28.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
