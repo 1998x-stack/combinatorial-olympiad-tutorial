@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第15章 概率方法</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第十五章：概率方法</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第15章：概率方法</h1>
+            <p class="dek">用随机性证明确定性：把“存在”转述成“随机抽到它的概率大于零”。从三步框架、期望线性性与并集界（union bound）出发，给出 Ramsey 下界、大围长高色数图与随机竞赛图，并展示 Alteration 方法。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。这一章我们要接触一个在组合数学中既"离经叛道"又极其强大的工具——<strong>概率方法</strong>。</p>
 
@@ -65,7 +70,44 @@
   <li><strong>得出结论</strong>：如果 P &gt; 0，则满足性质的对象一定存在。</li>
 </ol>
 
-<p>这个框架简单得令人难以置信——但它的威力惊人。关键就在于第2步中的"所需性质"如何定义。大多数情况下，我们定义的是某个"坏事件"——只要这个坏事件不发生的概率大于零，好的对象就存在。</p>
+<p>这个框架简单得令人难以置信——但它的威力惊人。关键就在于第2步中的"所需性质"如何定义。大多数情况下，我们定义的是某个"坏事件"——只要这个坏事件不发生的概率大于零，好的对象就存在。最常用的控制工具是<strong>并集界</strong>（union bound）：</p>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="并集界">
+<math display="block" aria-label="若千个坏事件并集的概率不超过它们概率之和">
+ <mrow>
+  <mi>P</mi><mo>(</mo><msub><mi>A</mi><mn>1</mn></msub><mo>∪</mo><mo>⋯</mo><mo>∪</mo><msub><mi>A</mi><mi>m</mi></msub><mo>)</mo>
+  <mo>≤</mo>
+  <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover>
+  <mi>P</mi><mo>(</mo><msub><mi>A</mi><mi>i</mi></msub><mo>)</mo>
+ </mrow>
+</math>
+</div>
+
+<p>只要所有“坏事件”的概率之和小于 1，就必然存在一个样本点不在任何坏事件中——即一个满足全部要求的好对象。</p>
+
+<figure id="fig-pmf">
+  <svg role="img" aria-labelledby="fig-pm-title fig-pm-desc" viewBox="0 0 660 180" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-pm-title">概率方法的三步框架</title>
+    <desc id="fig-pm-desc">第一步在候选对象上定义概率分布，第二步计算坏事件的总概率，第三步若总概率小于就得出好对象存在。</desc>
+    <g stroke="#147f80" stroke-width="2" marker-end="url(#ar-pm)">
+      <line x1="206" y1="90" x2="238" y2="90"/>
+      <line x1="426" y1="90" x2="458" y2="90"/>
+    </g>
+    <g>
+      <rect x="30" y="55" width="176" height="70" rx="12" fill="#eef4f2" stroke="#147f80" stroke-width="2"/>
+      <rect x="240" y="55" width="186" height="70" rx="12" fill="#fbf6e2" stroke="#7461ba" stroke-width="2"/>
+      <rect x="460" y="55" width="176" height="70" rx="12" fill="#e6f4f4" stroke="#d06d4d" stroke-width="2"/>
+    </g>
+    <g font-size="13" text-anchor="middle" fill="#123b3c">
+      <text x="118" y="86">① 在候选对象上</text><text x="118" y="106">定义概率分布</text>
+      <text x="333" y="86">② 计算“坏事件”</text><text x="333" y="106">总概率 P_bad</text>
+      <text x="548" y="86">③ P_bad &lt; 1</text><text x="548" y="106">⇒ 好对象存在</text>
+    </g>
+    <text x="330" y="34" text-anchor="middle" font-size="15" fill="#123b3c">概率方法：用随机性证明确定性</text>
+    <defs><marker id="ar-pm" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#147f80"/></marker></defs>
+  </svg>
+  <figcaption>图 15.1　概率方法的三步框架：定义概率空间 → 控制所有“坏事件”的总概率 → 总概率小于 1 则存在好对象。这一步到下一步之间不涉及任何具体构造。</figcaption>
+</figure>
 
 <div class="highlight">
   <p><strong>核心洞察</strong>：概率方法="打破确定性思维"——你不需要亲眼看到那个对象，只需要知道它理论上存在就够了。这就像警察不需要亲眼看到凶手，只要证据链证明凶手存在的概率为100%，法官就会定罪。概率方法给组合数学带来的，正是这种"证据链式的存在性证明"。</p>
@@ -90,13 +132,22 @@
 当 C(n,k) × 2^{1-C(k,2)} < 1 时，存在一种染色不含单色 K_k。
 即 R(k,k) > n 当 C(n,k) × 2^{C(k,2)-1} < 1。</code></pre>
 
-<p>这个推导告诉我们：R(k,k) 至少是指数增长的。更精确地说，R(k,k) &gt; k × 2<sup>k/2</sup> / e × √2。这个下界迄今为止仍然没有被显式构造超越——因为所有已知的显式构造给出的下界都远小于这个值。这就是概率方法的震撼之处：<strong>构造做不到的事，概率方法做到了</strong>。</p>
+<p>这个推导告诉我们：R(k,k) 至少是指数增长的。更精确地，概率方法给出
+R(k,k) ≥ (1+o(1)) · (k / (e√2)) · 2^(k/2)。值得注意的是，纯显式构造给出的下界至今仍在常数因子上弱于这个概率下界。这就是概率方法的震撼之处：<strong>构造做不到的事，概率方法做到了</strong>。</p>
 
 <h2>15.2 期望的线性性</h2>
 
 <p>期望的线性性是概率方法中最灵活的工具之一。它说的是：对于任意随机变量 X<sub>1</sub>, X<sub>2</sub>, ..., X<sub>n</sub>（不论它们是否独立），都有：</p>
 
-<pre><code>E[X₁ + X₂ + ... + Xₙ] = E[X₁] + E[X₂] + ... + E[Xₙ]</code></pre>
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="期望的线性性">
+<math display="block" aria-label="X1 到 Xn 之和的期望等于各期望之和">
+ <mrow>
+  <mi>E</mi><mo>[</mo><msub><mi>X</mi><mn>1</mn></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>X</mi><mi>n</mi></msub><mo>]</mo>
+  <mo>=</mo>
+  <mi>E</mi><mo>[</mo><msub><mi>X</mi><mn>1</mn></msub><mo>]</mo><mo>+</mo><mo>⋯</mo><mo>+</mo><mi>E</mi><mo>[</mo><msub><mi>X</mi><mi>n</mi></msub><mo>]</mo>
+ </mrow>
+</math>
+</div>
 
 <p>这个性质的重要性在于：<strong>我们不关心随机变量之间的依赖关系</strong>。这在组合问题中特别有用，因为我们可以把复杂的全局量分解为简单的指示变量之和。</p>
 
@@ -119,6 +170,26 @@
 <p>证明是平凡的：如果所有样本点的 X 都小于 μ，那期望不可能等于 μ。反之亦然。</p>
 
 <p>这个推论在竞赛中非常实用——它告诉我们，存在一个"不小于平均值"的对象，不需要任何额外的条件。</p>
+
+<figure id="fig-union">
+  <svg role="img" aria-labelledby="fig-un-title fig-un-desc" viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-un-title">并集界随 n 下降</title>
+    <desc id="fig-un-desc">曲线 f(n) 等于 n 乘以 e 的负 n 减一除以十六次方；当 n 约为七十时曲线降到虚线 y 等于一以下，表明存在满足条件的竞赛图。</desc>
+    <line x1="70" y1="250" x2="610" y2="250" stroke="#8a9a98" stroke-width="2"/>
+    <line x1="70" y1="40" x2="70" y2="250" stroke="#8a9a98" stroke-width="2"/>
+    <line x1="70" y1="220" x2="610" y2="220" stroke="#d06d4d" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="600" y="214" text-anchor="end" font-size="12" fill="#d06d4d">y = 1</text>
+    <polyline points="70,250 156,62 243,112 329,174 416,212 448,222 502,233 588,242" fill="none" stroke="#147f80" stroke-width="2.5"/>
+    <g fill="#147f80">
+      <circle cx="156" cy="62" r="4"/><circle cx="243" cy="112" r="4"/><circle cx="329" cy="174" r="4"/><circle cx="416" cy="212" r="4"/><circle cx="448" cy="222" r="5"/><circle cx="502" cy="233" r="4"/><circle cx="588" cy="242" r="4"/>
+    </g>
+    <g font-size="12" fill="#123b3c" text-anchor="middle">
+      <text x="70" y="270">0</text><text x="243" y="270">32</text><text x="416" y="270">64</text><text x="588" y="270">96</text>
+    </g>
+    <text x="340" y="26" text-anchor="middle" font-size="14" fill="#123b3c">并集界：n · e^(−(n−1)/16)</text>
+  </svg>
+  <figcaption>图 15.2　随机竞赛图（例2）中的并集界：坏事件总概率不超过 n·e^(−(n−1)/16)。曲线在 n ≈ 70 处降到 1 以下（n=70 时约 0.938），于是存在一个不存在“出度过小”顶点的竞赛图。数值为按 Chernoff 界算出的教学示例，非精确概率。</figcaption>
+</figure>
 
 <h2>15.3 随机图 G(n,p) 模型</h2>
 
@@ -161,22 +232,22 @@
 
 <h3>15.4.1 证明思路</h3>
 
-<pre><code>在 G(n,p) 中选取适当的 p，使得：
-(1) 图中长度为 ≤ L 的圈的数量很少——可以删除每条圈上的一个顶点来消除所有短圈
-(2) 删除这些顶点后，剩下的图色数仍然很高
+<pre><code>核心是两条随机图 G(n,p) 的标准估计（渐近意义下）：
+(A) 长度为 ≤ L 的圈的期望数目 → 0，只要 n·p 增长得足够慢；
+(B) 最大独立集 α(G) ≈ 2 ln n / p（当 np 较大时）。
 
-具体步骤：
-1. 选取 p = n^(1/(L+1)-1)，此时 G(n,p) 中长度 ≤ L 的圈的期望数量是 o(n)
-   （即增长慢于 n，意味着大部分顶点不在短圈上）
+取 p = n^(θ−1)，其中 0 < θ < 1/L：
 
-2. 从每个长度 ≤ L 的圈上删除一个顶点，得到子图 G'
-   - 删除的顶点数 ≤ 短圈的数量 ≤ n/2（依概率）
-   - G' 的围长 > L
+• 由 (A)：长度 ≤ L 的圈的期望数目 ≤ Σ_{i=3}^{L} (n p)^i / (2i) = O(n^θL) → 0
+  （因为 θL < 1），故围长 > L 依概率成立；
+• 由 (B)：α/n ≈ 2 n^(−θ) ln n → 0，
+  故色数 χ(G) ≥ n/α ≈ n^θ / (2 ln n) → ∞。
 
-3. G' 的色数：利用 G(n,p) 中独立集大小的上界
-   - G(n,p) 中最大独立集的大小 ≈ 2n ln(1/(1-p)) / p ≈ O(n ln n / p)
-   - 因此 G 的色数 ≥ n / α(G) ≈ Ω(p / ln n)
-   - 删除 n/2 个顶点后，G' 的色数仍然 ≥ Ω(p / ln n)</code></pre>
+于是对任意给定的 L 和 K，只要 n 足够大，
+就存在一个围长 > L、色数 > K 的图。证毕。
+
+（若希望“删点”后仍保持高色数，可在同一骨架上用 Alteration：
+  先删掉落在短圈上的顶点，再验证剩余图的色数。）</code></pre>
 
 <p>这个结论的意义在于：<strong>围长和色数可以同时任意大</strong>。这彻底改变了图论学家对图的结构认知。而最关键的是——没有人能写出一个具体的大围长高色数图的构造！我们只知道它存在，但无法"画出"来。这是概率方法最极致的表现。</p>
 
@@ -231,20 +302,43 @@ Algorithm:
 <p>让我们看一个联赛难度的实际问题。这个例子综合了期望线性性和概率方法的精髓。</p>
 
 <div class="highlight">
-  <p><strong>例2（全国高中数学联赛改编）</strong>：给定 n 个点，任意两点之间连一条红色或蓝色的边。证明：存在一个顶点，它至少有 n/√2 个邻居的颜色与它到某个特定顶点的边颜色相同。</p>
+  <p><strong>例2（随机竞赛图 · 并集界的典型用法）</strong>：证明：对充分大的 n，存在一个 n 个顶点的竞赛图（任意两点间恰有一条有向边），使得每个顶点的出度都至少为 (n−1)/4。</p>
 
-  <p><strong>分析</strong>：这个题目的表述比较绕。我们来翻译一下：对任意顶点 v，定义它的得分 f(v) = 与 v 相连且颜色与边 (v, uᵥ) 相同的顶点数（uᵥ 是某个固定的顶点）。要证明存在一个 v 使得 f(v) ≥ n/√2。</p>
+  <p><strong>证明</strong>：随机地给每条边定向（两个方向各以 1/2 概率）。固定一个顶点 v，它的出度 d(v) ~ Bin(n−1, 1/2)，期望 μ = (n−1)/2。把 d ≤ (n−1)/4 看作 μ 的 (1−δ) 倍（δ = 1/2），由 Chernoff 界：</p>
 
-  <p><strong>概率方法证明</strong>：随机均匀地选择一个顶点 u 作为"锚点"。对每个其他顶点 v，考虑它到 u 的边的颜色。令 Xᵥ 为指示变量：如果 v 到 u 的边为红色且 v 到 w 的边也为红色，或两者均为蓝色，则 Xᵥ = 1；否则 Xᵥ = 0。</p>
+  <pre><code>P( d(v) ≤ (n−1)/4 ) ≤ e^(−μδ²/2) = e^(−(n−1)/16)</code></pre>
 
-  <p>对固定的 u 和 v，P(Xᵥ = 1) = P(两条边同色) = 1/2。因此 E[Σ Xᵥ] = (n-1) × 1/2。所以存在一个 u 使得 Σ Xᵥ ≥ (n-1)/2。</p>
+  <p>令坏事件 Aᵥ = { d(v) ≤ (n−1)/4 }。由并集界，至少有一个顶点出度过小的概率不超过 n·e^(−(n−1)/16)。当 n 充分大时该值 &lt; 1（例如 n = 80 时约 0.574，参见图 15.2），于是存在一次定向使所有 Aᵥ 都不发生——即存在一个竞赛图，所有顶点出度 ≥ (n−1)/4。证毕。</p>
 
-  <p>但这只是给出 n/2 的下界，不是 n/√2。怎么改进？换个思路：对每个顶点 v，考虑与 v 相连的所有边。如果 v 的红色边数 ≥ 蓝色边数，则定义 v 为"红主导"，取 u 为 v 的一个红色邻居；否则定义 v 为"蓝主导"，取 u 为 v 的一个蓝色邻居。这样构造出的 (u,v) 对满足性质。然后证明这种 (u,v) 的总数 ≥ n²/2，因此存在至少一个顶点 v 出现在至少 n/2 个这样的对中——但这个下界仍然不是 n/√2。</p>
-
-  <p><strong>标准答案的思路</strong>：对每个顶点 v，它的红色度数为 dʀ(v)，蓝色度数为 dʙ(v)，dʀ(v) + dʙ(v) = n-1。可以证明 max(dʀ(v), dʙ(v)) ≥ (n-1)/2。随机选一个顶点作为 u，对每个固定 u，考虑所有 v 的情况——期望值为 (n-1)/2 + 某个额外的量。最终可以得到 n/√2 的下界。详细推导这里不再展开。</p>
-
-  <p>这个问题的关键在于它需要你打破常规思路——不是一次随机取一个对象，而是多次随机并取最大值。这种"多次尝试"的技巧在联赛概率方法题中非常常见。</p>
+  <p>这个例子集中体现了概率方法的两个要点：<strong>一是把“存在一个满足所有要求的对象”化为“所有坏事件的并概率 &lt; 1”；二是用并集界把“同时控制 n 个顶点”拆成“分别控制每一个”。</strong>注意：并集界只给出“n 充分大时”的存在性，小的 n 需要单独检查——这是用渐近不等式证明存在性时的通例。</p>
 </div>
+
+<div class="controls" role="group" aria-label="并集界计算器">
+  <label>n = <input id="ub-n" type="number" min="10" max="200" value="80" style="width:5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-ub="40" aria-pressed="false">n = 40</button>
+  <button type="button" data-ub="80" aria-pressed="true">n = 80</button>
+  <button type="button" data-ub="120" aria-pressed="false">n = 120</button>
+</div>
+<p id="ub-out" aria-live="polite"></p>
+<script>
+(function(){
+  var ni=document.getElementById('ub-n'), out=document.getElementById('ub-out');
+  function upd(){
+    var n=Math.max(10,Math.min(200,Math.round(+ni.value||10)));
+    var f=n*Math.exp(-(n-1)/16);
+    out.textContent='n='+n+'：并集界 n·e^(−(n−1)/16) = '+f.toFixed(3)+(f<1?' < 1，因此存在所有出度 ≥ (n−1)/4 的竞赛图。':' ≥ 1，并集界尚不能保证存在，需要更大的 n。');
+  }
+  ni.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-ub]').forEach(function(b){
+    b.addEventListener('click',function(){
+      ni.value=b.getAttribute('data-ub');
+      document.querySelectorAll('.controls button[data-ub]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
 
 <h2>15.7 本章小结与过渡</h2>
 
@@ -257,8 +351,8 @@ Algorithm:
             <a href="index.html">📖 返回目录</a>
             <a href="16.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
