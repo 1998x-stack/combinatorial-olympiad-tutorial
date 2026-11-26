@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第22章 染色问题</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第二十二章：染色问题</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第22章：染色问题</h1>
+            <p class="dek">给对象上色，为的是制造一个能被计算的不变量：当覆盖或操作破坏某种颜色守恒时，矛盾就出现了。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。欢迎来到我们"专题深入"部分的最后一章。到今天为止，我们已经学了计数、递推、抽屉原理、母函数、图论、Ramsey理论。现在我们要学一个看似简单、但在竞赛中极其强大的技巧——<strong>染色法</strong>。</p>
 
@@ -59,11 +64,36 @@
 
 <p>这是最基础的染色方式——像国际象棋棋盘一样，按"黑-白-黑-白"交替染色。通常，相邻的格子颜色不同。</p>
 
-<p><strong>例1</strong>：一个8×8棋盘被剪掉对角上的两个格子（一黑一白），是否能用31个2×1的多米诺骨牌完全覆盖？</p>
+<p><strong>例1</strong>：一个 8×8 棋盘被剪掉<strong>同一条对角线</strong>上的两个角格（比如左上角与右下角），是否能用 31 个 2×1 的多米诺骨牌完全覆盖？</p>
 
-<p>分析：8×8棋盘有32黑和32白。每个多米诺骨牌恰好覆盖一黑一白。如果剪掉一黑一白，剩下的棋盘有31黑31白。表面上看，31个多米诺覆盖31黑31白——数量和颜色都匹配，似乎可行？</p>
+<p>分析：8×8 棋盘有 32 黑和 32 白。每个多米诺骨牌恰好覆盖一黑一白。假设剪掉的是异色格，剩下的棋盘有 31 黑 31 白——数量和颜色都匹配，似乎可行？</p>
 
-<p>但问题的关键在于：剪掉的如果是<strong>对角</strong>上的两个格子——比如左上角和右下角——这两个格子<strong>同色</strong>！因为左上角(1,1)为黑色，右下角(8,8)坐标和为16也是黑色。剪掉两个同色格，剩下的是32黑30白（或30黑32白）。每个多米诺覆盖一黑一白，所以可覆盖的黑色数必须等于白色数——但现在不平衡了，所以不可能完全覆盖。</p>
+<p>但问题的关键在于：<strong>同一条对角线</strong>上的两个角格<strong>同色</strong>！因为左上角 (1,1) 坐标和为 2 为黑，右下角 (8,8) 坐标和为 16 也是黑。剪掉两个同色格，剩下的是 32 黑 30 白（或 30 黑 32 白）。每个多米诺覆盖一黑一白，所以可覆盖的黑色数必须等于白色数——但计数不平衡，故不可能完全覆盖。</p>
+
+<figure id="fig-chess">
+  <svg role="img" aria-labelledby="fig-chess-title fig-chess-desc" viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-chess-title">8×8 棋盘剪去对角两格后的黑白计数</title>
+    <desc id="fig-chess-desc">标准棋盘有 32 黑 32 白；同一条对角线上的两个角格同色，剪去后剩 32 黑 30 白，黑白不相等，因此无法用 31 块覆盖一黑一白的多米诺完全覆盖。</desc>
+    <defs>
+      <pattern id="chk22" width="80" height="80" patternUnits="userSpaceOnUse">
+        <rect width="80" height="80" fill="#f4f1ea"/>
+        <rect width="40" height="40" fill="#203035"/>
+        <rect x="40" y="40" width="40" height="40" fill="#203035"/>
+      </pattern>
+    </defs>
+    <rect x="40" y="40" width="320" height="320" fill="url(#chk22)" stroke="#203035" stroke-width="2"/>
+    <g fill="none" stroke="#d06d4d" stroke-width="4">
+      <rect x="40" y="40" width="40" height="40"/>
+      <rect x="320" y="320" width="40" height="40"/>
+    </g>
+    <g stroke="#d06d4d" stroke-width="4">
+      <line x1="42" y1="42" x2="78" y2="78"/><line x1="78" y1="42" x2="42" y2="78"/>
+      <line x1="322" y1="322" x2="358" y2="358"/><line x1="358" y1="322" x2="322" y2="358"/>
+    </g>
+    <text x="200" y="392" text-anchor="middle" font-size="15" fill="#53676d">剪去的两角同色 → 32 黑 30 白</text>
+  </svg>
+  <figcaption>图 22.1　8×8 棋盘本有 32 黑 32 白；同色角各剪一格后黑白不再相等，而每块多米诺恰好覆盖一黑一白，颜色守恒立刻给出矛盾。</figcaption>
+</figure>
 
 <div class="highlight">
   <p><strong>关键点</strong>：棋盘染色把"覆盖问题"转化为"颜色数量是否相等"的问题。如果两种颜色的格子数不同，用固定覆盖一黑一白的骨牌就不可能完全覆盖。这是染色法最简单也最有效的应用。</p>
@@ -73,9 +103,41 @@
 
 <p>当2-染色（黑白两色）不够用时，可以考虑模k染色。比如给每个格子赋予它在某种模数下的余数作为颜色。</p>
 
-<p><strong>例2</strong>：一个n×n棋盘，能否用1×3的L型三格骨牌（形如"↴"）完全覆盖？</p>
+<p><strong>例2</strong>：一个 n×n 棋盘，能否用 1×3 的直三格骨牌（三连块）完全覆盖？</p>
 
-<p>分析：对n×n棋盘按(i + 2j) mod 3进行染色。每个1×3的L型骨牌在不同方向上覆盖的三个格子，其(i+2j) mod 3的值分别是0、1、2各一个（经过验证）。因此，每种颜色的格子数必须相等，棋盘才能被覆盖。这就要求n²能被3整除，即n是3的倍数。可以证明，当n是3的倍数时确实可以覆盖。</p>
+<p>分析：对 n×n 棋盘按 (i + 2j) mod 3 染色（i 为行、j 为列）。一块直三格骨牌无论横放还是竖放，覆盖的三个格子取值恰好是 0、1、2 各一个：横放时 j 递增 1，颜色每次加 2（即模 3 下为 0→2→1）；竖放时 i 递增 1，颜色每次加 1。因此若棋盘能被完全覆盖，三种颜色的格子数必须相等，这就要求 n² 能被 3 整除。由于 3 是质数，这等价于 <strong>n 是 3 的倍数</strong>；而当 3 | n 时，把棋盘切成 3×1 的长条即可完成覆盖。</p>
+
+<figure id="fig-mod3">
+  <svg role="img" aria-labelledby="fig-mod3-title fig-mod3-desc" viewBox="0 0 340 340" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-mod3-title">按 (i+2j) mod 3 的三色周期染色</title>
+    <desc id="fig-mod3-desc">把 3×3 的格子按 (i+2j) 模 3 的余数染成三种颜色，每种颜色各 3 格；一块直三格骨牌（高亮区）恰好覆盖三种颜色各一个。</desc>
+    <rect x="40" y="40" width="240" height="240" fill="none" stroke="#203035" stroke-width="2"/>
+    <g font-size="22" text-anchor="middle" dominant-baseline="central">
+      <g stroke="#203035" stroke-width="1">
+        <line x1="120" y1="40" x2="120" y2="280"/><line x1="200" y1="40" x2="200" y2="280"/>
+        <line x1="40" y1="120" x2="280" y2="120"/><line x1="40" y1="200" x2="280" y2="200"/>
+      </g>
+      <g fill="#f4f1ea">
+        <rect x="40" y="40" width="80" height="80"/><rect x="200" y="40" width="80" height="80"/>
+        <rect x="120" y="120" width="80" height="80"/>
+      </g>
+      <g fill="#8fbfb4">
+        <rect x="120" y="40" width="80" height="80"/><rect x="40" y="120" width="80" height="80"/><rect x="200" y="200" width="80" height="80"/>
+      </g>
+      <g fill="#d9a08a">
+        <rect x="200" y="120" width="80" height="80"/><rect x="40" y="200" width="80" height="80"/><rect x="120" y="200" width="80" height="80"/>
+      </g>
+      <g fill="#203035">
+        <text x="80" y="80">0</text><text x="160" y="80">2</text><text x="240" y="80">1</text>
+        <text x="80" y="160">1</text><text x="160" y="160">0</text><text x="240" y="160">2</text>
+        <text x="80" y="240">2</text><text x="160" y="240">1</text><text x="240" y="240">0</text>
+      </g>
+    </g>
+    <rect x="40" y="40" width="80" height="240" fill="none" stroke="#d06d4d" stroke-width="4"/>
+    <text x="170" y="320" text-anchor="middle" font-size="14" fill="#53676d">高亮列 0→2→1：直三格骨牌每块含三色各一</text>
+  </svg>
+  <figcaption>图 22.2　按 (i+2j) mod 3 的周期染色：9 个格子均分三色；一块直三格骨牌（红框）无论横竖都恰好覆盖 0、1、2 各一格，故完全覆盖要求 n² ≡ 0 (mod 3)。</figcaption>
+</figure>
 
 <h3>22.1.3 按坐标和染色</h3>
 
@@ -102,6 +164,33 @@
   <p><strong>定理 22.1（染色不变量的基本原理）</strong></p>
   <p>给每个对象赋予一个数值（"颜色值"），使得每次操作不改变所有对象数值之和的某种模性质。如果初始状态和目标状态的数值之和不匹配，则不可能通过操作完成转换。</p>
 </div>
+
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="染色不变量：带权颜色和">
+<math display="block" aria-label="染色不变量：颜色值 c(i,j) 与权重 w(i,j) 的带权和在每次操作下保持模 p 不变">
+ <mrow><mi>S</mi><mo>=</mo><munder><mo>∑</mo><mrow><mo>(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>)</mo></mrow></munder><mi>c</mi><mo>(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>)</mo><mo>·</mo><mi>w</mi><mo>(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo>)</mo><mspace width="1em"/><mo>(</mo><mi>mod</mi><mspace width="0.3em"/><mi>p</mi><mo>)</mo></mrow>
+</math>
+</div>
+
+<p>式中 c(i,j) 是格子 (i,j) 的颜色值（如白=0、黑=1），w(i,j) 是人为选定的权重。只要每次操作对 S 的影响恒为 0（模 p），S 就是操作下的不变量。</p>
+
+<div class="controls" role="group" aria-label="剪角棋盘黑白计数">
+  <button type="button" data-i="0" aria-pressed="true">完整 8×8</button>
+  <button type="button" data-i="1" aria-pressed="false">剪同色两角</button>
+  <button type="button" data-i="2" aria-pressed="false">剪异色两角</button>
+</div>
+<p id="chess-out" aria-live="polite">完整棋盘：黑 32 格、白 32 格，黑白相等。</p>
+<script>
+(function(){
+  var out=document.getElementById('chess-out');
+  var msgs=['完整棋盘：黑 32 格、白 32 格，黑白相等。','剪去同色两角：黑 32、白 30（或反之），黑白不相等，而每块多米诺恒覆盖一黑一白，颜色守恒直接给出矛盾。','剪去异色两角：黑 31、白 31，颜色计数匹配。注意计数相等只是铺满的必要条件，并非充分条件。'];
+  document.querySelectorAll('.controls button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.controls button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      out.textContent=msgs[+b.getAttribute('data-i')];
+    });
+  });
+})();
+</script>
 
 <h3>22.2.1 经典案例：15拼图</h3>
 
@@ -130,9 +219,7 @@ w(i,j) = α^i · β^j
 
 <p>更具体地说：考虑模 2。每个操作翻转一个子正方形内的所有格子——等价于每个格子的颜色值（白=0,黑=1）加上该正方形内的"特征函数"模2。关键是怎么判断这个操作是否可能实现目标状态。</p>
 
-<p>更具体地说：考虑模 2。每个操作翻转一个子正方形内的所有格子——等价于每个格子的颜色值（白=0,黑=1）加上该正方形内的"特征函数"模2。关键是怎么判断这个操作是否可能实现目标状态。</p>
-
-<p>事实上，这个问题的完整解法需要用到多项式理论和代数方法——它比表面看起来要深刻得多。最终结论是：<strong>当且仅当 r 和 s 都是奇数时，目标状态才可能达到</strong>。</p>
+<p>事实上，这个问题的完整解法需要用到多项式理论和代数方法——它比表面看起来要深刻得多。最终结论是：<strong>当且仅当 r 和 s 都是奇数时，目标状态才可能达到</strong>（此处为教学简化，只陈述结论并给出不变量思想的轮廓，完整代数证明从略）。</p>
 
 <p>这个问题的染色不变量构造非常巧妙：取一个足够大的质数 p > r,s，在有限域 F<sub>p</sub> 上考虑多项式 P(x,y) = (1+x+...+x<sup>r-1</sup>)(1+y+...+y<sup>r-1</sup>) 和 Q(x,y)。最终通过比较多项式系数来得到结论。</p>
 
@@ -219,8 +306,8 @@ w(i,j) = α^i · β^j
             <a href="index.html">📖 返回目录</a>
             <a href="23.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
