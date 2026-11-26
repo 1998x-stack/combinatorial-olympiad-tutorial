@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第14章 数学归纳法与加强命题</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第十四章：数学归纳法与加强命题</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第14章：数学归纳法与加强命题</h1>
+            <p class="dek">当归纳假设太弱、推不动下一步时，把命题“加强”反而更容易证明：从一个不等式坎开始，经 AM–GM 的向前-向后归纳、图论中的顶点/边归纳，到归纳构造与反向归纳，建立一套可靠的归纳策略。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。数学归纳法可能是各位最早接触的"高级"证明方法——但也是最容易被低估的。很多同学觉得归纳法就是"n=1成立，假设n成立推出n+1成立"的套公式游戏。但真正到了竞赛中，你往往会发现：<strong>原命题的归纳假设根本不够用</strong>。</p>
 
@@ -70,7 +75,16 @@
 
 <p><strong>解决方案：加强命题</strong>。我们来证明一个更强的结论：</p>
 
-<pre><code>加强命题：1 + 1/2² + 1/3² + ... + 1/n² ≤ 2 - 1/n</code></pre>
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="加强后的命题">
+<math display="block" aria-label="k 从 1 到 n 求和 1 除以 k 的平方 小于等于 2 减 1 除以 n">
+ <mrow>
+  <munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover>
+  <mfrac><mn>1</mn><msup><mi>k</mi><mn>2</mn></msup></mfrac>
+  <mo>≤</mo>
+  <mn>2</mn><mo>−</mo><mfrac><mn>1</mn><mi>n</mi></mfrac>
+ </mrow>
+</math>
+</div>
 
 <p>这个命题比原命题"更强"——如果它成立，原命题自然成立（因为 2 - 1/n < 2）。而且它在右侧留出了一个"余量" 1/n，使得递推步能闭合。</p>
 
@@ -94,6 +108,34 @@ n+1 时：
 
 <p>这个例子展示了加强命题的精髓：<strong>在右侧添加一个"消失项" 1/n，这个项在归纳步中被消耗掉，使递推闭合</strong>。</p>
 
+<div class="controls" role="group" aria-label="加强命题效果演示">
+  <label>n = <input id="hs-n" type="number" min="1" max="40" value="8" style="width:4.5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-hs="1" aria-pressed="false">n = 1</button>
+  <button type="button" data-hs="8" aria-pressed="true">n = 8</button>
+  <button type="button" data-hs="40" aria-pressed="false">n = 40</button>
+</div>
+<p id="hs-out" aria-live="polite"></p>
+<script>
+(function(){
+  var ni=document.getElementById('hs-n'), out=document.getElementById('hs-out');
+  function upd(){
+    var n=Math.max(1,Math.min(40,Math.round(+ni.value||1))), s=0;
+    for(var k=1;k<=n;k++) s+=1/(k*k);
+    var bound=2-1/n;
+    out.textContent='S_'+n+' = '+s.toFixed(4)+'，加强上界 2−1/'+n+' = '+bound.toFixed(4)+'（原上界为 2）。S 始终 ≤ 加强上界，而这个上界随 n 增大——这个“会增长的余量”正是归纳能闭合的关键。';
+  }
+  ni.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-hs]').forEach(function(b){
+    b.addEventListener('click',function(){
+      ni.value=b.getAttribute('data-hs');
+      document.querySelectorAll('.controls button[data-hs]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
+
 <div class="highlight">
 <p><strong>什么时候应该加强命题</strong>——以下信号值得警惕：</p>
 <ol>
@@ -109,7 +151,42 @@ n+1 时：
 
 <p><strong>均值不等式</strong>：对任意正数 a₁, a₂, ..., aₙ，有 (a₁+...+aₙ)/n ≥ ⁿ√(a₁·...·aₙ)，等号当且仅当所有aᵢ相等。</p>
 
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="均值不等式">
+<math display="block" aria-label="a1 到 an 的算术平均大于等于它们的几何平均">
+ <mrow>
+  <mfrac><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>+</mo><mo>⋯</mo><mo>+</mo><msub><mi>a</mi><mi>n</mi></msub></mrow><mi>n</mi></mfrac>
+  <mo>≥</mo>
+  <mroot><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⋯</mo><msub><mi>a</mi><mi>n</mi></msub></mrow><mi>n</mi></mroot>
+ </mrow>
+</math>
+</div>
+
 <p>这个证明不需要写"加强命题"四个字，但它的策略本质就是加强：先证明对所有2的幂成立（正向跳步），再证明可以倒退到更小的数（反向退步）。</p>
+
+<figure id="fig-fb">
+  <svg role="img" aria-labelledby="fig-fb-title fig-fb-desc" viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-fb-title">向前-向后归纳法</title>
+    <desc id="fig-fb-desc">先在二的幂次上向前归纳，证明 2、4、8、16 等成立；再向后归纳，从一个更大的幂次退回到任意目标 n。</desc>
+    <line x1="60" y1="150" x2="600" y2="150" stroke="#c9d6d3" stroke-width="2"/>
+    <g stroke="#147f80" stroke-width="2" marker-end="url(#ar-fb)">
+      <line x1="128" y1="150" x2="224" y2="150"/>
+      <line x1="248" y1="150" x2="344" y2="150"/>
+      <line x1="368" y1="150" x2="464" y2="150"/>
+    </g>
+    <g fill="#147f80"><circle cx="120" cy="150" r="8"/><circle cx="240" cy="150" r="8"/><circle cx="360" cy="150" r="8"/><circle cx="480" cy="150" r="8"/></g>
+    <g font-size="14" fill="#123b3c" text-anchor="middle"><text x="120" y="180">2</text><text x="240" y="180">4</text><text x="360" y="180">8</text><text x="480" y="180">16</text></g>
+    <line x1="472" y1="128" x2="432" y2="128" stroke="#d06d4d" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#ar-fb2)"/>
+    <circle cx="420" cy="150" r="8" fill="#d06d4d"/>
+    <text x="420" y="180" font-size="14" fill="#d06d4d" text-anchor="middle">n</text>
+    <text x="320" y="36" text-anchor="middle" font-size="15" fill="#123b3c">正向：2 → 4 → 8 → 16 → …（所有 2ᵏ）</text>
+    <text x="320" y="62" text-anchor="middle" font-size="15" fill="#d06d4d">反向：16 ⇒ 15 ⇒ … ⇒ n（任意 n）</text>
+    <defs>
+      <marker id="ar-fb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#147f80"/></marker>
+      <marker id="ar-fb2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#d06d4d"/></marker>
+    </defs>
+  </svg>
+  <figcaption>图 14.1　向前-向后归纳（Cauchy）：先沿 2 的幂次“向前”把结论推到无穷（2→4→8→…），再用“从 n 退到 n−1”的步骤从某个更大的 2ᵏ 一路“向后”退到任意目标 n，从而覆盖所有正整数。</figcaption>
+</figure>
 
 <h3>第一步（向后归纳）：若对n成立，则对n-1也成立</h3>
 
@@ -178,6 +255,28 @@ T' 仍然是树（去掉叶子不会产生环，且仍连通），有 n 个顶�
 由归纳假设，T' 有 n-1 条边。
 所以 T 有 (n-1) + 1 = n 条边。证毕。</code></pre>
 
+<figure id="fig-tree">
+  <svg role="img" aria-labelledby="fig-tr-title fig-tr-desc" viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-tr-title">对树的顶点数归纳：去掉一个叶子</title>
+    <desc id="fig-tr-desc">一棵六个顶点的树，顶点一是一个叶子；去掉它及其相连的边后，剩下五个顶点的树，由归纳假设有四条边，所以原树有五条边。</desc>
+    <g stroke="#147f80" stroke-width="2">
+      <line x1="80" y1="110" x2="160" y2="110"/>
+      <line x1="160" y1="110" x2="240" y2="110"/>
+      <line x1="240" y1="110" x2="320" y2="70"/>
+      <line x1="240" y1="110" x2="320" y2="150"/>
+      <line x1="320" y1="150" x2="400" y2="150"/>
+    </g>
+    <line x1="80" y1="110" x2="160" y2="110" stroke="#d06d4d" stroke-width="3" stroke-dasharray="6 4"/>
+    <g fill="#7461ba"><circle cx="80" cy="110" r="12"/><circle cx="160" cy="110" r="12"/><circle cx="240" cy="110" r="12"/><circle cx="320" cy="70" r="12"/><circle cx="320" cy="150" r="12"/><circle cx="400" cy="150" r="12"/></g>
+    <circle cx="80" cy="110" r="12" fill="#d06d4d"/>
+    <g fill="#fff" font-size="11" text-anchor="middle">
+      <text x="80" y="114">1</text><text x="160" y="114">2</text><text x="240" y="114">3</text><text x="320" y="74">4</text><text x="320" y="154">5</text><text x="400" y="154">6</text>
+    </g>
+    <text x="240" y="196" text-anchor="middle" font-size="13" fill="#123b3c">去掉叶子 1 → 剩 5 个顶点的树（4 条边）→ 原树共 5 条边 = n−1</text>
+  </svg>
+  <figcaption>图 14.2　树的边数归纳：树总有度数为 1 的叶子（极端原理）。去掉叶子及其唯一的边，剩下的图仍是树但顶点数减一；由归纳假设它有 n−2 条边，补回被删的那条边，原树就恰有 n−1 条边（n 为原顶点数）。</figcaption>
+</figure>
+
 <p>这里的关键是"去掉一个叶子"——利用树的极端结构（一定有叶子）来化归问题。这本质上也是极端原理在图论归纳中的应用。</p>
 
 <h3>14.3.2 对边数归纳</h3>
@@ -236,32 +335,17 @@ n=1,2 显然成立。
 
 <p><strong>例5</strong>：对任意 n ≥ 2，构造一个 n×n 的 0-1 矩阵，使得每一行、每一列都恰好有两个 1。</p>
 
-<pre><code>用归纳法构造：
+<p>这个构造可以完全绕开归纳，用显式方式给出；如果坚持用归纳，则需把假设<strong>加强</strong>到“附加可调整结构”，为扩展预留空间。</p>
 
-n=2：矩阵 [[1,1],[1,1]]，每行每列各两个 1，成立。
+<pre><code>显式构造（n ≥ 3）：令 Aₙ 的第 i 行在列 i 与列 i+1 处为 1（下标按模 n 取，
+即第 n 行取列 n 与列 1），其余为 0。
 
-假设已构造了 n×n 矩阵 Aₙ 满足条件。来构造 Aₙ₊₁：
+验证：第 i 行恰有位于 i、i+1 的两个 1。
+第 j 列收到来自第 j 行（位置 j,j）与第 j−1 行（位置 j−1,j）的两个 1，
+下标模 n 后仍然恰好两个。所以每行每列恰有两个 1。
+n=2 时单独用 [[1,1],[1,1]]。（n=1 不可能，因为只有一个位置。）</code></pre>
 
-取 Aₙ 放在左上角，剩下加一行一列。
-在新行的第 n 列放 1、第 n+1 列放 1。
-在新列的第 n 行放 1、第 n+1 行放 1。
-其余位置补 0。
-
-验证：
-- 前 n-1 行：每行在 Aₙ 中有两个 1，新加的一列全 0 → 仍有两个 1
-- 第 n 行：在 Aₙ 中有两个 1，新加的第 n+1 列有 1 → 变成三个 1！
-  这违反条件了。需要调整。
-
-修正：让第 n 行在 Aₙ 中只有一个 1，新加一列后再加一个 1，
-总共两个 1。这需要 Aₙ 的构造也满足"第 n 行恰有一个 1"的额外条件。
-——这就是"加强命题"在构造中的应用！
-
-加强后的归纳假设：存在 n×n 的 0-1 矩阵，每行每列都恰有两个 1，
-且最后一行和最后一列各恰有一个 1（位于交叉点）。
-
-这样一来，在扩展时就能保持所有条件。
-这个例子告诉我们：有时候为了构造成功，你需要对构造对象
-施加比题目要求更强的"归纳假设"。</code></pre>
+<p><strong>为什么不天真地用“加一行一列”的归纳？</strong>若保留 Aₙ 再补第 n+1 行、第 n+1 列，前 n 行、前 n 列原有的 1 的个数会从 2 变成 3。要修正它，就得在归纳时把假设<strong>加强</strong>为“存在一个每行每列恰 2 个 1、且指定的一行一列的 1 恰好落在交叉位置”的矩阵，为扩展时重排 1 的位置留出余地。这正是“加强命题”在构造题里的典型用法：<strong>你不仅要让对象满足题目的条件，还要让它满足一个方便扩展的额外条件。</strong></p>
 
 <div class="highlight">
 <p><strong>归纳构造的核心技巧</strong>：</p>
@@ -353,8 +437,8 @@ f((x₁+...+xₙ₋₁ + y)/n) ≤ (f(x₁)+...+f(xₙ₋₁)+f(y))/n
             <a href="index.html">📖 返回目录</a>
             <a href="15.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
