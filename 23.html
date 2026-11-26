@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第23章 操作与对策（一）</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第23章 操作与对策（一）</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第23章：操作与对策（一）</h1>
+            <p class="dek">操作题只有三个问题：什么不变、什么单调、哪些局面必败。从残缺棋盘到 Nim 的异或和，再到 SG 函数。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。今天开启一个全新的专题——操作与对策。这可能是整个组合数学领域里最"好玩"的部分了：你有一个局面，你可以做某些操作，对手也可以做某些操作，你要么想证明"怎么折腾也到不了某个状态"（不变量），要么想证明"我肯定能赢"（必胜策略），要么想证明"这操作早晚得停"（单调有界）。本质上，这些问题都共享一个分析框架。</p>
 
@@ -63,6 +68,33 @@
 </ol>
 
 <p>这个框架看似简单，但几乎所有操作题都能装进去。我们来看一个具体的例子：</p>
+
+<figure id="fig-framework">
+  <svg role="img" aria-labelledby="fig-framework-title fig-framework-desc" viewBox="0 0 760 150" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-framework-title">操作问题的四步分析框架</title>
+    <desc id="fig-framework-desc">从左到右四个步骤：定义状态、定义操作、找不变量或单调量、得出结论；不变量与单调量是框架的核心枢纽。</desc>
+    <defs>
+      <marker id="arr23" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#53676d"/>
+      </marker>
+    </defs>
+    <g font-size="16" text-anchor="middle">
+      <rect x="20" y="40" width="150" height="60" rx="10" fill="#e9f1ee" stroke="#147f80" stroke-width="2"/>
+      <text x="95" y="76" fill="#123b3c">① 定义状态</text>
+      <rect x="210" y="40" width="150" height="60" rx="10" fill="#e9f1ee" stroke="#147f80" stroke-width="2"/>
+      <text x="285" y="76" fill="#123b3c">② 定义操作</text>
+      <rect x="400" y="40" width="180" height="60" rx="10" fill="#f7e7df" stroke="#d06d4d" stroke-width="3"/>
+      <text x="490" y="76" fill="#7a3b26">③ 不变量 / 单调量</text>
+      <rect x="620" y="40" width="120" height="60" rx="10" fill="#e9f1ee" stroke="#147f80" stroke-width="2"/>
+      <text x="680" y="76" fill="#123b3c">④ 结论</text>
+      <line x1="170" y1="70" x2="208" y2="70" stroke="#53676d" stroke-width="2" marker-end="url(#arr23)"/>
+      <line x1="360" y1="70" x2="398" y2="70" stroke="#53676d" stroke-width="2" marker-end="url(#arr23)"/>
+      <line x1="580" y1="70" x2="618" y2="70" stroke="#53676d" stroke-width="2" marker-end="url(#arr23)"/>
+    </g>
+    <text x="490" y="126" text-anchor="middle" font-size="14" fill="#7a3b26">③ 是关键：不变量管“不可能”，单调有界量管“必然终止”</text>
+  </svg>
+  <figcaption>图 23.1　操作题的四步框架。第 ③ 步是分水岭：抓住操作前后不变的量可以证明“不可能”，抓住单调有界的势能函数可以证明“必然终止”。</figcaption>
+</figure>
 
 <div class="highlight">
   <p><strong>例1</strong>：在黑板上写下数字 1, 2, 3, …, 20。每次操作擦去两个数 a 和 b，然后写上 a+b+ab。经过若干次操作后，黑板上只剩一个数。问这个数是多少？</p>
@@ -99,11 +131,11 @@
 
 <p>奇偶性不变量本质上就是模2不变量。更一般地，我们可以考虑模某个数的余数。来看一个升级版的例子：</p>
 
-<p><strong>例3</strong>：有 n 堆石子，每堆有若干颗。每次操作可以选择任意一堆，从中取出至少一颗石子。证明：无论怎样操作，石子总数的奇偶性和初始时相同。</p>
+<p><strong>例3</strong>：黑板上写着 1, 2, …, n。每次操作擦去两个数 a、b，写上 |a−b|。经过若干次操作后只剩一个数。证明：这个数的奇偶性与 1+2+…+n 的奇偶性相同。</p>
 
-<p>等等，这个例子太简单了——每次拿走至少一颗，总数减少，奇偶性难道不是可能改变吗？实际上这里有个陷阱。题目没有说"只能拿一颗"，拿一颗会改变奇偶性，拿两颗会保持奇偶性不变。所以实际上<strong>总数奇偶性并不是不变量</strong>。那真正的不变量是什么？正确的分析需要重新定义状态。</p>
+<p>分析：关键观察是 <strong>|a−b| ≡ a+b (mod 2)</strong>——因为 a−b 与 a+b 同奇偶，而绝对值不改变奇偶性。每次操作把 a 与 b 换成 |a−b|，两者模 2 相等，所以<strong>黑板所有数之和的奇偶性是不变量</strong>。初始和为 1+2+…+n = n(n+1)/2，最终只剩一个数 x，故 x ≡ n(n+1)/2 (mod 2)。</p>
 
-<p>这个例子告诉我们在找不变量时一定要小心：不要随便声称某个量是"不变量"，必须严格验证<strong>每次操作</strong>下它是否真的不变。</p>
+<p>这个例子提醒我们：验证不变量时必须对<strong>每一次操作</strong>都成立。像“总数奇偶性”在“每次取走任意颗石子”的操作下就不是不变量（取 1 颗会改变奇偶性）；而上例中“总和模 2”之所以成立，恰恰是因为 |a−b| 与 a+b 恒同余。</p>
 
 <h3>23.2.3 加权和不变量</h3>
 
@@ -117,7 +149,7 @@
 
 <p><strong>例4（IMO 1994 预选题）</strong>：在一个 8×8 的棋盘上，每个格子中有一个整数。每次操作可以选择一个 2×2 的子方格，将其中四个数各加 1。问能否经过若干次操作使得所有格子中的数相等？</p>
 
-<p>我们可以给格子 (i,j) 赋予权重 (-1)^{i+j}。每次操作选择的 2×2 子方格中，四个格子的权重分别为 +1, -1, -1, +1（取决于你从哪个位置开始标记），它们的和是 0。所以加权和 S = Σ (-1)^{i+j} × a_{ij} 是一个不变量。如果初始时这个不变量不为0，而最终要达到全相等的状态（此时 S = 0 或不是0取决于相等值的奇偶），就可以判断不可能。</p>
+<p>分析：给格子 (i,j) 赋予权重 (−1)<sup>i+j</sup>。任意一个 2×2 子方格中，四个格子的权重两两为 +1、−1、−1、+1，和为 0。因此加权和 <em>S</em> = Σ (−1)<sup>i+j</sup> a<sub>ij</sub> 在每次操作下<strong>不变</strong>。若最终所有格子都等于同一个整数 c，则 S = c·Σ(−1)<sup>i+j</sup>；而 8×8 棋盘中 +1 与 −1 的格子各占一半，Σ(−1)<sup>i+j</sup> = 0，故最终 S 必为 0。于是<strong>只要初始 S ≠ 0，就不可能达到全相等</strong>。</p>
 
 <h2>23.3 单调有界量证明"必然终止"型操作题</h2>
 
@@ -129,13 +161,16 @@
 
 <p>但更常见的情况是：操作不减少状态空间的大小，但某个"势能函数"在单调变化。例如：</p>
 
-<p><strong>例6</strong>：黑板上写有若干个正实数。每次操作擦去两个数 a 和 b，写上 (a+b)/2。证明：经过有限次操作后，所有数都会变得相等。</p>
+<p><strong>例6</strong>：黑板上写有 n 个正实数，平均值为 μ。每次操作擦去两个数 a、b，写上 (a+b)/2。证明：总和始终不变；只要还存在两个不相等的数，平方和 Σ x<sub>i</sub>² 就严格减小，从而方差单调递减。</p>
 
 <div class="tip">
-  <p><strong>分析思路</strong>：考虑最大数 M 和最小数 m。每次操作取两个数 (a,b) 替换为 (a+b)/2。如果 a 和 b 不相等，(a+b)/2 严格介于 a 和 b 之间。所以 M 不会增加，m 不会减少。而且只要还有不相等的数，M 和 m 的差就会严格减小——因为要么最大数被操作了（新数小于原最大数），要么最小数被操作了（新数大于原最小数）。但 M-m 这个量是非负的、单调递减的。不过要注意，它不一定能严格递减到0——如果操作的两个数恰好是同样大的，M-m 不改变。</p>
+  <p><strong>分析</strong>：擦去 a、b 写上 (a+b)/2 后，不变的是总和 μ·n。看平方和的变化：</p>
+  <p style="text-align:center">2·((a+b)/2)² − (a²+b²) = (a²+2ab+b²)/2 − a² − b² = −(a−b)²/2 ≤ 0，</p>
+  <p>当且仅当 a = b 时取等号。所以方差 V = Σ(x<sub>i</sub>−μ)² 单调不增，且只要操作的两个数不等，V 就严格减小。V 有下界 0，故它收敛，所有数都逼近 μ。</p>
+  <p>这里要提醒一个常见误区：这个操作<strong>并不能保证在有限步内让所有数恰好相等</strong>，它只保证方差单调下降、极限为 0。要证明“有限步终止”，必须另找一个每次操作都严格减小的整数型量——这正是例 5 中“个数减少”或欧几里得算法“总和减少”的思路。</p>
 </div>
 
-<p>这个例子留给读者思考：如何构造一个"每次操作都严格减小"的势能函数？提示：考虑所有数的方差或所有数的两两差的平方和。</p>
+<p>这个例子也说明：单调量不一定直接给出“步数上界”，它也可以只用来证明<strong>收敛性</strong>（单调有界必有极限）；要根据问题到底问“能否终止”还是“是否收敛”来选择工具。</p>
 
 <h2>23.4 游戏对策中的必胜/必败态</h2>
 
@@ -199,6 +234,12 @@
   <p>用符号表示：设各堆石子数为 a₁, a₂, …, a_k，则局面为必败态 ⟺ a₁ ⊕ a₂ ⊕ … ⊕ a_k = 0。</p>
 </div>
 
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Bouton 定理：异或和判定">
+<math display="block" aria-label="Nim 局面是必败态当且仅当各堆石子数的异或和等于 0">
+ <mrow><msub><mi>a</mi><mn>1</mn></msub><mo>⊕</mo><msub><mi>a</mi><mn>2</mn></msub><mo>⊕</mo><mo>⋯</mo><mo>⊕</mo><msub><mi>a</mi><mi>k</mi></msub><mo>=</mo><mn>0</mn><mspace width="1em"/><mo>⟺</mo><mspace width="1em"/><mtext>必败态</mtext></mrow>
+</math>
+</div>
+
 <p>这个定理的证明分两步：</p>
 <ol>
   <li>如果当前异或和为 0，那么任何操作（改变某一堆）都会使异或和变为非 0。</li>
@@ -216,9 +257,52 @@
 
 <p>这个定理的美妙之处在于：它将一个看似复杂的多人博弈简化为一个异或运算。你不需要模拟任何操作，只需要计算异或和就能知道当前局面谁必胜。</p>
 
+<figure id="fig-nim">
+  <svg role="img" aria-labelledby="fig-nim-title fig-nim-desc" viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-nim-title">三堆 Nim 的一个制胜着法</title>
+    <desc id="fig-nim-desc">三堆分别为 7、9、13，异或和为 3 非零；取第 1 堆的 3 颗使其变为 4，则新异或和 4⊕9⊕13 = 0，交给对手一个必败态。</desc>
+    <g font-size="15">
+      <text x="20" y="42" fill="#203035">堆1</text>
+      <rect x="80" y="26" width="70" height="22" fill="#147f80"/>
+      <rect x="150" y="26" width="30" height="22" fill="#d06d4d"/>
+      <text x="192" y="43" fill="#7a3b26">7，取走 3 → 4</text>
+      <text x="20" y="102" fill="#203035">堆2</text>
+      <rect x="80" y="86" width="90" height="22" fill="#147f80"/>
+      <text x="178" y="103" fill="#53676d">9</text>
+      <text x="20" y="162" fill="#203035">堆3</text>
+      <rect x="80" y="146" width="130" height="22" fill="#147f80"/>
+      <text x="218" y="163" fill="#53676d">13</text>
+    </g>
+    <text x="80" y="205" font-size="14" fill="#123b3c">初始 7⊕9⊕13 = 3 ≠ 0；制胜着：把 7 减到 7⊕3 = 4</text>
+  </svg>
+  <figcaption>图 23.2　三堆 Nim（7、9、13）的制胜着法：把第 1 堆减到 7⊕3 = 4，新异或和 4⊕9⊕13 = 0，把必败态交给对手。</figcaption>
+</figure>
+
+<div class="controls" role="group" aria-label="Nim 异或和判定器">
+  <label>堆1 <input id="nim-a" type="number" min="0" value="7" style="width:4.5em;padding:.3rem"></label>
+  <label>堆2 <input id="nim-b" type="number" min="0" value="9" style="width:4.5em;padding:.3rem"></label>
+  <label>堆3 <input id="nim-c" type="number" min="0" value="13" style="width:4.5em;padding:.3rem"></label>
+  <button type="button" id="nim-go">计算异或和</button>
+</div>
+<p id="nim-out" aria-live="polite">输入三堆石子数后点击按钮，计算异或和并判断胜负。</p>
+<script>
+(function(){
+  var out=document.getElementById('nim-out');
+  function calc(){
+    var a=+document.getElementById('nim-a').value||0;
+    var b=+document.getElementById('nim-b').value||0;
+    var c=+document.getElementById('nim-c').value||0;
+    var x=(a^b^c)>>>0;
+    out.textContent=a+' ⊕ '+b+' ⊕ '+c+' = '+x+(x===0?'：异或和为 0，是必败态（后手必胜）。':' ≠ 0：先手必胜。');
+  }
+  document.getElementById('nim-go').addEventListener('click',calc);
+  ['nim-a','nim-b','nim-c'].forEach(function(id){document.getElementById(id).addEventListener('input',calc);});
+})();
+</script>
+
 <div class="warning">
-  <p><strong>⚠️ 踩坑实录</strong>：有一年我带学生参加省队选拔，一道看似简单的Nim变种题把好多人坑了。题目说："有3堆石子，分别有 7、9、13 颗。每次可以从任意一堆中取走任意正整数颗（至少1），但不能从两堆或多堆中同时取。取走最后一颗者胜。"一个学生直接算了 7⊕9⊕13 = 7⊕9=14, 14⊕13=3 ≠ 0，直接说"先手必胜"。但题目中有一个隐藏条件：<strong>取走的石子数不能等于当前堆已取走的石子总数</strong>（意思是有一个全局计数器记录已取走的石子总数）。这个额外规则完全改变了游戏的性质，再直接用标准Nim的异或和结论就错了。</p>
-  <p>这个故事告诉我们：<strong>不要套公式！</strong> 看到"取石子"就立刻套 Nim 的结论是非常危险的。在套用任何现成结论之前，先仔细确认游戏规则是否完全匹配。</p>
+  <p><strong>易错点：Nim 的“反版”不能照搬异或和。</strong>上面 Bouton 定理针对的是<strong>正常玩法</strong>（取走最后一颗者胜）。竞赛里还常出现<strong>反版玩法</strong>（misère play，取走最后一颗者<em>输</em>），它的结论并不相同：当所有堆都不超过 1 颗时，胜负由堆数的奇偶决定（奇数堆时先手必败）；只要还有至少两堆超过 1 颗，就先按正常 Nim 的异或和策略走，把局面留成“恰有一堆超过 1 颗”的必败形。</p>
+  <p>所以在套用异或和之前，先确认：是正常玩法还是反版玩法？是取走任意多颗还是只能取固定集合？不要看到“取石子”就直接写 XOR。</p>
 </div>
 
 <h2>23.5 SG 函数简介</h2>
@@ -236,6 +320,12 @@ g(S) = mex{ g₁, g₂, …, g_k }
 
 特别地，没有后继状态的状态（终止状态）的 SG 值为 0。</code></pre>
 
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="SG 值的 mex 定义">
+<math display="block" aria-label="状态 S 的 SG 值等于其后继 SG 值集合的 mex">
+ <mrow><mi>g</mi><mo>(</mo><mi>S</mi><mo>)</mo><mo>=</mo><mi>mex</mi><mo>{</mo><msub><mi>g</mi><mn>1</mn></msub><mo>,</mo><msub><mi>g</mi><mn>2</mn></msub><mo>,</mo><mo>…</mo><mo>,</mo><msub><mi>g</mi><mi>k</mi></msub><mo>}</mo></mrow>
+</math>
+</div>
+
 <p>SG 值的重要性质：</p>
 <ul>
   <li>g(S) = 0 当且仅当 S 是必败态</li>
@@ -251,10 +341,11 @@ g(S) = mex{ g₁, g₂, …, g_k }
 
 <p>来看一个具体的例子，计算某个游戏的 SG 值：</p>
 
-<p><strong>例8（移动棋子游戏）</strong>：在一条 1×n 的格子上，一枚棋子初始在位置 1。每次可以向左或向右移动 1 格或 2 格，但不能移出边界（即位置必须在 1 到 n 之间）。当棋子到达位置 n 时游戏结束（到达 n 的玩家获胜）。求每个位置的 SG 值。</p>
+<p><strong>例8（向右移动游戏）</strong>：一条 1×n 的格子，一枚棋子初始在位置 1。每步只能把棋子<strong>向右</strong>移动 1 格或 2 格，不能移出右边界；无法移动者输（等价于把棋子正好走到位置 n 者胜）。由于每步位置严格增大，状态转移构成有向无环图，SG 值可用 mex 递推。求每个位置的 SG 值。</p>
 
 <p>我们手动计算 n=6 的情况：</p>
 
+<div class="table-scroll" style="overflow-x:auto;max-width:100%">
 <table>
   <tr>
     <th>位置 i</th>
@@ -268,33 +359,66 @@ g(S) = mex{ g₁, g₂, …, g_k }
   <tr>
     <td>可到达的位置</td>
     <td>2,3</td>
-    <td>1,3,4</td>
-    <td>1,2,4,5</td>
-    <td>2,3,5,6</td>
-    <td>3,4,6</td>
+    <td>3,4</td>
+    <td>4,5</td>
+    <td>5,6</td>
+    <td>6</td>
     <td>—</td>
   </tr>
   <tr>
     <td>后继 SG 值</td>
     <td>g(2),g(3)</td>
-    <td>g(1),g(3),g(4)</td>
-    <td>g(1),g(2),g(4),g(5)</td>
-    <td>g(2),g(3),g(5),g(6)</td>
-    <td>g(3),g(4),g(6)</td>
+    <td>g(3),g(4)</td>
+    <td>g(4),g(5)</td>
+    <td>g(5),g(6)</td>
+    <td>g(6)</td>
     <td>—</td>
   </tr>
   <tr>
     <td>SG 值 g(i)</td>
-    <td>?</td>
-    <td>?</td>
-    <td>?</td>
-    <td>?</td>
-    <td>?</td>
+    <td>2</td>
+    <td>1</td>
+    <td>0</td>
+    <td>2</td>
+    <td>1</td>
     <td>0</td>
   </tr>
 </table>
+</div>
 
-<p>从右向左递推：g(6)=0（终止态）。g(5)=mex{g(3),g(4),0}，需要先知道 g(3),g(4)。继续递推就能全部算出来。这个过程留给读者完成，计算后你会发现这个游戏的 SG 值呈现周期性规律——这正是 SG 函数的美妙之处。</p>
+<p>从右向左递推（终止态 g(6)=0）：g(5)=mex{0}=1，g(4)=mex{1,0}=2，g(3)=mex{2,1}=0，g(2)=mex{0,2}=1，g(1)=mex{1,0}=2。可见 SG 值以 3 为周期重复：<strong>g(i) = (n − i) mod 3</strong>。所以只要 n − 1 不能被 3 整除，初始位置就是必胜态。</p>
+
+<figure id="fig-sg">
+  <svg role="img" aria-labelledby="fig-sg-title fig-sg-desc" viewBox="0 0 620 210" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-sg-title">向右移动 1 或 2 格游戏的 SG 值</title>
+    <desc id="fig-sg-desc">位置 1 到 6 排成一行，每点可向右连 1 格（实线）或 2 格（虚线）；从右向左用 mex 递推得 g 值为 2,1,0,2,1,0，呈周期 3。</desc>
+    <g stroke="#53676d" stroke-width="1.6">
+      <line x1="80" y1="90" x2="130" y2="90"/><line x1="170" y1="90" x2="220" y2="90"/>
+      <line x1="260" y1="90" x2="310" y2="90"/><line x1="350" y1="90" x2="400" y2="90"/>
+      <line x1="440" y1="90" x2="490" y2="90"/>
+    </g>
+    <g stroke="#d06d4d" stroke-width="1.6" stroke-dasharray="6 4">
+      <line x1="80" y1="78" x2="220" y2="78"/><line x1="170" y1="78" x2="310" y2="78"/>
+      <line x1="260" y1="78" x2="400" y2="78"/><line x1="350" y1="78" x2="490" y2="78"/>
+    </g>
+    <g font-size="15" text-anchor="middle">
+      <g fill="#203035">
+        <circle cx="60" cy="90" r="20"/><circle cx="150" cy="90" r="20"/><circle cx="240" cy="90" r="20"/>
+        <circle cx="330" cy="90" r="20"/><circle cx="420" cy="90" r="20"/><circle cx="510" cy="90" r="20"/>
+      </g>
+      <g fill="#ffffff">
+        <text x="60" y="96">1</text><text x="150" y="96">2</text><text x="240" y="96">3</text>
+        <text x="330" y="96">4</text><text x="420" y="96">5</text><text x="510" y="96">6</text>
+      </g>
+      <g fill="#7a3b26">
+        <text x="60" y="150">g=2</text><text x="150" y="150">g=1</text><text x="240" y="150">g=0</text>
+        <text x="330" y="150">g=2</text><text x="420" y="150">g=1</text><text x="510" y="150">g=0</text>
+      </g>
+    </g>
+    <text x="60" y="188" font-size="14" fill="#53676d">实线：向右 1 格　虚线：向右 2 格　周期 3</text>
+  </svg>
+  <figcaption>图 23.3　向右移动 1 或 2 格游戏的 SG 值：从终止点 n=6 向左用 mex 递推，得 g = 2,1,0,2,1,0，以 3 为周期。</figcaption>
+</figure>
 
 <h2>23.6 "状态图"与可达性分析</h2>
 
@@ -325,8 +449,8 @@ g(S) = mex{ g₁, g₂, …, g_k }
             <a href="index.html">📖 返回目录</a>
             <a href="24.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
