@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>第10章 母函数（一）</title>
-    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="assets/css/article.css">
+    <style>pre{overflow-x:auto;max-width:100%;}figure svg,img{max-width:100%;height:auto;}</style>
 </head>
 <body>
-<div class="double-border">
-<div class="container">
-    <div class="sidebar">
-        <h3>🧮 课程目录</h3>
+<a class="skip-link" href="#content">跳转至正文</a>
+<div class="layout">
+    <nav class="toc" aria-label="课程章节">
+        <p class="toc-title">🧮 课程目录</p>
         <ul class="chapter-list">
             <li><a href="01.html">第1章 计数原理与排列</a></li>
             <li><a href="02.html">第2章 组合数与恒等式</a></li>
@@ -41,9 +42,13 @@
             <li><a href="27.html">第27章 IMO组合名题赏析</a></li>
             <li><a href="28.html">第28章 综合模拟与应试策略</a></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <h2>第十章：母函数（一）</h2>
+    </nav>
+    <main id="content">
+    <article>
+        <header class="article-header">
+            <h1>第10章：母函数（一）</h1>
+            <p class="dek">把数列嵌进形式幂级数，让“选法”变成“系数”、让“合并”变成“乘积”：从 OGF 的定义与卷积出发，用 Euler 乘积公式统一整数拆分与找零问题，再用有理母函数系统地反推递推数列的通项。</p>
+        </header>
 
 <p>大家好，我是你们的讲师。接下来的两章，我们要来学习组合数学中最有"魔法感"的工具——<strong>母函数</strong>（Generating Functions，也译作生成函数）。</p>
 
@@ -57,7 +62,15 @@
 
 <p>对于一个数列 {a₀, a₁, a₂, ...}，它的<strong>普通母函数</strong>（Ordinary Generating Function，OGF）定义为：</p>
 
-<pre><code>G(x) = a₀ + a₁x + a₂x² + a₃x³ + ... = Σ aₙxⁿ</code></pre>
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="普通母函数的定义">
+<math display="block" aria-label="G(x) 等于 a下标n 乘以 x 的 n 次方对 n 从零到无穷求和">
+ <mrow>
+  <mi>G</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo>
+  <munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></munderover>
+  <msub><mi>a</mi><mi>n</mi></msub><msup><mi>x</mi><mi>n</mi></msup>
+ </mrow>
+</math>
+</div>
 
 <p>这里的 x 只是一个形式符号（formal symbol），我们并不关心它在某个具体点是否收敛。这就是"形式幂级数"（formal power series）的含义。</p>
 
@@ -73,6 +86,16 @@
 
 <p>其中最关键的是第二条：<strong>两个母函数的乘积对应数列的卷积</strong>。而卷积在组合中的含义就是"两个独立选择的总数"——这正是乘法原理的代数表达！</p>
 
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="卷积公式">
+<math display="block" aria-label="c 下标 n 等于 a 下标 k 乘以 b 下标 n 减 k 对 k 从零到 n 求和">
+ <mrow>
+  <msub><mi>c</mi><mi>n</mi></msub><mo>=</mo>
+  <munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>n</mi></munderover>
+  <msub><mi>a</mi><mi>k</mi></msub><msub><mi>b</mi><mrow><mi>n</mi><mo>−</mo><mi>k</mi></mrow></msub>
+ </mrow>
+</math>
+</div>
+
 <div class="highlight">
 <p><strong>核心洞察</strong>：母函数和组合计数的关系可以总结为一句话——"<strong>乘积对应组合</strong>"。具体的：</p>
 <ul>
@@ -81,6 +104,38 @@
 <li>不同面额硬币的组合、不同限制条件的整数拆分等等，都统一在这个框架下</li>
 </ul>
 </div>
+
+<figure id="fig-conv">
+  <svg role="img" aria-labelledby="fig-conv-title fig-conv-desc" viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-conv-title">母函数乘积中的系数拼接（卷积）</title>
+    <desc id="fig-conv-desc">三乘三方格中每个格代表 a 下标 i 乘以 b 下标 j；行下标与列下标之和等于二的三个格组成反对角线，它们的和就是乘积级数中 x 的二次方系数 c 下标二。</desc>
+    <g font-size="15" fill="#123b3c">
+      <text x="60" y="34" font-weight="700">列 = bⱼ</text>
+      <text x="70" y="160" font-weight="700" transform="rotate(-90 70 160)">行 = aᵢ</text>
+    </g>
+    <g font-size="14" text-anchor="middle" fill="#53676d">
+      <text x="170" y="32">b₀</text><text x="250" y="32">b₁</text><text x="330" y="32">b₂</text>
+      <text x="128" y="72" text-anchor="end">a₀</text>
+      <text x="128" y="122" text-anchor="end">a₁</text>
+      <text x="128" y="172" text-anchor="end">a₂</text>
+    </g>
+    <g stroke="#147f80" stroke-width="1.3" fill="#eef4f2">
+      <rect x="140" y="42" width="60" height="50"/><rect x="220" y="42" width="60" height="50"/><rect x="300" y="42" width="60" height="50"/>
+      <rect x="140" y="92" width="60" height="50"/><rect x="220" y="92" width="60" height="50"/><rect x="300" y="92" width="60" height="50"/>
+      <rect x="140" y="142" width="60" height="50"/><rect x="220" y="142" width="60" height="50"/><rect x="300" y="142" width="60" height="50"/>
+    </g>
+    <g fill="#d06d4d" fill-opacity="0.18">
+      <rect x="300" y="42" width="60" height="50"/><rect x="220" y="92" width="60" height="50"/><rect x="140" y="142" width="60" height="50"/>
+    </g>
+    <g font-size="14" text-anchor="middle" fill="#3a4b50">
+      <text x="170" y="72">a₀b₀</text><text x="250" y="72">a₀b₁</text><text x="330" y="72">a₀b₂</text>
+      <text x="170" y="122">a₁b₀</text><text x="250" y="122">a₁b₁</text><text x="330" y="122">a₁b₂</text>
+      <text x="170" y="172">a₂b₀</text><text x="250" y="172">a₂b₁</text><text x="330" y="172">a₂b₂</text>
+    </g>
+    <text x="260" y="228" text-anchor="middle" font-size="15" fill="#123b3c">c₂ = a₀b₂ + a₁b₁ + a₂b₀（高亮反对角线）</text>
+  </svg>
+  <figcaption>图 10.2　母函数相乘时，xⁿ 的系数由所有“下标之和 = n”的项相加得到，即卷积 cₙ = Σ aₖbₙ₋ₖ。图中高亮的反对角线（i+j=2）给出 c₂。</figcaption>
+</figure>
 
 <h3>10.1.2 形式幂级数的运算规则</h3>
 
@@ -112,7 +167,17 @@
 
 <p>Euler 给出了一个令人震惊的母函数公式：</p>
 
-<pre><code>Σ p(n)xⁿ = 1/((1-x)(1-x²)(1-x³)(1-x⁴)...)</code></pre>
+<div class="math-scroll" data-math-scroll tabindex="0" role="region" aria-label="Euler 整数拆分母函数公式">
+<math display="block" aria-label="p(n) 的母函数等于 k 从 1 到无穷的 1 减 x 的 k 次方 之倒数的连乘积">
+ <mrow>
+  <munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></munderover>
+  <mi>p</mi><mo>(</mo><mi>n</mi><mo>)</mo><msup><mi>x</mi><mi>n</mi></msup>
+  <mo>=</mo>
+  <munderover><mo>∏</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>∞</mi></munderover>
+  <mfrac><mn>1</mn><mrow><mn>1</mn><mo>−</mo><msup><mi>x</mi><mi>k</mi></msup></mrow></mfrac>
+ </mrow>
+</math>
+</div>
 
 <p>为什么？因为每个因子 1/(1-xᵏ) 的展开是 1 + xᵏ + x²ᵏ + x³ᵏ + ...，其中 xᵐᵏ 表示使用了 m 个 k 作为加数。所有因子的乘积中 xⁿ 的系数就是从各个因子中选择若干 xᵐᵏ 使得指数之和为 n 的方式数——也就是将 n 拆分成若干正整数之和的方式数。</p>
 
@@ -150,6 +215,34 @@ c=2: a + 2b = 0 → b=0 → 1种
 
 <p>所以将 10 拆分成 1,2,5 的方式有 <strong>10 种</strong>。</p>
 
+<figure id="fig-coins">
+  <svg role="img" aria-labelledby="fig-coins-title fig-coins-desc" viewBox="0 0 660 280" xmlns="http://www.w3.org/2000/svg">
+    <title id="fig-coins-title">找零母函数：三个因子各取一项</title>
+    <desc id="fig-coins-desc">三行分别对应一元、二元、五元因子；从每行可选的指数中各取一项，指数分别为一、四、五，相加等于十，就贡献了 x 的十次方系数。</desc>
+    <g font-size="14" fill="#123b3c">
+      <text x="20" y="70" font-weight="700">1元 (1−x)⁻¹</text>
+      <text x="20" y="140" font-weight="700">2元 (1−x²)⁻¹</text>
+      <text x="20" y="210" font-weight="700">5元 (1−x⁵)⁻¹</text>
+    </g>
+    <g stroke="#c9d6d3" stroke-width="2">
+      <line x1="112" y1="80" x2="615" y2="80"/>
+      <line x1="112" y1="150" x2="615" y2="150"/>
+      <line x1="112" y1="220" x2="615" y2="220"/>
+    </g>
+    <g fill="#147f80">
+      <circle cx="95" cy="80" r="5"/><circle cx="147" cy="80" r="5"/><circle cx="199" cy="80" r="5"/><circle cx="251" cy="80" r="5"/><circle cx="303" cy="80" r="5"/><circle cx="355" cy="80" r="5"/><circle cx="407" cy="80" r="5"/><circle cx="459" cy="80" r="5"/><circle cx="511" cy="80" r="5"/><circle cx="563" cy="80" r="5"/><circle cx="615" cy="80" r="5"/>
+      <circle cx="95" cy="150" r="5"/><circle cx="199" cy="150" r="5"/><circle cx="303" cy="150" r="5"/><circle cx="407" cy="150" r="5"/><circle cx="511" cy="150" r="5"/><circle cx="615" cy="150" r="5"/>
+      <circle cx="95" cy="220" r="5"/><circle cx="355" cy="220" r="5"/><circle cx="615" cy="220" r="5"/>
+    </g>
+    <g fill="#d06d4d"><circle cx="147" cy="80" r="8"/><circle cx="303" cy="150" r="8"/><circle cx="355" cy="220" r="8"/></g>
+    <g font-size="11" fill="#8a9a98" text-anchor="middle">
+      <text x="95" y="252">0</text><text x="147" y="252">1</text><text x="199" y="252">2</text><text x="251" y="252">3</text><text x="303" y="252">4</text><text x="355" y="252">5</text><text x="407" y="252">6</text><text x="459" y="252">7</text><text x="511" y="252">8</text><text x="563" y="252">9</text><text x="615" y="252">10</text>
+    </g>
+    <text x="330" y="276" text-anchor="middle" font-size="14" fill="#123b3c">选 x¹（1元）+ x⁴（2元×2）+ x⁵（5元×1）= x¹⁰</text>
+  </svg>
+  <figcaption>图 10.1　找零问题的母函数图景：每个面额是一个因子，因子中可选的指数就是该面额能贡献的金额。从三个因子中各取一项，指数之和即总金额；图中取 1+4+5=10，对应 10 = 1×1 + 2×2 + 5×1 这一种拆分。把所有这种组合加起来，就是 x¹⁰ 的系数。</figcaption>
+</figure>
+
 <div class="tip">
 <p><strong>母函数 vs 枚举</strong>：如果只是算一个具体的数，手动枚举可能更快。但母函数的优势在于你可以得到一个 <strong>封闭形式</strong>——比如 1/((1-x)(1-x²)(1-x⁵)) 这个式子本身，比 10 这个具体数字包含了更多的信息。它可以用来求任意 n 的拆分方式数，可以计算平均值、渐近行为等等。</p>
 </div>
@@ -176,20 +269,54 @@ c=2: a + 2b = 0 → b=0 → 1种
 <p><strong>母函数解决"找零"问题的核心</strong>：每种面额的硬币对应一个因子，因子的形式取决于硬币的数量限制。所有因子的乘积就是母函数。要凑成金额 n，看 xⁿ 的系数。这就是"乘法对应组合"思想的直接体现。</p>
 </div>
 
-<p><strong>例4（联考真题）</strong>：用 1 元、2 元和 5 元的硬币支付 100 元，要求 2 元硬币的个数不超过 5 元硬币的个数，有多少种支付方式？</p>
+<div class="controls" role="group" aria-label="找零方式数计算器">
+  <label>金额 n = <input id="cc-n" type="number" min="0" max="60" value="10" style="width:5rem;font:inherit;padding:.3rem .5rem;border:1px solid var(--accent);border-radius:8px"></label>
+  <button type="button" data-cc="10" aria-pressed="true">n = 10</button>
+  <button type="button" data-cc="20" aria-pressed="false">n = 20</button>
+  <button type="button" data-cc="50" aria-pressed="false">n = 50</button>
+</div>
+<p id="cc-out" aria-live="polite"></p>
+<script>
+(function(){
+  var ni=document.getElementById('cc-n'), out=document.getElementById('cc-out'), coins=[1,2,5];
+  function count(n){
+    var dp=new Array(n+1).fill(0); dp[0]=1;
+    for(var i=0;i<coins.length;i++)for(var v=coins[i];v<=n;v++)dp[v]+=dp[v-coins[i]];
+    return dp[n];
+  }
+  function upd(){
+    var n=Math.max(0,Math.min(60,Math.round(+ni.value||0)));
+    out.textContent='用 1、2、5 元（每种无限枚）凑成 '+n+' 元，共有 '+count(n)+' 种组合方式（与顺序无关）。';
+  }
+  ni.addEventListener('input',upd);
+  document.querySelectorAll('.controls button[data-cc]').forEach(function(b){
+    b.addEventListener('click',function(){
+      ni.value=b.getAttribute('data-cc');
+      document.querySelectorAll('.controls button[data-cc]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      upd();
+    });
+  });
+  upd();
+})();
+</script>
 
-<p>这比无限制的找零多了一个"数量关系"条件。处理这种不等式约束，母函数有一个技巧——引入新变量来标记个数。设 1 元、2 元、5 元的个数分别为 a,b,c：</p>
+<p><strong>例4（带约束的找零）</strong>：用 1 元、2 元和 5 元的硬币支付 100 元，要求 2 元硬币的个数 b 不超过 5 元硬币的个数 c（即 b ≤ c），有多少种支付方式？</p>
 
-<pre><code>要求：a + 2b + 5c = 100, 且 b ≤ c（2元个数不超过5元个数）</code></pre>
+<p>设 1 元、2 元、5 元的个数分别为 a, b, c，则 a, b, c ≥ 0，a + 2b + 5c = 100。当 b, c 固定时 a 被唯一确定（a = 100 − 2b − 5c ≥ 0），所以问题化为数满足 b ≤ c 且 2b + 5c ≤ 100 的非负整数对 (b, c) 的个数：</p>
 
-<p>可以用双变量母函数：引入 y 标记 b 和 c 的个数：</p>
+<pre><code>N = Σ_{c=0}^{20} #{ b : 0 ≤ b ≤ min(c, ⌊(100−5c)/2⌋) }
+  = Σ_{c=0}^{20} ( min(c, ⌊(100−5c)/2⌋) + 1 )</code></pre>
 
-<pre><code>F(x,y) = (1/(1-x)) × (1/(1-x²y)) × (1/(1-x⁵y))
-        = Σ a,b,c ≥ 0  x^(a+2b+5c) y^(b+c)</code></pre>
+<p>注意 c ≤ ⌊(100−5c)/2⌋ 等价于 7c ≤ 100，即 c ≤ 14。分两段：</p>
+<ul>
+  <li>c = 0,…,14：min 取 c，贡献 Σ(c+1) = 1+2+…+15 = 120；</li>
+  <li>c = 15,…,20：min 取 ⌊(100−5c)/2⌋，贡献依次为 13, 11, 8, 6, 3, 1，合计 42。</li>
+</ul>
+<pre><code>N = 120 + 42 = 162</code></pre>
 
-<p>我们需要的是 x¹⁰⁰ y^(b+c) 中满足 b ≤ c 的项之和。这需要从 y 的指数入手——b+c 固定时，b ≤ c 的条件等价于 b ≤ (b+c)/2，即 b ≤ ⌊(b+c)/2⌋。可以转化为在固定总硬币数下，b 不超过一半。</p>
+<p>所以共有 <strong>162</strong> 种支付方式。</p>
 
-<p>这确实比较复杂——竞赛中如果遇到这类题，通常结合生成函数和组合计数联合处理，或者直接用组合方法分类。</p>
+<p><strong>母函数在这里的角色</strong>：双变量母函数 (1/(1−x))·(1/(1−x²y))·(1/(1−x⁵y)) 用 x 编码金额、用 y 编码硬币个数，能统一地写出所有项；但“b ≤ c”是一个<strong>跨变量</strong>的不等式，提取系数后仍需手工分类。约束越“跨变量”，母函数就越需要与枚举、分段求和等技巧配合——这也是竞赛题常见的组合套路。</p>
 
 <h2>10.4 用母函数求递推通项</h2>
 
@@ -223,9 +350,9 @@ G(x) = x/(1 - x - x²)</code></pre>
 
 <pre><code>x/(1 - x - x²) = A/(1-αx) + B/(1-βx)
 
-通分并比较系数得：
-A = 1/(α-β) · 1/α = 1/√5
-B = -1/(α-β) · 1/β = -1/√5
+通分：A(1-βx) + B(1-αx) = x
+比较系数：A + B = 0，-Aβ - Bα = 1
+解得：A = 1/(α-β) = 1/√5，B = -1/(α-β) = -1/√5
 
 所以 G(x) = 1/√5 [1/(1-αx) - 1/(1-βx)]
          = 1/√5 [Σ αⁿxⁿ - Σ βⁿxⁿ]
@@ -275,8 +402,8 @@ B = -1/(α-β) · 1/β = -1/√5
             <a href="index.html">📖 返回目录</a>
             <a href="11.html">下一章 →</a>
         </div>
-    </div>
-</div>
+    </article>
+    </main>
 </div>
 </body>
 </html>
